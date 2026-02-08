@@ -1,0 +1,3 @@
+displayName = 樱羽艾玛 Sakuraba Ema
+author = Scarlet
+version = 1.0

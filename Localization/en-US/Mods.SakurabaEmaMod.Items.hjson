@@ -1,0 +1,9 @@
+SakurabaEmma: {
+	DisplayName: Otherworldly Beret
+	Tooltip:
+		'''
+		A strangely peculiar beret.
+		Wearing it might grant some odd, special effects¡­
+		Press middle-click while hovering on this to switch sound effects.
+		'''
+}
