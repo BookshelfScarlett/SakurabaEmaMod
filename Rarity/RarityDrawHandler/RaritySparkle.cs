@@ -6,7 +6,8 @@ using SakurabaEmaMod.Core.ParticleSystem;
 namespace SakurabaEmaMod.Rarity.RarityDrawHandler
 {
     /// <summary>
-    /// 从炼狱那复制过来，但引入了自己的改动
+    ///由炼狱启发，并结合了自己的粒子系统
+    ///这里的粒子系统是单独写的一个新类，因为不需要modsystem接入管理，所以可以省一点加载时间
     /// </summary>
     public abstract class RaritySparkle
     {

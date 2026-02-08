@@ -19,8 +19,9 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         }
         public static void PostDrawRarity(ref List<RaritySparkle> particleList, DrawableTooltipLine tooltipLine)
         {
-            //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
             Vector2 textSize = tooltipLine.Font.MeasureString(tooltipLine.Text);
+            //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
+            //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
             if (Main.rand.NextBool(10))
             {
                 float scale = Main.rand.NextFloat(0.10f * 0.5f, 0.10f) * 0.8f;
@@ -30,7 +31,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
                 SakuraPetals sakuraPetals = new SakuraPetals(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, RandRotTwoPi, 1f, scale, 0.1f);
                 particleList.Add(sakuraPetals);
             }
-            //最后更新他。
+            //最后在通用的方法内进行更新
             RarityDrawHelper.UpdateTooltipParticles(tooltipLine, ref particleList);
         }
     }

@@ -15,7 +15,7 @@ using Terraria.ModLoader.IO;
 
 namespace SakurabaEmaMod.Items
 {
-       public class SakurabaEmmaPlayer : ModPlayer
+    public class SakurabaEmmaPlayer : ModPlayer
     {
         public bool vanityEquipped = false;
         public bool JustKiang = false;
@@ -23,9 +23,10 @@ namespace SakurabaEmaMod.Items
         public float Timer = 0;
         public override void LoadData(TagCompound tag)
         {
+            //这些信息在退出世界的时候都不会保存
             vanityEquipped = tag.GetBool(nameof(vanityEquipped));
             JustKiang = tag.GetBool(nameof(JustKiang));
-            isGivedItem=tag.GetBool(nameof(isGivedItem));
+            isGivedItem = tag.GetBool(nameof(isGivedItem));
         }
         public override void SaveData(TagCompound tag)
         {
@@ -41,7 +42,7 @@ namespace SakurabaEmaMod.Items
         public override void UpdateDead() => Timer = 1;
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if(!ShouldDisable)
+            if (!ShouldDisable)
             {
                 hurtInfo.SoundDisabled = true;
                 Disable();
@@ -59,13 +60,11 @@ namespace SakurabaEmaMod.Items
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) => ModifySound(ref modifiers);
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) => ModifySound(ref modifiers);
 
+        //modify这里取消声音就行了，自定义音效在onhit那执行
         private void ModifySound(ref Player.HurtModifiers modifiers)
         {
             if (!ShouldDisable)
-            {
                 modifiers.DisableSound();
-                //Disable();
-            }
 
         }
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
@@ -75,7 +74,7 @@ namespace SakurabaEmaMod.Items
                 genDust = false;
                 if (!ShouldDisable)
                 {
-                    SoundStyle sound = JustKiang ? SoundRegister.Ema_Kiang: SoundRegister.Ema_HitHeavy;
+                    SoundStyle sound = JustKiang ? SoundRegister.Ema_Kiang : SoundRegister.Ema_HitHeavy;
                     SoundEngine.PlaySound(sound, Player.Center);
                 }
                 //落樱和散发粒子，修改为这些。
@@ -110,7 +109,7 @@ namespace SakurabaEmaMod.Items
             {
                 if (!Main.mouseMiddleRelease)
                     return;
-                SoundStyle playSound = !JustKiang ? SoundRegister.Ema_Kiang: SoundRegister.Ema_HitSound;
+                SoundStyle playSound = !JustKiang ? SoundRegister.Ema_Kiang : SoundRegister.Ema_HitSound;
                 SoundEngine.PlaySound(playSound, Player.Center);
                 JustKiang = !JustKiang;
             }
@@ -121,7 +120,6 @@ namespace SakurabaEmaMod.Items
             {
                 //出于某些原因如果真的有神人玩家选择加载了樱羽艾玛死亡音效mod，则禁用这个物品的所有自定义音效
                 //还有这里的中文变量名纯故意的
-
                 bool 草艾玛 = ModLoader.HasMod("Sounds_SakurabaEma");
                 if (草艾玛)
                     return true;
@@ -152,7 +150,7 @@ namespace SakurabaEmaMod.Items
             //只有暂停的时候下面才会调用这个方法
             bool isPaused = Main.gamePaused || Main.autoPause;
             //重写这段是为了开启自动暂停的时候，也能绘制需要的时装
-            if(vanityEquipped && isPaused)
+            if (vanityEquipped && isPaused)
             {
                 Player.legs = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Legs);
                 Player.body = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Body);
@@ -162,24 +160,27 @@ namespace SakurabaEmaMod.Items
         public override void FrameEffects()
         {
             //这里只能通过遍历所有玩家原版盔甲栏的方式来寻找需要的时装物品。
+            //因为这里需要实现的效果是，让人物存档页面也能绘制需要的时装
             //如果玩家佩戴了其他的饰品栏，那么……嗯，随便吧反正
             bool equip = false;
             if (Main.gameMenu)
-            {
-                foreach (Item item in Player.armor)
-                {
-                    if (item.type == ItemType<SakurabaEmma>())
-                    {
-                        equip = true;
-                        break;
-                    }
-                }
-            }
+                GetArmorSlotItem(ref equip);
             if (vanityEquipped || equip)
             {
                 Player.legs = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Legs);
                 Player.body = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Body);
                 Player.head = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Head);
+            }
+        }
+        public void GetArmorSlotItem(ref bool equip)
+        {
+            foreach (Item item in Player.armor)
+            {
+                if (item.type == ItemType<SakurabaEmma>())
+                {
+                    equip = true;
+                    break;
+                }
             }
         }
         public override void PostUpdateMiscEffects()
@@ -189,6 +190,7 @@ namespace SakurabaEmaMod.Items
         }
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
+            //确保对准头上的樱花装饰。
             Vector2 spawnPos = Player.direction > 0 ? new Vector2(drawInfo.Position.X + 2, drawInfo.Position.Y + 2) : new Vector2(drawInfo.Position.X + 15, drawInfo.Position.Y + 2);
             if (Timer <= 0f && vanityEquipped)
                 DrawGlow(spawnPos);
@@ -198,6 +200,7 @@ namespace SakurabaEmaMod.Items
             new CrossGlow(spawnPos, Color.Pink, 30, 1, 0.10f).Spawn();
             for (int i = 0; i < 3; i++)
             {
+                //花瓣与光球
                 new Petal(spawnPos, Vector2.UnitY * Main.rand.NextFloat(1.1f, 1.3f), RandLerpColor(Color.HotPink, Color.LightPink), 120, RandRotTwoPi, 0.8f, Main.rand.NextFloat(0.08f, 0.1f), 0.3f).Spawn();
                 new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 0.2f, RandLerpColor(Color.HotPink, Color.LightPink), 120, 0.22f, RandRotTwoPi).Spawn();
             }
@@ -214,12 +217,11 @@ namespace SakurabaEmaMod.Items
         public override bool AllowPrefix(int pre) => false;
         public override void Load()
         {
-            if (Main.netMode != NetmodeID.Server)
-            {
-                EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaHead", EquipType.Head, this);
-                EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaBody", EquipType.Body, this);
-                EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaLegs", EquipType.Legs, this);
-            }
+            if (Main.netMode == NetmodeID.Server)
+                return;
+            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaHead", EquipType.Head, this);
+            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaBody", EquipType.Body, this);
+            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaLegs", EquipType.Legs, this);
         }
         public override void SetStaticDefaults()
         {
@@ -251,15 +253,20 @@ namespace SakurabaEmaMod.Items
             CreateRecipe().
                 AddIngredient(ItemID.Silk, 15).
                 AddIngredient(ItemID.PinkPricklyPear).
+                DisableDecraft().
                 AddTile(TileID.Loom).
                 Register();
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
+            //替换所有的tooltip来进行重写
+            //实际上这里的作用仅仅是为了给tooltip进行染色
+            //后续会再考虑独立染色的方式而不是直接重写tooltip去做
             tooltips.ReplaceAllTooltip(Mod.GetLocalizationKey($"{LocalizationCategory}.{GetType().Name}.Tooltip"), Color.LightPink);
         }
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
+            //使用自定义的稀有度
             if (line.Name == "ItemName" && line.Mod == "Terraria")
             {
                 SakuraRarity.DrawRarity(line);
@@ -272,10 +279,10 @@ namespace SakurabaEmaMod.Items
             Texture2D tex = TextureAssets.Item[Type].Value;
             Vector2 position = Item.position - Main.screenPosition + tex.Size() / 2;
             Rectangle iFrame = tex.Frame();
-            //为锤子添加描边，并时刻更新大小
+            //绘制物品时装描边
             for (int i = 0; i < 16; i++)
                 spriteBatch.Draw(tex, position + ToRadians(i * 60f).ToRotationVector2() * 2.4f, null, Color.Pink with { A = 0 }, 0f, tex.Size() / 2, scale, 0, 0f);
-            //然后绘制锤子本身。
+            //绘制物品本身
             spriteBatch.Draw(tex, position, iFrame, Color.White, 0f, tex.Size() / 2, scale, 0f, 0f);
             Lighting.AddLight(position, TorchID.UltraBright);
             return false;
@@ -294,8 +301,6 @@ namespace SakurabaEmaMod.Items
         }
         public override void UpdateVanity(Player player)
         {
-            //整理一下这里的代码
-            //如果开启自动暂停的情况下，这里需要手动绘制一遍
             player.GetModPlayer<SakurabaEmmaPlayer>().vanityEquipped = true;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)

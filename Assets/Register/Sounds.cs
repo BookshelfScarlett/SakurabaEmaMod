@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.Audio;
+﻿using Terraria.Audio;
 
 namespace SakurabaEmaMod.Assets.Register
 {
@@ -13,11 +6,20 @@ namespace SakurabaEmaMod.Assets.Register
     {
         public enum Charactor
         {
-            SakurabaEma
+            SakurabaEma,
+            NikaidouHiro,
+            NatsumeAnn,
+            JougasakiNoa,
+            TachibanaSherry,
+            ToonoHanna
         }
         private static string Path => "SakurabaEmaMod/Assets/Sounds/";
-        public static SoundStyle Ema_HitSound = new SoundStyle($"{Path}{Charactor.SakurabaEma}Sounds/{nameof(Ema_HitSound)}", numVariants: 4);
-        public static SoundStyle Ema_Kiang = new SoundStyle($"{Path}{Charactor.SakurabaEma}Sounds/{nameof(Ema_Kiang)}");
-        public static SoundStyle Ema_HitHeavy= new SoundStyle($"{Path}{Charactor.SakurabaEma}Sounds/{nameof(Ema_HitHeavy)}", 3);
+        public static SoundStyle Ema_HitSound = GetSound(Charactor.SakurabaEma, nameof(Ema_HitSound), 4);
+        public static SoundStyle Ema_HitHeavy = GetSound(Charactor.SakurabaEma, nameof(Ema_HitHeavy), 3);
+        public static SoundStyle Ema_Kiang = GetSound(Charactor.SakurabaEma, nameof(Ema_Kiang));
+        public static SoundStyle GetSound(Charactor charactor, string soundName, int soundVariants = 1)
+        {
+            return new SoundStyle($"{Path}{charactor}Sounds/{soundName}", numVariants: soundVariants);
+        }
     }
 }

@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Assets.Register
 {
+    // todo：这里的注册系统完全没有必要……
     public class Tex2DWithPath
     {
         public Asset<Texture2D> Texture { get; }
@@ -49,9 +50,9 @@ namespace SakurabaEmaMod.Assets.Register
         public static Tex2DWithPath Particle_Petal { get; set; }
 
         public static Tex2DWithPath Texture_BloomShockwave { get; set; }
-                public static Tex2DWithPath Texture_RarityGlow { get; set; }
+        public static Tex2DWithPath Texture_RarityGlow { get; set; }
 
-               public static Tex2DWithPath InvisAsset { get; private set; }
+        public static Tex2DWithPath InvisAsset { get; private set; }
         public static Texture2D Particle_SharpTear => TextureAssets.Extra[ExtrasID.SharpTears].Value;
         private string TexPath => "SakurabaEmaMod/Assets/Texture";
         private string Path_Particle => $"{TexPath}/Particles/";
@@ -67,7 +68,7 @@ namespace SakurabaEmaMod.Assets.Register
             Particle_CrossGlow = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_CrossGlow)}");
             Particle_Petal = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_Petal)}");
             Texture_BloomShockwave = new Tex2DWithPath($"{Path_General}{nameof(Texture_BloomShockwave)}");
-                       Texture_RarityGlow = new Tex2DWithPath($"{Path_General}{nameof(Texture_RarityGlow)}");
+            Texture_RarityGlow = new Tex2DWithPath($"{Path_General}{nameof(Texture_RarityGlow)}");
 
 
 
@@ -82,8 +83,8 @@ namespace SakurabaEmaMod.Assets.Register
             Particle_CrossGlow = null;
             Particle_Petal = null;
 
-                      Texture_BloomShockwave = null;
-                      Texture_RarityGlow= null;
+            Texture_BloomShockwave = null;
+            Texture_RarityGlow = null;
         }
     }
 }

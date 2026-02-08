@@ -2,11 +2,6 @@ global using static Microsoft.Xna.Framework.MathHelper;
 global using static SakurabaEmaMod.Globals.Handlers.GlobalHandlers;
 global using static SakurabaEmaMod.Globals.Handlers.EasingHandler;
 global using static Terraria.ModLoader.ModContent;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod

@@ -38,18 +38,20 @@ namespace SakurabaEmaMod.Rarity.RarityDrawHandler
             ChatManager.DrawColorCodedString(Main.spriteBatch, tooltipLine.Font, textValue, textPosition, mainTextColor, tooltipLine.Rotation, tooltipLine.Origin, tooltipLine.BaseScale);
         }
         /// <summary>
-        /// 炼狱复制
+        /// 手动操作稀有度粒子的更新
         /// </summary>
+        /// <param name="tooltipLine"></param>
+        /// <param name="sparklesList"></param>
         public static void UpdateTooltipParticles(DrawableTooltipLine tooltipLine, ref List<RaritySparkle> sparklesList)
         {
             Vector2 textSize = tooltipLine.Font.MeasureString(tooltipLine.Text);
-            //手动在这里更新一下所有的draw
+            //在这里更新粒子的Draw，让粒子动起来
             for (int i = 0; i < sparklesList.Count; i++)
             {
                 sparklesList[i].CustomUpdate();
                 sparklesList[i].Time++;
             }
-            //在需要的时候删除掉粒子
+            //在需要的时候删除掉粒子，即使用的粒子系统内的LifeTimeRatio
             sparklesList.RemoveAll((s) => s.LifetimeRatio >= 1);
             //而后，绘制所有的粒子
             foreach (RaritySparkle sparkle in sparklesList)
