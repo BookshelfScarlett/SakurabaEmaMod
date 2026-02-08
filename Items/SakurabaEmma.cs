@@ -4,12 +4,16 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
 using SakurabaEmaMod.Rarity.RarityShiny;
+using Steamworks;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -171,6 +175,20 @@ namespace SakurabaEmaMod.Items
                 Player.body = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Body);
                 Player.head = EquipLoader.GetEquipSlot(Mod, nameof(SakurabaEmma), EquipType.Head);
             }
+            //绘制粒子
+            if (vanityEquipped)
+            {
+                if (Player.IsStandingStil(5f))
+                {
+                    if (Timer <= 0f)
+                        DrawGlow();
+                }
+                else
+                {
+                    if (Main.rand.NextBool())
+                        DrawGeneralParticle();
+                }
+            }
         }
         public void GetArmorSlotItem(ref bool equip)
         {
@@ -188,15 +206,24 @@ namespace SakurabaEmaMod.Items
             if (Timer > 0f)
                 Timer--;
         }
-        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+
+        private void DrawGeneralParticle()
         {
-            //确保对准头上的樱花装饰。
-            Vector2 spawnPos = Player.direction > 0 ? new Vector2(drawInfo.Position.X + 2, drawInfo.Position.Y + 2) : new Vector2(drawInfo.Position.X + 15, drawInfo.Position.Y + 2);
-            if (Timer <= 0f && vanityEquipped)
-                DrawGlow(spawnPos);
+            //如果玩家速度过小，我们不生成粒子。
+            Vector2 mountedPlayerPos = Player.position;
+            Vector2 spawnPos = Main.rand.NextVector2FromRectangle(new Rectangle((int)mountedPlayerPos.X, (int)mountedPlayerPos.Y, (int)Player.width, (int)Player.height));
+            Vector2 vel = Player.velocity.SafeNormalize(Vector2.UnitX) * -Main.rand.NextFloat(0.3f, 1.25f) * 1.1f;
+            new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 0.6f, RandLerpColor(Color.HotPink, Color.LightPink), 40, 0.34f, RandRotTwoPi).Spawn();
+            if(Main.rand.NextBool(3))
+            new Petal(spawnPos, vel, RandLerpColor(Color.HotPink, Color.LightPink), 40, RandRotTwoPi, 1f, 0.1f, 0.5f).Spawn();
         }
-        public void DrawGlow(Vector2 spawnPos)
+
+        public void DrawGlow()
         {
+            //这里的写法潜在问题是如果有人试图手动操作玩家的贴图大小，则无法校准
+            //但是……我还真没见过这种情况。先不管反正。
+            Timer = 120f;
+            Vector2 spawnPos = Player.direction > 0 ? new Vector2(Player.position.X + 2, Player.position.Y + 2) : new Vector2(Player.position.X + 15, Player.position.Y + 2);
             new CrossGlow(spawnPos, Color.Pink, 30, 1, 0.10f).Spawn();
             for (int i = 0; i < 3; i++)
             {
@@ -204,7 +231,6 @@ namespace SakurabaEmaMod.Items
                 new Petal(spawnPos, Vector2.UnitY * Main.rand.NextFloat(1.1f, 1.3f), RandLerpColor(Color.HotPink, Color.LightPink), 120, RandRotTwoPi, 0.8f, Main.rand.NextFloat(0.08f, 0.1f), 0.3f).Spawn();
                 new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 0.2f, RandLerpColor(Color.HotPink, Color.LightPink), 120, 0.22f, RandRotTwoPi).Spawn();
             }
-            Timer = 120f;
 
         }
     }
@@ -240,6 +266,8 @@ namespace SakurabaEmaMod.Items
         }
         public override bool ConsumeItem(Player player) => false;
         public int Timer = 0;
+        public int FlavorTooltipIndex = 0;
+        public int RealTooltipIndex = 0;
         public override void SetDefaults()
         {
             Item.width = 22;
@@ -259,20 +287,47 @@ namespace SakurabaEmaMod.Items
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            //替换所有的tooltip来进行重写
-            //实际上这里的作用仅仅是为了给tooltip进行染色
-            //后续会再考虑独立染色的方式而不是直接重写tooltip去做
-            tooltips.ReplaceAllTooltip(Mod.GetLocalizationKey($"{LocalizationCategory}.{GetType().Name}.Tooltip"), Color.LightPink);
+            //遍历一遍寻找需要绘制的特殊台词的索引
+            //这里需要先遍历，因为后面会把对应的tooltip替换掉为需要的内容
+            FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
+            //创建新的tooltip，然后植入进去
+            string value = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("FlavorTooltip"));
+            string realTooltipValue = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("RealTooltip"));
+            TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
+            TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
+            //植入
+            tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
+            tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
+            Player player = Main.LocalPlayer;
+            if (player.GetModPlayer<SakurabaEmmaPlayer>().JustKiang)
+            {
+                tooltips.CreateTooltip(this.GetLocalizedValue("KiangSound"), LineName: "SoundName");
+            }
+            else
+                tooltips.CreateTooltip(this.GetLocalizedValue("RegularSound"), LineName: "RegularSound");
         }
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
-            //使用自定义的稀有度
-            if (line.Name == "ItemName" && line.Mod == "Terraria")
+            if (line.Mod == "Terraria" && line.Name == "ItemName")
             {
                 SakuraRarity.DrawRarity(line);
                 return false;
             }
+            if (line.Mod == Mod.Name && line.Name == "FlavorTooltipName")
+            {
+                    SakuraRarity.DrawFlavor(line);
+                    return false;
+            }
+            if (line.Mod == Mod.Name && line.Name == "RealToolTipName")
+            {
+                SakuraRarity.DrawTooltip(line);
+                return false;
+            }
             return base.PreDrawTooltipLine(line, ref yOffset);
+        }
+        public override void PostDrawTooltipLine(DrawableTooltipLine line)
+        {
+            base.PostDrawTooltipLine(line);
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {

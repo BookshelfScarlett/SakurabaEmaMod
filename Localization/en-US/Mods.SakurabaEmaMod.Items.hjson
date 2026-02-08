@@ -1,9 +1,12 @@
 SakurabaEmma: {
 	DisplayName: Otherworldly Beret
-	Tooltip:
+	Tooltip: Press middle-click while hovering on this to switch sound effects
+	FlavorTooltip: "[-The Reviled One-]"
+	RealTooltip:
 		'''
-		A strangely peculiar beret.
-		Wearing it might grant some odd, special effects¡­
-		Press middle-click while hovering on this to switch sound effects.
+		She is one who deserves revulsion.
+		And the one who loathes her more than anyone...is herself.
 		'''
+	KiangSound: Current Sound: Kiang Only
+	RegularSound: Current Sound: Regular
 }

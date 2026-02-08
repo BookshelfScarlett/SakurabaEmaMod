@@ -1,9 +1,12 @@
-﻿SakurabaEmma: {
+SakurabaEmma: {
 	DisplayName: 异世贝雷帽
-	Tooltip:
+	Tooltip: 对着物品按下中键以切换受击音效
+	FlavorTooltip: "[-受厌恶之人-]"
+	RealTooltip:
 		'''
-		好奇怪的贝雷帽
-		佩戴之后会不会有什么特殊的效果……
-		对着物品按中键可以切换音效
+		她是应受厌恶之人
+		而比任何人都厌恶她的，正是她本人
 		'''
+	KiangSound: 当前受击音效：纯享
+	RegularSound: 当前受击音效：常规
 }

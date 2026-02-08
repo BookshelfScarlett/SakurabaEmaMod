@@ -1,8 +1,8 @@
-ÎªÄãµÄÓÎÏ·ÀïÌí¼ÓÁËÒ»Ì×Ó£Óğ°¬ÂêÊ±×°£¬ÈËÎïÃûÎª¡°Ó£Óğ°¬Âê¡±»òÕßÃû×ÖÄÚ´ø"Sakuraba"Ê±½øÈëÊÀ½ç¸øÓè
-»òÔÚÓÎÏ·ÄÚºÏ³É
-·ÛÃ«Ğ¡±¿¹·¿É°®Äó
+ï»¿ä¸ºä½ çš„æ¸¸æˆé‡Œæ·»åŠ äº†ä¸€å¥—æ¨±ç¾½è‰¾ç›æ—¶è£…ï¼Œäººç‰©åä¸ºâ€œæ¨±ç¾½è‰¾ç›â€æˆ–è€…åå­—å†…å¸¦"Sakuraba"æ—¶è¿›å…¥ä¸–ç•Œç»™äºˆ
+æˆ–åœ¨æ¸¸æˆå†…åˆæˆ
+ç²‰æ¯›å°ç¬¨ç‹—å¯çˆ±æ
 Kiang!
 
-Add Sakuraba Ema Costume from Ä§·¨ÉÙÅ®Ä§Å®²ÃÅĞ, give on entering world if your name contains "Sakuraba"
+Add Sakuraba Ema Costume from é­”æ³•å°‘å¥³é­”å¥³è£åˆ¤, give on entering world if your name contains "Sakuraba"
 Or can be crafed in game
 Kiang.
