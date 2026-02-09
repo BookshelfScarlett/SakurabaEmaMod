@@ -3,7 +3,6 @@ using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
 using System.Collections.Generic;
-using System.Data;
 using Terraria;
 using Terraria.ModLoader;
 

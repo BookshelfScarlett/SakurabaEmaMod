@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using SakurabaEmaMod.Core.ParticleSystem;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

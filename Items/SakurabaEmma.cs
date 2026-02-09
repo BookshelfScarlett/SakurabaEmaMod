@@ -4,16 +4,12 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
 using SakurabaEmaMod.Rarity.RarityShiny;
-using Steamworks;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -287,17 +283,20 @@ namespace SakurabaEmaMod.Items
         }
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            //遍历一遍寻找需要绘制的特殊台词的索引
-            //这里需要先遍历，因为后面会把对应的tooltip替换掉为需要的内容
+            //遍历一遍寻找需要绘制的特殊台词位置的索引
+            //这里需要把对应的原罪名与原罪文本直接植入到物品名的下方，让其看起来比较协调
             FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
-            //创建新的tooltip，然后植入进去
+            //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
             string value = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("FlavorTooltip"));
             string realTooltipValue = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("RealTooltip"));
+            //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
             TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
             TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
-            //植入
+            //植入Tooltip。
             tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
             tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
+            //艾玛有中键音效切换，这里需要提示玩家当前使用的版本
+            //直接用的封装CreateTooltip方法
             Player player = Main.LocalPlayer;
             if (player.GetModPlayer<SakurabaEmmaPlayer>().JustKiang)
             {
@@ -308,16 +307,19 @@ namespace SakurabaEmaMod.Items
         }
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
+            //为物品名本身绘制特效
             if (line.Mod == "Terraria" && line.Name == "ItemName")
             {
                 SakuraRarity.DrawRarity(line);
                 return false;
             }
+            //为原罪名文本绘制特效
             if (line.Mod == Mod.Name && line.Name == "FlavorTooltipName")
             {
-                    SakuraRarity.DrawFlavor(line);
-                    return false;
+                SakuraRarity.DrawFlavor(line);
+                return false;
             }
+            //为原罪文本绘制特效
             if (line.Mod == Mod.Name && line.Name == "RealToolTipName")
             {
                 SakuraRarity.DrawTooltip(line);
@@ -344,7 +346,7 @@ namespace SakurabaEmaMod.Items
         }
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-            Texture2D tex = Request<Texture2D>(Texture).Value;
+            Texture2D tex = TextureAssets.Item[Type].Value;
             //描边。
             for (int i = 0; i < 8; i++)
             {

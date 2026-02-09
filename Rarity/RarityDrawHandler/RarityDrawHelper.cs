@@ -37,6 +37,12 @@ namespace SakurabaEmaMod.Rarity.RarityDrawHandler
             Color mainTextColor = mainColor;
             ChatManager.DrawColorCodedString(Main.spriteBatch, tooltipLine.Font, textValue, textPosition, mainTextColor, tooltipLine.Rotation, tooltipLine.Origin, tooltipLine.BaseScale);
         }
+        /// <summary>
+        /// 重载绘制特殊文本的方法，这里的绘制不带通用发背景素材
+        /// </summary>
+        /// <param name="tooltipLine"></param>
+        /// <param name="edgeColor"></param>
+        /// <param name="mainColor"></param>
         public static void DrawCustomTooltipLine(DrawableTooltipLine tooltipLine, Color edgeColor, Color mainColor)
         {
             string textValue = tooltipLine.Text;
