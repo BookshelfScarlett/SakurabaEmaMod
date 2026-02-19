@@ -41,7 +41,7 @@ namespace SakurabaEmaMod.Assets.Register
             }
         }
     }
-    public class TextureRegister : ModSystem
+    public class ManosabaTexture : ModSystem
     {
         public static Tex2DWithPath Particle_ShinyOrb { get; set; }
         public static Tex2DWithPath Particle_HRShinyOrbSmall { get; set; }

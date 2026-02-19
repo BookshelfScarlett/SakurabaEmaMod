@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
+using SakurabaEmaMod.Rarity;
 using SakurabaEmaMod.Rarity.RarityShiny;
 using System.Collections.Generic;
 using Terraria;
@@ -15,7 +17,7 @@ using Terraria.ModLoader.IO;
 
 namespace SakurabaEmaMod.Items
 {
-    public class SakurabaEmmaPlayer : ModPlayer
+    public class SakurabaEmaPlayer : ModPlayer
     {
         public bool vanityEquipped = false;
         public bool JustKiang = false;
@@ -74,7 +76,7 @@ namespace SakurabaEmaMod.Items
                 genDust = false;
                 if (!ShouldDisable)
                 {
-                    SoundStyle sound = JustKiang ? SoundRegister.Ema_Kiang : SoundRegister.Ema_HitHeavy;
+                    SoundStyle sound = JustKiang ? ManosabaSounds.Ema_Kiang : ManosabaSounds.Ema_HitHeavy;
                     SoundEngine.PlaySound(sound, Player.Center);
                 }
                 //落樱和散发粒子，修改为这些。
@@ -96,7 +98,7 @@ namespace SakurabaEmaMod.Items
             {
                 string name = "SakurabaEma".ToLower();
                 string name2 = "樱羽艾玛";
-                if (Player.name.ToLower().Equals(name) || Player.name.ToLower().Contains("sakuraba") || Player.name.Equals(name2))
+                if (Player.name.ToLower().Equals(name) || Player.name.ToLower().Contains("sakuraba") || Player.name.Contains(name2))
                 {
                     Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<SakurabaEmma>());
                     isGivedItem = true;
@@ -109,7 +111,7 @@ namespace SakurabaEmaMod.Items
             {
                 if (!Main.mouseMiddleRelease)
                     return;
-                SoundStyle playSound = !JustKiang ? SoundRegister.Ema_Kiang : SoundRegister.Ema_HitSound;
+                SoundStyle playSound = !JustKiang ? ManosabaSounds.Ema_Kiang : ManosabaSounds.Ema_HitSound;
                 SoundEngine.PlaySound(playSound, Player.Center);
                 JustKiang = !JustKiang;
             }
@@ -120,8 +122,8 @@ namespace SakurabaEmaMod.Items
             {
                 //出于某些原因如果真的有神人玩家选择加载了樱羽艾玛死亡音效mod，则禁用这个物品的所有自定义音效
                 //还有这里的中文变量名纯故意的
-                bool 草艾玛 = ModLoader.HasMod("Sounds_SakurabaEma");
-                if (草艾玛)
+                bool 草kino= ModLoader.HasMod("Sounds_SakurabaEma");
+                if (草kino)
                     return true;
                 if (!vanityEquipped)
                     return true;
@@ -133,17 +135,35 @@ namespace SakurabaEmaMod.Items
         {
             //如果玩家出于某种原因想听艾玛狗叫的话。
             //kiang
-            if (JustKiang)
+            if (Main.netMode == NetmodeID.Server)
             {
-                SoundEngine.PlaySound(SoundRegister.Ema_Kiang, Player.Center);
-                return true;
+                int soundType;
+                if (JustKiang)
+                {
+                    //是的，这里漂洋过海半天就是为了做包的收发。
+                    soundType = 1;
+                    SoundPackets.BroadcastSound(Player.Center, soundType);
+                }
+                else
+                {
+                    soundType = Main.rand.NextBool().ToInt();
+                    SoundPackets.BroadcastSound(Player.Center, soundType);
+                }
             }
             else
             {
-                SoundStyle hitSound = Main.rand.NextBool() ? SoundRegister.Ema_HitSound : SoundRegister.Ema_Kiang;
-                SoundEngine.PlaySound(hitSound, Player.Center);
-                return true;
+                if (JustKiang)
+                {
+                    //是的，这里漂洋过海半天就是为了做包的收发。
+                    SoundEngine.PlaySound(ManosabaSounds.Ema_Kiang, Player.Center);
+                }
+                else
+                {
+                    SoundStyle hitSound = Main.rand.NextBool() ? ManosabaSounds.Ema_HitSound : ManosabaSounds.Ema_Kiang;
+                    SoundEngine.PlaySound(hitSound, Player.Center);
+                }
             }
+                return true;
         }
         public override void UpdateVisibleVanityAccessories()
         {
@@ -269,7 +289,7 @@ namespace SakurabaEmaMod.Items
             Item.width = 22;
             Item.height = 30;
             Item.accessory = true;
-            Item.rare = RarityType<SakuraRarity>();
+            Item.rare = ManoRarityID.SakurabaEmaRarity;
             Item.vanity = true;
         }
         public override void AddRecipes()
@@ -287,8 +307,8 @@ namespace SakurabaEmaMod.Items
             //这里需要把对应的原罪名与原罪文本直接植入到物品名的下方，让其看起来比较协调
             FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
             //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
-            string value = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("FlavorTooltip"));
-            string realTooltipValue = SakurabaEmaMethods.ToLangValue(this.GetLocalizedValue("RealTooltip"));
+            string value = ManosabaMethods.ToLangValue(this.GetLocalizedValue("FlavorTooltip"));
+            string realTooltipValue = ManosabaMethods.ToLangValue(this.GetLocalizedValue("RealTooltip"));
             //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
             TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
             TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
@@ -298,7 +318,7 @@ namespace SakurabaEmaMod.Items
             //艾玛有中键音效切换，这里需要提示玩家当前使用的版本
             //直接用的封装CreateTooltip方法
             Player player = Main.LocalPlayer;
-            if (player.GetModPlayer<SakurabaEmmaPlayer>().JustKiang)
+            if (player.GetModPlayer<SakurabaEmaPlayer>().JustKiang)
             {
                 tooltips.CreateTooltip(this.GetLocalizedValue("KiangSound"), LineName: "SoundName");
             }
@@ -358,11 +378,11 @@ namespace SakurabaEmaMod.Items
         }
         public override void UpdateVanity(Player player)
         {
-            player.GetModPlayer<SakurabaEmmaPlayer>().vanityEquipped = true;
+            player.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped = true;
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<SakurabaEmmaPlayer>().vanityEquipped = !hideVisual;
+            player.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped = !hideVisual;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace SakurabaEmaMod.Particles
         // 这里采样没有问题，他贴图就是这样
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D texture = TextureRegister.Particle_CrossGlow.Value;
+            Texture2D texture = ManosabaTexture.Particle_CrossGlow.Value;
             spriteBatch.Draw(texture, Position - Main.screenPosition, null, DrawColor * Opacity, Rotation, texture.Size() / 2, Scale, se, 0f);
         }
     }

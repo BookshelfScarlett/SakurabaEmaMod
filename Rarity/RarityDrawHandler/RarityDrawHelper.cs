@@ -21,7 +21,7 @@ namespace SakurabaEmaMod.Rarity.RarityDrawHandler
             Vector2 glowPosition = new(tooltipLine.X + textCenter.X, tooltipLine.Y + textCenter.Y / 1.5f);
             Vector2 glowScale = new Vector2(textSize.X * 0.135f, 0.6f) * glowScaleMult;
             //绘制需要的……发光背景。
-            Main.spriteBatch.Draw(TextureRegister.Texture_RarityGlow.Value, glowPosition, null, glowColor.ToAddColor() * 0.85f, 0f, TextureRegister.Texture_RarityGlow.Origin, glowScale, SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(ManosabaTexture.Texture_RarityGlow.Value, glowPosition, null, glowColor.ToAddColor() * 0.85f, 0f, ManosabaTexture.Texture_RarityGlow.Origin, glowScale, SpriteEffects.None, 0f);
 
             float sine = (float)((1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2.5f)) / 2);
             float sineOffset = Lerp(0.5f, 1f, sine);

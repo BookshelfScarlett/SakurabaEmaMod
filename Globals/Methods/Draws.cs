@@ -4,7 +4,7 @@ using Terraria;
 
 namespace SakurabaEmaMod.Globals.Methods
 {
-    public static partial class SakurabaEmaMethods
+    public static partial class ManosabaMethods
     {
         public static void BeginDefault(this SpriteBatch SB) =>
           SB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -23,7 +23,22 @@ namespace SakurabaEmaMod.Globals.Methods
             SB.End();
             SB.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
+        public static void EnterHudArea(BlendState blendState)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+        }
+        public static void EnterHudArea(BlendState blendState, SamplerState samplerState)
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Immediate, blendState, samplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+        }
 
+        public static void EndHudArea()
+        {
+            Main.spriteBatch.End();
+            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+        }
         public static void EndShaderArea(this SpriteBatch SB)
         {
             SB.End();
@@ -83,5 +98,10 @@ namespace SakurabaEmaMod.Globals.Methods
             }
         }
         public static Color ToAddColor(this Color color, byte alphaValue = 0) => color with { A = alphaValue };
+
+        public static Vector2 ScreenCenter()
+        {
+            return GetScreenSize / 2f;
+        }
     }
 }

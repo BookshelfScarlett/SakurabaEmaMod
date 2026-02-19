@@ -1,10 +1,15 @@
-﻿using System;
+﻿using log4net.Core;
+using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Players;
+using SakurabaEmaMod.Items;
+using System;
 using Terraria;
 
 namespace SakurabaEmaMod.Globals.Methods
 {
-    public static partial class SakurabaEmaMethods
+    public static partial class ManosabaMethods
     {
+        public static ManosabaPlayer ManosabaMod(this Player player) => player.GetModPlayer<ManosabaPlayer>();
         /// <summary>
         /// 玩家是否站立不动，处理方式为计算玩家水平速度模+垂直速度模的总和
         /// </summary>
@@ -15,5 +20,6 @@ namespace SakurabaEmaMod.Globals.Methods
         {
             return (Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y)) < standingStillThreshold;
         }
+
     }
 }

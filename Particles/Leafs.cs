@@ -80,7 +80,7 @@ namespace SakurabaEmaMod.Particles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D texture = TextureRegister.Particle_Leafs.Value;
+            Texture2D texture = ManosabaTexture.Particle_Leafs.Value;
             spriteBatch.Draw(texture, Position - Main.screenPosition, null, DrawColor * Opacity * Lighting.Brightness((int)(Position.X / 16f), (int)(Position.Y / 16f)), Rotation, texture.Size() / 2, Scale, SpriteEffects.None, 0);
         }
     }

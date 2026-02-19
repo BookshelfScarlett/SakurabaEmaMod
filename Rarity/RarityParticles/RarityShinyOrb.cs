@@ -38,7 +38,7 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
         public override void CustomDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
             Vector2 scale = new Vector2(1f, 1f) * Scale;
-            Texture2D texture = TextureRegister.Particle_ShinyOrb.Value;
+            Texture2D texture = ManosabaTexture.Particle_ShinyOrb.Value;
             spriteBatch.Draw(texture, drawPosition, null, DrawColor, Rotation, texture.Size() * 0.5f, scale, 0, 0f);
             if (GlowCenter)
                 spriteBatch.Draw(texture, drawPosition, null, Color.White * FadeOut, Rotation, texture.Size() * 0.5f, scale * GlowCenterScale, 0, 0f);

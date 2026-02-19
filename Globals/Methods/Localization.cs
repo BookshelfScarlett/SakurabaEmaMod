@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Methods
 {
-    public static partial class SakurabaEmaMethods
+    public static partial class ManosabaMethods
     {
         public static void ReplaceAllTooltip(this List<TooltipLine> tooltips, string replacedTextPath, Color? textColor = null)
         {

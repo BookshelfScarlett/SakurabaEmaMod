@@ -1,7 +1,9 @@
-﻿为你的游戏里添加了一套樱羽艾玛时装，人物名为“樱羽艾玛”或者名字内带"Sakuraba"时进入世界给予
-或在游戏内合成
-粉毛小笨狗可爱捏
-Kiang!
+﻿
+迎接少女们的，是一场残酷的死亡游戏……在即将来临的“魔女审判”中，打破魔法和谎言的幻影，揪出混入少女之中的“魔女”吧。
+
+该Mod以ADV游戏《魔法少女的魔女审判》作为蓝本制作的粉丝作品，主要做一些与原作相关的内容
+目前模组提供了一套高度打磨的樱羽艾玛时装，以及一个完全仿制魔裁主界面的游戏主界面
+时装可以通过命名”樱羽艾玛“或者名字内带"Sakuraba"时进入世界给予，或游戏内合成
 
 Add Sakuraba Ema Costume from 魔法少女魔女裁判, give on entering world if your name contains "Sakuraba"
 Or can be crafed in game

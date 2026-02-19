@@ -39,7 +39,7 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
 
         public override void CustomDraw(SpriteBatch spriteBatch, Vector2 drawPosition)
         {
-            Texture2D texture = TextureRegister.Particle_Petal.Value;
+            Texture2D texture = ManosabaTexture.Particle_Petal.Value;
             spriteBatch.Draw(texture, drawPosition, null, DrawColor * Opacity, Rotation, texture.Size() / 2, Scale, SpriteEffects.None, 0);
         }
     }

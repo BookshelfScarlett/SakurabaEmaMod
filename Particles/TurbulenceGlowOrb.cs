@@ -48,7 +48,7 @@ namespace SakurabaEmaMod.Particles
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D texture = TextureRegister.Particle_HRShinyOrbSmall.Value;
+            Texture2D texture = ManosabaTexture.Particle_HRShinyOrbSmall.Value;
             spriteBatch.Draw(texture, Position - Main.screenPosition, null, DrawColor * Opacity, Rotation, texture.Size() / 2, Scale, SpriteEffects.None, 0);
             if (DrawGlowCenter)
                 spriteBatch.Draw(texture, Position - Main.screenPosition, null, Color.White * Opacity, Rotation, texture.Size() / 2, Scale * GlowCenterMult, SpriteEffects.None, 0);

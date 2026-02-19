@@ -81,7 +81,7 @@ public class TurbulenceShinyOrb : BaseParticle
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        Texture2D texture = TextureRegister.Particle_ShinyOrb.Value;
+        Texture2D texture = ManosabaTexture.Particle_ShinyOrb.Value;
         spriteBatch.Draw(texture, Position - Main.screenPosition, null, DrawColor * Opacity, Rotation, texture.Size() / 2, Scale, SpriteEffects.None, 0);
         if (DrawGlowCenter)
             spriteBatch.Draw(texture, Position - Main.screenPosition, null, Color.White * Opacity, Rotation, texture.Size() / 2, GlowCenterMult, SpriteEffects.None, 0);
