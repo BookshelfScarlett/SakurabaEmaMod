@@ -1,10 +1,15 @@
-﻿
-迎接少女们的，是一场残酷的死亡游戏……在即将来临的“魔女审判”中，打破魔法和谎言的幻影，揪出混入少女之中的“魔女”吧。
+﻿迎接少女们的，是一场残酷的死亡游戏……在即将来临的“魔女审判”中，打破魔法和谎言的幻影，揪出混入少女之中的“魔女”吧。
 
-该Mod以ADV游戏《魔法少女的魔女审判》作为蓝本制作的粉丝作品，主要做一些与原作相关的内容
+该Mod是以ADV游戏《魔法少女的魔女审判》作为蓝本制作的粉丝作品，主要做一些与原作相关的内容
 目前模组提供了一套高度打磨的樱羽艾玛时装，以及一个完全仿制魔裁主界面的游戏主界面
 时装可以通过命名”樱羽艾玛“或者名字内带"Sakuraba"时进入世界给予，或游戏内合成
 
+Thirteen girls awaken, only to find themselves in a prison. What awaits them: a Witch Trial.
+Help them prepare for the trial by exploring the prison in order to find the witch hidden amongst them.
+Find the witch, learn what kind of magic she holds, dispel the lies, and prepare for the execution.
+
+
+This mod is a fan-made work based on the ADV game Mahou Shoujo no Majo Saiban (魔法少女ノ魔女裁判, Magical Girl's Witch Trial), focusing on content related to the original work.
+Currently, the mod features a highly polished Sakuraba Ema costume set, as well as a full recreation of the main menu from the original game.
+The costume can be obtained by entering the world with the character name set to "Sakuraba Ema" or any name containing "Sakuraba", or crafted in-game.
 Add Sakuraba Ema Costume from 魔法少女魔女裁判, give on entering world if your name contains "Sakuraba"
-Or can be crafed in game
-Kiang.

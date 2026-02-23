@@ -3,16 +3,18 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Methods;
+using SakurabaEmaMod.Menus.MainMenu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SakurabaEmaMod.Menus
+namespace SakurabaEmaMod.Menus.Managemments
 {
     public class ManosabaMenu : ModMenu
     {
@@ -30,16 +32,25 @@ namespace SakurabaEmaMod.Menus
         public override Asset<Texture2D> MoonTexture => ManosabaTexture.InvisAsset.Texture;
         public override Asset<Texture2D> Logo => ManosabaTexture.InvisAsset.Texture;
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => null;
+        public override int Music => MusicLoader.GetMusicSlot(ManosabaMusic.Menu);
         public override string DisplayName => Mod.GetLocalizationKey("Menu.Name").ToLangValue();
+        public static bool CanSwitchToOtherMenu;
         public override void OnSelected()
         {
             //选择当前主界面时的行为
-            //预制了这个钩子，
+            //然后依据文档的名字来修改对应的ID
             Main.menuMode = ID;
-            base.OnSelected();
+            //这下面用于处理背景的渐变。
+            //模拟魔裁进入游戏的情况
+            ManosabaBackground.TheScaleRatios = 0;
+            ManosabaBackground.LogoScaleRatios = 0;
+            ManosabaMenuUpdate.GeneralFadingRatios = 0;
+            ManosabaMenuLayer.OverlayBlackOpacity = 1;
+            CanSwitchToOtherMenu = false;
         }
         public override void OnDeselected()
         {
+            CanSwitchToOtherMenu = false;
             if (Main.menuMode != MenuID.FancyUI)
                 Main.menuMode = MenuID.Title;
         }
@@ -49,6 +60,10 @@ namespace SakurabaEmaMod.Menus
         /// <param name="isOnTitleScreen"></param>
         public override void Update(bool isOnTitleScreen)
         {
+            if (Main.mouseLeftRelease && Main.mouseRightRelease)
+            {
+                CanSwitchToOtherMenu = true;
+            }
             ManosabaMenuUpdate.CustomUpdate();
         }
         /// <summary>

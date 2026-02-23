@@ -70,8 +70,6 @@ namespace SakurabaEmaMod.Assets.Register
             Texture_BloomShockwave = new Tex2DWithPath($"{Path_General}{nameof(Texture_BloomShockwave)}");
             Texture_RarityGlow = new Tex2DWithPath($"{Path_General}{nameof(Texture_RarityGlow)}");
 
-
-
         }
         public override void Unload()
         {

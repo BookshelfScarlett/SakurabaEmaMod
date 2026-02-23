@@ -1,1 +1,13 @@
-Menu.Name: ""
+Menu: {
+	Name: 魔法少女ノ魔女裁判
+	SinglePlayer: Single Player
+	Multiplayer: Multiplayer
+	Workshop: Workshop
+	Credit: Credit
+	Achievement: Achievement
+	LoadText: Load Game
+	GalleryText: Gallery
+	Options: Options
+	SwitchManosabaBackground: ""
+	ModVersion: ""
+}

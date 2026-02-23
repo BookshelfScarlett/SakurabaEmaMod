@@ -1,33 +1,44 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using ReLogic.Graphics;
+using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Hud;
+using SakurabaEmaMod.Globals.Methods;
+using SakurabaEmaMod.Menus.AltMenu;
 using SakurabaEmaMod.Menus.Class;
+using SakurabaEmaMod.Menus.Managemments;
 using System;
 using System.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SakurabaEmaMod.Menus.MainMenu
 {
     public class LoadGame : ManosabaButtonClass
     {
+        public static float GeneralWidthOffset = 0f;
         public override bool ShouldDrawText => false;
         public override Texture2D ChosenTexture => ManosabaMenuAssets.Main_LoadGameChosen.Texture.Value;
         public override Texture2D UnChosenTexture => ManosabaMenuAssets.Main_LoadGameUnChosen.Texture.Value;
-        public override Vector2 Center => new Vector2(0, 200f);
+        public override Vector2 Center => new Vector2(250f, Main.screenHeight - 150f);
         public override int TargetMenuID => MenuID.None;
+        public override float ButtonScale => 0.85f;
+        public override Rectangle Hitbox => Utils.CenteredRectangle(Position, new Vector2(300, 200));
         public override void OnMouseLeftRelease()
         {
             //需要进入alt的二级ui
             //这里还没设置，待会做二级ui的时候开始弄
-            base.OnMouseLeftRelease();
+            if (!ManoHudManager.ActiveDepth[2])
+            {
+                SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
+                ManosabaMenuUpdate.GeneralFadingRatios = 0;
+                LoadHud.IsEnable = true;
+            }
         }
     }
     /// <summary>
@@ -38,23 +49,21 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override bool ShouldDrawText => false;
         public override Texture2D ChosenTexture => ManosabaMenuAssets.Main_GalleryChosen.Texture.Value;
         public override Texture2D UnChosenTexture => ManosabaMenuAssets.Main_GalleryUnChosen.Texture.Value;
-        public override Vector2 Center => new Vector2(Main.screenWidth /2, Main.screenHeight / 2);
+        public override Vector2 Center => new Vector2(Main.screenWidth / 2 - 300f, Main.screenHeight - 75f);
         //成就的iD名呢？
         public override int TargetMenuID => MenuID.None;
+        public override float ButtonScale => 0.65f;
+        public override Rectangle Hitbox => base.Hitbox;
         public override void OnMouseLeftRelease()
         {
-            base.OnMouseLeftRelease();
-        }
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Texture2D useTex = MouseIsHovering ? ChosenTexture: UnChosenTexture;
-            Vector2 posOffset = MouseIsHovering ? TexturePosOffset : Vector2.Zero;
-            //实际绘制
-            spriteBatch.Draw(useTex, Center, Rectangle, DrawColor, Rotation, useTex.Size() / 2, 1f, 0, 0);
-            DynamicSpriteFont font = FontAssets.MouseText.Value;
-            Vector2 size = ChatManager.GetStringSize(font, "1145", Vector2.One);
-            ChatManager.DrawColorCodedString(spriteBatch, font, "1145", Center, Color.White, 0, size / 2, Vector2.One * Scale2 * 1.5f);
-
+            //这里还没设置，待会做二级ui的时候开始弄
+            if (!ManoHudManager.ActiveDepth[2])
+            {
+                //需要给渐变。
+                SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
+                ManosabaMenuUpdate.GeneralFadingRatios = 0;
+                GalleryHud.IsEnable = true;
+            }
         }
     }
     public class Options : ManosabaButtonClass
@@ -62,8 +71,17 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override bool ShouldDrawText => false;
         public override Texture2D ChosenTexture => ManosabaMenuAssets.Main_OptionChosen.Texture.Value;
         public override Texture2D UnChosenTexture => ManosabaMenuAssets.Main_OptionUnChosen.Texture.Value;
-        public override Vector2 Center => base.Center;
+        public override Vector2 Center => new Vector2(Main.screenWidth / 2f - 150f, Main.screenHeight - 125f);
         public override int TargetMenuID => MenuID.Settings;
+        public override float ButtonScale => 0.65f;
+        public override Rectangle Hitbox => base.Hitbox;
+        public override void OnMouseLeftRelease()
+        {
+            SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
+            ManosabaMenuDraw.DrawTextValue = Mod.GetLocalizationKey("Menu.Options").ToLangValue();
+            ManosabaMenuUpdate.GeneralFadingRatios = 0;
+            ManosabaMenuMethods.ChangeMenu(TargetMenuID);
+        }
 
     }
     public class Exit : ManosabaButtonClass
@@ -71,7 +89,9 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override bool ShouldDrawText => false;
         public override Texture2D ChosenTexture => ManosabaMenuAssets.Main_ExitChosen.Texture.Value;
         public override Texture2D UnChosenTexture => ManosabaMenuAssets.Main_ExitUnChosen.Texture.Value;
-        public override Vector2 Center => new Vector2(200f, Main.screenHeight - 500f);
+        public override Vector2 Center => new Vector2(Main.screenWidth / 2f - 30f, Main.screenHeight - 75f);
+        public override float ButtonScale => 0.65f;
+        public override Rectangle Hitbox => base.Hitbox;
         public override void OnMouseLeftRelease()
         {
             Main.instance.Exit();
@@ -120,17 +140,30 @@ namespace SakurabaEmaMod.Menus.MainMenu
         }
         public override void OnMouseLeftRelease()
         {
-            MenuLoader.OffsetModMenu(1);
+            if (ManosabaMenu.CanSwitchToOtherMenu)
+                MenuLoader.OffsetModMenu(1);
         }
         public override void OnMouseRightRelease()
         {
-            MenuLoader.OffsetModMenu(-1);
+            if (ManosabaMenu.CanSwitchToOtherMenu)
+                MenuLoader.OffsetModMenu(-1);
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 size = ChatManager.GetStringSize(font, TextValue, Vector2.One);
             ChatManager.DrawColorCodedString(spriteBatch, font, TextValue, Position, Color.Silver, 0, size / 2, Vector2.One * Scale2);
+
+            //在这里画模组的版本字号。
+
+            Vector2 scale = new(1.15f);
+            string TextValue2 = Mod.GetLocalizationKey("Menu.ModVersion").ToLangValue();
+            font = ManosabaFonts.BookAntiqua.Value;
+            Vector2 size2 = ChatManager.GetStringSize(font, TextValue, Vector2.One * scale);
+            Vector2 ori = size2 / 2;
+            Vector2 pos = new Vector2(Main.screenWidth, Main.screenHeight - 50f) + Vector2.UnitX * 140f;
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, TextValue2, pos, Color.White, 0, ori, Vector2.One * scale);
+
         }
     }
 }

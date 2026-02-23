@@ -1,1 +1,13 @@
-Menu.Name: 魔法少女的魔女审判
+Menu: {
+	Name: 魔法少女的魔女审判
+	SinglePlayer: 单人游戏
+	Multiplayer: 多人游戏
+	Workshop: 创意工坊
+	Credit: 工作人员
+	Achievement: 成就列表
+	LoadText: 读取
+	GalleryText: 画廊
+	Options: 游戏设置
+	SwitchManosabaBackground: 切换背景主题
+	ModVersion: Ver 1.2.0
+}
