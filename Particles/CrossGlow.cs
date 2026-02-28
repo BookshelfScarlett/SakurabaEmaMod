@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using SakurabaEmaMod.Core.ParticleSystem;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.ParticleSystem;
+using System;
+using Terraria;
 
 namespace SakurabaEmaMod.Particles
 {
@@ -12,7 +13,8 @@ namespace SakurabaEmaMod.Particles
         public float BeginScale;
         public SpriteEffects se = SpriteEffects.None;
         public bool UseFadeIn = true;
-        public CrossGlow(Vector2 position, Color color, int lifetime, float opacity, float scale)
+        private bool NoLighting;
+        public CrossGlow(Vector2 position, Color color, int lifetime, float opacity, float scale, bool noLighting= true)
         {
             Position = position;
             DrawColor = color;
@@ -20,8 +22,9 @@ namespace SakurabaEmaMod.Particles
             Opacity = opacity;
             Scale = scale;
             BeginScale = scale;
+            NoLighting = noLighting;
         }
-        public CrossGlow(Vector2 position, Color color, int lifetime, float opacity, float scale, bool useFadeIn)
+        public CrossGlow(Vector2 position, Color color, int lifetime, float opacity, float scale, bool useFadeIn, bool noLighting = true)
         {
             Position = position;
             DrawColor = color;
@@ -30,6 +33,7 @@ namespace SakurabaEmaMod.Particles
             Scale = scale;
             BeginScale = scale;
             UseFadeIn = useFadeIn;
+            NoLighting = noLighting;
         }
         public override void OnSpawn()
         {
@@ -41,6 +45,10 @@ namespace SakurabaEmaMod.Particles
         }
         public override void Update()
         {
+            if(!NoLighting)
+            {
+                Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G /255f, DrawColor.B/255f));
+            }
             if (LifetimeRatio < 0.5f)
             {
                 if (UseFadeIn)

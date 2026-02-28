@@ -8,6 +8,23 @@ namespace SakurabaEmaMod.Globals.Methods
 {
     public static partial class ManosabaMethods
     {
+        /// <summary>
+        /// 判断ItemName，直接的快捷方法
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        public static bool IsItemName(this DrawableTooltipLine line) => IsThisLine(line, "ItemName"); 
+        /// <summary>
+        /// 判断这一行是否为你需要的Tooltipname和ModName
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="name"></param>
+        /// <param name="modName"></param>
+        /// <returns></returns>
+        public static bool IsThisLine(this DrawableTooltipLine line, string name, string modName = "Terraria")
+        {
+            return line.Name == name && line.Mod == modName;
+        }
         public static void ReplaceAllTooltip(this List<TooltipLine> tooltips, string replacedTextPath, Color? textColor = null)
         {
             tooltips.RemoveAll((line) => line.Mod == "Terraria" && line.Name != "Tooltip0" && line.Name.StartsWith("Tooltip"));

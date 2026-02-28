@@ -75,6 +75,12 @@ namespace SakurabaEmaMod.Menus.MainMenu
                 case ManosabaMenuID.HannaSherry:
                     ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.HannaSherry);
                     return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
+                case ManosabaMenuID.YukiMeruru:
+                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.YukiMeruru);
+                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
+                case ManosabaMenuID.Margo:
+                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Margo);
+                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
                 default:
                     ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Ema);
                     return ManosabaMenuAssets.ManosabaBackgroundList[ManosabaMenuID.Ema].Texture.Value;

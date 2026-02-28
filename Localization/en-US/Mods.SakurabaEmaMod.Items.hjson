@@ -10,3 +10,21 @@ SakurabaEmma: {
 	KiangSound: Current Sound: Kiang Only
 	RegularSound: Current Sound: Regular
 }
+
+NatsumeAnanItem: {
+	DisplayName: A Child's Sketchbook
+	Tooltip: ""
+	SinnerType: "[-The Lying Sleeping Princess-]"
+	SinnerTooltip:
+		'''
+		She sleeps alone again today.
+		      Hurting none keeps her unhurt.
+		'''
+}
+
+NoaPainter: {
+	DisplayName: Noa Painter
+	Tooltip: ""
+	SinnerType: ""
+	SinnerTooltip: ""
+}

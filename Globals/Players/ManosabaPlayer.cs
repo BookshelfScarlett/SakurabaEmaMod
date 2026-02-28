@@ -1,9 +1,11 @@
-﻿using SakurabaEmaMod.Globals.Enums;
-using SakurabaEmaMod.Items;
+﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Enums;
+using SakurabaEmaMod.Items.Vanity;
+using System;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
 
 namespace SakurabaEmaMod.Globals.Players
 {
@@ -15,24 +17,46 @@ namespace SakurabaEmaMod.Globals.Players
     {
         #region 时装佩戴的Boolen
         //扔给了统一的管理。
-        public Charactor CurrentCharator = Charactor.None;
+        public float ParticleTimer = 0;
+        public short ManosabaGirl = ManosabaGirlID.None;
+        public bool NoaButterflyDeath = false;
         public bool sakurabaEmaVanity = false;
         #endregion
         #region 其余内容
-
+        public bool IsGiveAnyVanityItem = false;
         #endregion
-        
-        //public override void SaveData(TagCompound tag)
-        //{
-        //    tag.Add(nameof(CurrentCharator), CurrentCharator);
-        //}
-        //public override void LoadData(TagCompound tag)
-        //{
-        //    CurrentCharator = tag.Get<Charactor>(nameof(CurrentCharator));
-        //}
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add(nameof(ManosabaGirl), ManosabaGirl);
+            tag.Add(nameof(NoaButterflyDeath), NoaButterflyDeath);
+            tag.Add(nameof(IsGiveAnyVanityItem), IsGiveAnyVanityItem);
+
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            ManosabaGirl = tag.GetShort(nameof(ManosabaGirl));
+            NoaButterflyDeath = tag.GetBool(nameof(NoaButterflyDeath));
+            IsGiveAnyVanityItem = tag.GetBool(nameof(IsGiveAnyVanityItem));
+
+        }
+        public override void OnEnterWorld()
+        {
+            if (Main.myPlayer != Player.whoAmI)
+                return;
+            if (IsGiveAnyVanityItem)
+                return;
+            string name = Player.name.ToLower();
+            if (name.Contains("Natsume") || name.Contains("Anan") || name.Contains("夏目安安") || name.Contains("安安"))
+            {
+                IsGiveAnyVanityItem = true;
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<NatsumeAnanItem>());
+            }
+        }
         public override void ResetEffects()
         {
-            CurrentCharator = Charactor.None;
+            ManosabaGirl = ManosabaGirlID.None;
+            NoaButterflyDeath = false;
         }
         public override void FrameEffects()
         {
@@ -42,14 +66,17 @@ namespace SakurabaEmaMod.Globals.Players
             bool equip = false;
             if (Main.gameMenu)
                 GetArmorSlotItem(ref equip);
-            if (CurrentCharator != Charactor.None || equip)
+            if (ManosabaGirl != ManosabaGirlID.None || equip)
+            {
                 UpdateVanityOnNeed();
+                DrawParticleOnNeed(); 
+            }
         }
         public void GetArmorSlotItem(ref bool equip)
         {
             foreach (Item item in Player.armor)
             {
-                if (item.type == ItemType<SakurabaEmma>())
+                if (item.type == GetItemType)
                 {
                     equip = true;
                     break;
@@ -59,57 +86,56 @@ namespace SakurabaEmaMod.Globals.Players
         public override void UpdateVisibleVanityAccessories()
         {
             bool isPausingGame = Main.gamePaused || Main.autoPause;
-            if (CurrentCharator != Charactor.None  && isPausingGame)
+            if (ManosabaGirl != ManosabaGirlID.None && isPausingGame)
                 UpdateVanityOnNeed();
-        }
-        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
-        {
-            ModifyCustomSound(ref modifiers);
-        }
-        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
-        {
-            ModifyCustomSound(ref modifiers);
-        }
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
-        {
-            CustomSoundOnHurt(hurtInfo);
-        }
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
-        {
-            CustomSoundOnHurt(hurtInfo);
-        }
-        public void CustomSoundOnHurt(Player.HurtInfo hurtInfo)
-        {
-            if (!DisableOrignalSound)
-                return;
-            hurtInfo.SoundDisabled = true;
-            //代办：其余角色的承伤音效
-
-        }
-        public void ModifyCustomSound(ref  Player.HurtModifiers modifiers)
-        {
-            if (!DisableOrignalSound)
-                return;
-            modifiers.DisableSound();
-        }
-        public bool DisableOrignalSound
-        {
-            get
-            {
-                return CurrentCharator != Charactor.None;
-            }
         }
         public void UpdateVanityOnNeed()
         {
-            if (CurrentCharator == Charactor.None)
+            if (ManosabaGirl == ManosabaGirlID.None)
                 return;
             //除了艾玛的时装以外都统一管理
             //不过话又说回来，谁能想到这个mod会拓展成魔裁mod呢？一开始只是想把艾玛做进去罢了
-            Player.legs = EquipLoader.GetEquipSlot(Mod, nameof(CurrentCharator), EquipType.Legs);
-            Player.body = EquipLoader.GetEquipSlot(Mod, nameof(CurrentCharator), EquipType.Body);
-            Player.head = EquipLoader.GetEquipSlot(Mod, nameof(CurrentCharator), EquipType.Head);
-
+            string name = $"{GetName}Item";
+            //一些特殊情况。如安安有一个额外的头发……
+            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan)
+                Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
+            Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
+            Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);
+            Player.head = EquipLoader.GetEquipSlot(Mod, name, EquipType.Head);
         }
 
+        /// <summary>
+        /// string有个问题是过度占用空间，而且高频调用的情况下有可能有一定的性能问题
+        /// 这里改为了enum（本质short）与玩家类的short，然后用switch的形式在需要的时候使用nameof返回
+        /// </summary>
+        private string GetName
+        {
+            get
+            {
+                return ManosabaGirl switch
+                {
+                    ManosabaGirlID.SakurabaEma => nameof(Charactor.SakurabaEma),
+                    ManosabaGirlID.NikaidouHiro => nameof(Charactor.NikaidouHiro),
+                    ManosabaGirlID.NatsumeAnan => nameof(Charactor.NatsumeAnan),
+                    ManosabaGirlID.JougasakiNoa => nameof(Charactor.JougasakiNoa),
+                    ManosabaGirlID.TachibanaSherry => nameof(Charactor.TachibanaSherry),
+                    ManosabaGirlID.ToonoHanna => nameof(Charactor.ToonoHanna),
+                    _ => nameof(Charactor.None),
+                };
+            }
+        }
+        private int GetItemType
+        {
+            get
+            {
+                return ManosabaGirl switch
+                {
+                    ManosabaGirlID.SakurabaEma => ItemType<SakurabaEmma>(),
+                    ManosabaGirlID.NatsumeAnan => ItemType<NatsumeAnanItem>(),
+                    _ => -1,
+                };
+
+            }
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace SakurabaEmaMod.Particles
         public float FadeOut;
         public Color InitColor;
         public float GlowCenterScale = 0.5f;
-        public ShinyOrbParticle(Vector2 position, Vector2 velocity, Color color, int lifeTime, float scale)
+        private bool NoLighting;
+        public ShinyOrbParticle(Vector2 position, Vector2 velocity, Color color, int lifeTime, float scale, bool noLighting)
         {
             Position = position;
             Velocity = velocity;
@@ -25,8 +26,9 @@ namespace SakurabaEmaMod.Particles
             Scale = scale;
             BlendStateType = BlendStateID.Additive;
             FadeOut = 1f;
+            NoLighting = noLighting;
         }
-        public ShinyOrbParticle(Vector2 position, Vector2 velocity, Color color, int lifeTime, float scale, int? blendState = null, bool affactedByGravity = false, bool glowCenter = true, float glowCenterScale = 0.5f)
+        public ShinyOrbParticle(Vector2 position, Vector2 velocity, Color color, int lifeTime, float scale, int? blendState = null, bool affactedByGravity = false, bool glowCenter = true, float glowCenterScale = 0.5f, bool noLighting = false)
         {
             Position = position;
             Velocity = velocity;
@@ -38,6 +40,7 @@ namespace SakurabaEmaMod.Particles
             GlowCenter = glowCenter;
             GlowCenterScale = glowCenterScale;
             FadeOut = 1f;
+            NoLighting = noLighting;
         }
 
         public override void Update()
@@ -45,6 +48,9 @@ namespace SakurabaEmaMod.Particles
             FadeOut -= 0.05f;
             Scale *= 0.93f;
             DrawColor = Color.Lerp(InitColor, InitColor * 0.2f, (float)Math.Pow(LifetimeRatio, 30));
+            if (!NoLighting)
+                Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G /255f, DrawColor.B/255f));
+
             Velocity *= 0.95f;
             if(Velocity.Length() < 12f && AffectedByGravity)
             {

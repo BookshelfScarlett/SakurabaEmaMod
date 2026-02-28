@@ -39,7 +39,6 @@ namespace SakurabaEmaMod.Menus.AltMenu
             //这里是为了防止可能的意外
             if (ManosabaMenuUpdate.BanSwitchMenu)
                 return;
-            SoundEngine.PlaySound(ManosabaSounds.Menu_LoadGame with { volume = 0.7f});
             //textValue需要更新。这里用于转入泰拉界面之后的角标
             ManosabaMenuDraw.DrawTextValue = TextValue;
             ManosabaMenuLayer.OverlayBlackOpacity = 0;
@@ -58,6 +57,7 @@ namespace SakurabaEmaMod.Menus.AltMenu
         public override int TargetMenuID => MenuID.CharacterSelect;
         public override void ExOnMouseLeftRelease()
         {
+            SoundEngine.PlaySound(ManosabaSounds.Menu_LoadGame with { volume = 0.7f });
             ManosabaMenuMethods.ChangeMenu(TargetMenuID);
         }
     }
@@ -71,6 +71,7 @@ namespace SakurabaEmaMod.Menus.AltMenu
         public override int TargetMenuID => MenuID.Multiplayer;
         public override void ExOnMouseLeftRelease()
         {
+            SoundEngine.PlaySound(ManosabaSounds.Menu_LoadGame with { volume = 0.7f });
             ManosabaMenuMethods.ChangeMenu(TargetMenuID);
         }
 
@@ -85,6 +86,7 @@ namespace SakurabaEmaMod.Menus.AltMenu
         public override int TargetMenuID => MenuID.FancyUI;
         public override void ExOnMouseLeftRelease()
         {
+            SoundEngine.PlaySound(ManosabaSounds.Menu_GeneralChoice);
             ManosabaMenuMethods.OpenWorkshop();
         }
     }

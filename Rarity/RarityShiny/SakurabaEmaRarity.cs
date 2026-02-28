@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
@@ -8,19 +9,19 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Rarity.RarityShiny
 {
-    public class SakuraRarity : ModRarity
+    public class SakurabaEmaRarity : ModRarity
     {
         public static List<RaritySparkle> RaritySparkles = [];
         public static List<RaritySparkle> FlavorSparkles = [];
         public override Color RarityColor => Color.Lerp(Color.HotPink, Color.DeepPink, 0.9f);
         public static void DrawRarity(DrawableTooltipLine drawableTooltipLine)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.Violet.ToAddColor(), Color.HotPink);
+            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink);
             PostDrawRarity(ref RaritySparkles, drawableTooltipLine);
         }
         public static void DrawFlavor(DrawableTooltipLine drawableTooltipLine)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.Violet.ToAddColor(), Color.HotPink, 0.8f);
+            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink, 0.8f);
             PostDrawFlavor(ref FlavorSparkles, drawableTooltipLine);
 
         }
@@ -28,6 +29,11 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         {
             RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White);
         }
+        public static void DrawMisc(DrawableTooltipLine line)
+        {
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.White,Color.Lerp(Color.DeepPink, Color.HotPink, 0.75f));
+        }
+
         public static void PostDrawFlavor(ref List<RaritySparkle> particleList, DrawableTooltipLine tooltipLine)
         {
             Vector2 textSize = tooltipLine.Font.MeasureString(tooltipLine.Text);

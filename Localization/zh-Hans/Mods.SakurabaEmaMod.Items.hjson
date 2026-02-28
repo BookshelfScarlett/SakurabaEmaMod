@@ -10,3 +10,25 @@ SakurabaEmma: {
 	KiangSound: 当前受击音效：纯享
 	RegularSound: 当前受击音效：常规
 }
+
+NatsumeAnanItem: {
+	DisplayName: 孩童素描本
+	Tooltip: ""
+	SinnerType: "[-编织谎言的沉睡公主-]"
+	SinnerTooltip:
+		'''
+		她今天也独自沉睡着...
+		因为只要不伤害任何人，那她自己也就不会受伤
+		'''
+}
+
+NoaPainter: {
+	DisplayName: 魔法画笔
+	Tooltip:
+		'''
+		按住挥舞画笔
+		在一定时间后，修改自身在死亡之后的效果
+		'''
+	SinnerType: "[-虚伪的艺术家-]"
+	SinnerTooltip: 「所有所有血的红色，都变成蝴蝶的图画吧！」
+}

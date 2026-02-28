@@ -9,5 +9,7 @@ Menu: {
 	GalleryText: 画廊
 	Options: 游戏设置
 	SwitchManosabaBackground: 切换背景主题
-	ModVersion: Ver 1.2.0
+	ModVersion: Ver. 1.2.2
 }
+
+// Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj

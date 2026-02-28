@@ -10,14 +10,15 @@ namespace SakurabaEmaMod.Particles;
 public class TurbulenceShinyOrb : BaseParticle
 {
     public override int UseBlendStateID => BlendStateID.Additive;
-    public bool SeedHasHandValue = false;
-    public float Speed = 5f;
-    public int SeedOffset = 0;
-    public float BeginScale = 1f;
-    public float TurBulenceDirection = 0f;
-    public bool DrawGlowCenter;
-    public float GlowCenterMult;
-    public TurbulenceShinyOrb(Vector2 position, float speed, Color color, int lifetime, float scale, float direction)
+    private bool SeedHasHandValue = false;
+    private float Speed = 5f;
+    private int SeedOffset = 0;
+    private float BeginScale = 1f;
+    private float TurBulenceDirection = 0f;
+    private bool DrawGlowCenter;
+    private float GlowCenterMult;
+    private bool NoLighting = false;
+    public TurbulenceShinyOrb(Vector2 position, float speed, Color color, int lifetime, float scale, float direction, bool noLighting = false)
     {
         Position = position;
         Speed = speed;
@@ -28,33 +29,7 @@ public class TurbulenceShinyOrb : BaseParticle
         TurBulenceDirection = direction;
         DrawGlowCenter = false;
         GlowCenterMult = 0f;
-    }
-    public TurbulenceShinyOrb(Vector2 position, float speed, Color color, int lifetime, float scale, float direction, int seedValue)
-    {
-        Position = position;
-        Speed = speed;
-        DrawColor = color;
-        Lifetime = lifetime;
-        Scale = scale;
-        BeginScale = scale;
-        TurBulenceDirection = direction;
-        DrawGlowCenter = false;
-        GlowCenterMult = 0f;
-        SeedHasHandValue = true;
-        SeedOffset = seedValue;
-    }
-
-    public TurbulenceShinyOrb(Vector2 position, float speed, Color color, int lifetime, float scale, float direction, float glowCenterMult)
-    {
-        Position = position;
-        Speed = speed;
-        DrawColor = color;
-        Lifetime = lifetime;
-        Scale = scale;
-        BeginScale = scale;
-        TurBulenceDirection = direction;
-        DrawGlowCenter = true;
-        GlowCenterMult = glowCenterMult;
+        NoLighting = noLighting;
     }
     public override void OnSpawn()
     {
@@ -64,6 +39,8 @@ public class TurbulenceShinyOrb : BaseParticle
 
     public override void Update()
     {
+        if(!NoLighting)
+                Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G /255f, DrawColor.B/255f));
         if (Speed != 0)
         {
             Vector2 idealVelocity = -Vector2.UnitY.RotatedBy(Lerp(-TurBulenceDirection, TurBulenceDirection, (float)Math.Sin(Time / 36f + SeedOffset) * 0.5f + 0.5f)) * Speed;

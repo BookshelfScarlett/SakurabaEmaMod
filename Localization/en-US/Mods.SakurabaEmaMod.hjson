@@ -9,5 +9,7 @@ Menu: {
 	GalleryText: Gallery
 	Options: Options
 	SwitchManosabaBackground: ""
-	ModVersion: ""
+	ModVersion: Ver. 1.2.2
 }
+
+Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj

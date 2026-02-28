@@ -56,7 +56,7 @@ namespace SakurabaEmaMod.Core.Hud
             if (PreSetDepth())
                 ManoHudManager.ActiveDepthCount[UIDepth] = 2;
 
-            IsHover = Colliding(Rectangle, ManoModSystem.MouseRectangle);
+            IsHover = Colliding(Rectangle, ManosabaModSystem.MouseRectangle);
 
             bool CanUpdate = PreUpdateHover() && !ManoHudManager.ActiveDepth[UIDepth + 1] && ManoHudManager.BlockAllUI == 0;
             if (!CanUpdate)

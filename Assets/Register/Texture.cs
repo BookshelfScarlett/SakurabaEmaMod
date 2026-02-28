@@ -45,9 +45,11 @@ namespace SakurabaEmaMod.Assets.Register
     {
         public static Tex2DWithPath Particle_ShinyOrb { get; set; }
         public static Tex2DWithPath Particle_HRShinyOrbSmall { get; set; }
+        public static Tex2DWithPath Particle_FusableBall { get; set; }
         public static Tex2DWithPath Particle_Leafs { get; set; }
         public static Tex2DWithPath Particle_CrossGlow { get; set; }
         public static Tex2DWithPath Particle_Petal { get; set; }
+        public static Tex2DWithPath Particle_NoaButterfly { get; set; }
 
         public static Tex2DWithPath Texture_BloomShockwave { get; set; }
         public static Tex2DWithPath Texture_RarityGlow { get; set; }
@@ -67,6 +69,9 @@ namespace SakurabaEmaMod.Assets.Register
             Particle_Leafs = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_Leafs)}");
             Particle_CrossGlow = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_CrossGlow)}");
             Particle_Petal = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_Petal)}");
+            Particle_NoaButterfly = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_NoaButterfly)}");
+            Particle_FusableBall = new Tex2DWithPath($"{Path_Particle}{nameof(Particle_FusableBall)}");
+
             Texture_BloomShockwave = new Tex2DWithPath($"{Path_General}{nameof(Texture_BloomShockwave)}");
             Texture_RarityGlow = new Tex2DWithPath($"{Path_General}{nameof(Texture_RarityGlow)}");
 
@@ -80,6 +85,8 @@ namespace SakurabaEmaMod.Assets.Register
             Particle_Leafs = null;
             Particle_CrossGlow = null;
             Particle_Petal = null;
+            Particle_NoaButterfly = null;
+            Particle_FusableBall= null;
 
             Texture_BloomShockwave = null;
             Texture_RarityGlow = null;

@@ -37,6 +37,8 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static MenuTexPath Still_Anan{  get; private set; }
         public static MenuTexPath Still_Noa{  get; private set; }
         public static MenuTexPath Still_HannaSherry{  get; private set; }
+        public static MenuTexPath Still_YukiMeruru{  get; private set; }
+        public static MenuTexPath Still_Margo{  get; private set; }
         public static MenuTexPath Main_Mask {  get; private set; }
         public static MenuTexPath Main_Title {  get; private set; }
         public static MenuTexPath Main_Loading {  get; private set; }
@@ -65,6 +67,8 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Anan = new MenuTexPath($"{StillPath}{nameof(Still_Anan)}");
             Still_Noa  = new MenuTexPath($"{StillPath}{nameof(Still_Noa)}");
             Still_HannaSherry = new MenuTexPath($"{StillPath}{nameof(Still_HannaSherry)}");
+            Still_YukiMeruru = new MenuTexPath($"{StillPath}{nameof(Still_YukiMeruru)}");
+            Still_Margo = new MenuTexPath($"{StillPath}{nameof(Still_Margo)}");
             Main_Mask = new MenuTexPath($"{Path}{nameof(Main_Mask)}");
             Main_Title = new MenuTexPath($"{Path}{nameof(Main_Title)}");
             Main_Loading = new MenuTexPath($"{Path}{nameof(Main_Loading)}");
@@ -80,7 +84,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             Alt_Mask = new MenuTexPath($"{Path}{nameof(Alt_Mask)}");
 
             //完成内容的实例化后再把这些东西扔进数组内调用
-            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noa, Still_HannaSherry];
+            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noa, Still_HannaSherry, Still_YukiMeruru, Still_Margo];
         }
         public override void Unload()
         {
@@ -105,6 +109,8 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Anan = null;
             Still_HannaSherry = null;
             Still_Noa = null;
+            Still_YukiMeruru = null;
+            Still_Margo = null;
 
             Alt_ButtonChosen = null;
             Alt_ButtonUnChosen = null;

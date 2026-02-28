@@ -4,7 +4,6 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
-using SakurabaEmaMod.Rarity;
 using SakurabaEmaMod.Rarity.RarityShiny;
 using System.Collections.Generic;
 using Terraria;
@@ -15,7 +14,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
-namespace SakurabaEmaMod.Items
+namespace SakurabaEmaMod.Items.Vanity
 {
     public class SakurabaEmaPlayer : ModPlayer
     {
@@ -55,6 +54,14 @@ namespace SakurabaEmaMod.Items
             if (!ShouldDisable)
             {
                 hurtInfo.SoundDisabled = true;
+                Disable();
+            }
+        }
+        public override void OnHurt(Player.HurtInfo info)
+        {
+            if(!ShouldDisable)
+            {
+                info.SoundDisabled = true;
                 Disable();
             }
         }
@@ -122,14 +129,13 @@ namespace SakurabaEmaMod.Items
             {
                 //出于某些原因如果真的有神人玩家选择加载了樱羽艾玛死亡音效mod，则禁用这个物品的所有自定义音效
                 //还有这里的中文变量名纯故意的
-                bool 草kino= ModLoader.HasMod("Sounds_SakurabaEma");
+                bool 草kino = ModLoader.HasMod("Sounds_SakurabaEma");
                 if (草kino)
                     return true;
                 if (!vanityEquipped)
                     return true;
                 return false;
             }
-
         }
         private bool Disable()
         {
@@ -163,7 +169,7 @@ namespace SakurabaEmaMod.Items
                     SoundEngine.PlaySound(hitSound, Player.Center);
                 }
             }
-                return true;
+            return true;
         }
         public override void UpdateVisibleVanityAccessories()
         {
@@ -227,7 +233,7 @@ namespace SakurabaEmaMod.Items
         {
             //如果玩家速度过小，我们不生成粒子。
             Vector2 mountedPlayerPos = Player.position;
-            Vector2 spawnPos = Main.rand.NextVector2FromRectangle(new Rectangle((int)mountedPlayerPos.X, (int)mountedPlayerPos.Y, (int)Player.width, (int)Player.height));
+            Vector2 spawnPos = Main.rand.NextVector2FromRectangle(new Rectangle((int)mountedPlayerPos.X, (int)mountedPlayerPos.Y, Player.width, Player.height));
             Vector2 vel = Player.velocity.SafeNormalize(Vector2.UnitX) * -Main.rand.NextFloat(0.3f, 1.25f) * 1.1f;
             new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 0.6f, RandLerpColor(Color.HotPink, Color.LightPink), 40, 0.34f, RandRotTwoPi).Spawn();
             if(Main.rand.NextBool(3))
@@ -250,20 +256,23 @@ namespace SakurabaEmaMod.Items
 
         }
     }
+    /// <summary>
+    /// 代办：将其扔到统一基类管理
+    /// </summary>
     public class SakurabaEmma : ModItem, ILocalizedModType
     {
         public new string LocalizationCategory => "Items";
-        public static string ItemPath => "SakurabaEmaMod/Assets/Texture/Items/Ema/";
-        public override string Texture => ItemPath + "Acc_EmaItem";
+        public static string ItemPath => "SakurabaEmaMod/Assets/Texture/CharactorSets/SakurabaEma/";
+        public override string Texture => $"{ItemPath}Item";
         //没有理由给这个东西敲词缀，说实话
         public override bool AllowPrefix(int pre) => false;
         public override void Load()
         {
             if (Main.netMode == NetmodeID.Server)
                 return;
-            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaHead", EquipType.Head, this);
-            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaBody", EquipType.Body, this);
-            EquipLoader.AddEquipTexture(Mod, ItemPath + "EmaLegs", EquipType.Legs, this);
+            EquipLoader.AddEquipTexture(Mod, $"{ItemPath}Head", EquipType.Head, this);
+            EquipLoader.AddEquipTexture(Mod, $"{ItemPath}Body", EquipType.Body, this);
+            EquipLoader.AddEquipTexture(Mod, $"{ItemPath}Legs", EquipType.Legs, this);
         }
         public override void SetStaticDefaults()
         {
@@ -289,14 +298,13 @@ namespace SakurabaEmaMod.Items
             Item.width = 22;
             Item.height = 30;
             Item.accessory = true;
-            Item.rare = ManoRarityID.SakurabaEmaRarity;
+            Item.rare = RarityType<SakurabaEmaRarity>();
             Item.vanity = true;
         }
         public override void AddRecipes()
         {
             CreateRecipe().
                 AddIngredient(ItemID.Silk, 15).
-                AddIngredient(ItemID.PinkPricklyPear).
                 DisableDecraft().
                 AddTile(TileID.Loom).
                 Register();
@@ -307,8 +315,8 @@ namespace SakurabaEmaMod.Items
             //这里需要把对应的原罪名与原罪文本直接植入到物品名的下方，让其看起来比较协调
             FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
             //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
-            string value = ManosabaMethods.ToLangValue(this.GetLocalizedValue("FlavorTooltip"));
-            string realTooltipValue = ManosabaMethods.ToLangValue(this.GetLocalizedValue("RealTooltip"));
+            string value = this.GetLocalizedValue("FlavorTooltip").ToLangValue();
+            string realTooltipValue = this.GetLocalizedValue("RealTooltip").ToLangValue();
             //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
             TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
             TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
@@ -323,26 +331,42 @@ namespace SakurabaEmaMod.Items
                 tooltips.CreateTooltip(this.GetLocalizedValue("KiangSound"), LineName: "SoundName");
             }
             else
-                tooltips.CreateTooltip(this.GetLocalizedValue("RegularSound"), LineName: "RegularSound");
+                tooltips.CreateTooltip(this.GetLocalizedValue("RegularSound"), LineName: "SoundName");
         }
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
             //为物品名本身绘制特效
             if (line.Mod == "Terraria" && line.Name == "ItemName")
             {
-                SakuraRarity.DrawRarity(line);
+                SakurabaEmaRarity.DrawRarity(line);
                 return false;
             }
             //为原罪名文本绘制特效
             if (line.Mod == Mod.Name && line.Name == "FlavorTooltipName")
             {
-                SakuraRarity.DrawFlavor(line);
+                SakurabaEmaRarity.DrawFlavor(line);
                 return false;
             }
             //为原罪文本绘制特效
             if (line.Mod == Mod.Name && line.Name == "RealToolTipName")
             {
-                SakuraRarity.DrawTooltip(line);
+                SakurabaEmaRarity.DrawTooltip(line);
+                return false;
+            }
+            if (line.IsThisLine("Vanity") || line.IsThisLine("Equipable"))
+            {
+                SakurabaEmaRarity.DrawMisc(line);
+                return false;
+            }
+            if (line.IsThisLine("Tooltip0"))
+            {
+                SakurabaEmaRarity.DrawMisc(line);
+                return false;
+
+            }
+            if (line.IsThisLine("SoundName", Mod.Name))
+            {
+                SakurabaEmaRarity.DrawMisc(line);
                 return false;
             }
             return base.PreDrawTooltipLine(line, ref yOffset);

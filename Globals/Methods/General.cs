@@ -4,6 +4,7 @@ using SakurabaEmaMod.Globals.Players;
 using SakurabaEmaMod.Items;
 using System;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Methods
 {
@@ -20,6 +21,8 @@ namespace SakurabaEmaMod.Globals.Methods
         {
             return (Math.Abs(player.velocity.X) + Math.Abs(player.velocity.Y)) < standingStillThreshold;
         }
+        public static bool HasProj<T>(this Player player) where T : ModItem => HasProj(player, ItemType<T>());
+        public static bool HasProj(this Player player, int projID) => player.ownedProjectileCounts[projID] > 0;
 
     }
 }

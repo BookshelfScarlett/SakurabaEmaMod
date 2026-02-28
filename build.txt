@@ -1,3 +1,3 @@
 displayName = 魔法少女的魔女审判 Mahou Shoujo no Majo Saiban
 author = ScarletShelf
-version = 1.2
+version = 1.2.2

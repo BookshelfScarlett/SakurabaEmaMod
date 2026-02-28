@@ -69,14 +69,14 @@ namespace SakurabaEmaMod.Menus.MainMenu
             if (IsLeftArrow)
             {
                 if (BackID <= 0)
-                    BackID = ManosabaMenuID.HannaSherry;
+                    BackID = ManosabaMenuID.Margo;
                 else
                     BackID -= 1;
 
             }
             else
             {
-                if (BackID >= ManosabaMenuID.HannaSherry)
+                if (BackID >= ManosabaMenuID.Margo)
                     BackID = ManosabaMenuID.Ema;
                 else
                     BackID += 1;

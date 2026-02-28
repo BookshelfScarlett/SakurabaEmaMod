@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SakurabaEmaMod.Globals.Handlers
+﻿namespace SakurabaEmaMod.Globals.Handlers
 {
     public class AnimationHandler
     {
@@ -31,5 +25,8 @@ namespace SakurabaEmaMod.Globals.Handlers
 
             RotVelocity = new float[TotalAniUnit];
         }
+        public const int AniBegin = 0;
+        public const int AniMid = 1;
+        public const int AniEnd = 2;
     }
 }

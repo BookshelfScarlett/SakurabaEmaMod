@@ -1,4 +1,5 @@
 ﻿using SakurabaEmaMod.Globals.Enums;
+using Steamworks;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -8,8 +9,11 @@ namespace SakurabaEmaMod.Assets.Register
     {
         private static string Path => "SakurabaEmaMod/Assets/Sounds/";
         public static SoundStyle Ema_HitSound;
-        public static SoundStyle Ema_HitHeavy ;
+        public static SoundStyle Ema_HitHeavy;
         public static SoundStyle Ema_Kiang;
+
+        public static SoundStyle Anan_Hit;
+        public static SoundStyle Anan_Death;
         public static SoundStyle Menu_Cancel => new SoundStyle($"{Path}System/{nameof(Menu_Cancel)}");
         public static SoundStyle Menu_GeneralChoice => new SoundStyle($"{Path}System/{nameof(Menu_GeneralChoice)}");
         public static SoundStyle Menu_LoadGame => new SoundStyle($"{Path}System/{nameof(Menu_LoadGame)}");
@@ -25,6 +29,9 @@ namespace SakurabaEmaMod.Assets.Register
             Ema_HitSound = GetSound(Charactor.SakurabaEma, nameof(Ema_HitSound), 4);
             Ema_HitHeavy = GetSound(Charactor.SakurabaEma, nameof(Ema_HitHeavy), 3);
             Ema_Kiang = GetSound(Charactor.SakurabaEma, nameof(Ema_Kiang));
+
+            Anan_Hit = GetSound(Charactor.NatsumeAnan, "Hit", 5);
+            Anan_Death = GetSound(Charactor.NatsumeAnan, "Death", 2);
         }
     }
 }
