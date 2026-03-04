@@ -3,12 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using rail;
 using ReLogic.Content;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Globals.Players;
 using SakurabaEmaMod.Items.Vanity;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
+using SakurabaEmaMod.Rarity.RarityShiny;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -30,67 +32,58 @@ namespace SakurabaEmaMod.Core.Overlayer
         public ManosabaPlayer ManosabaPlayer => Main.LocalPlayer.ManosabaMod();
         public bool DrawCharactorResoure(ManosabaResourceSet setter, ResourceOverlayDrawContext context)
         {
-            if (CompareAllAssets(setter, context, true))
-                return false;
-            else if (CompareAllAssets(setter, context, false))
+            if (CompareAllAssets(setter, context))
                 return false;
             else
                 return true;
         }
-        public bool CompareAllAssets(ManosabaResourceSet setter, ResourceOverlayDrawContext context, bool hp)
+        public bool CompareAllAssets(ManosabaResourceSet setter, ResourceOverlayDrawContext context)
         {
-            string prefix = hp ? "HP" : "MP";
-            if (hp)
+            if (CompareAssets(context.texture, "HP_Panel_Middle"))
             {
-                if (CompareAssets(context.texture, "HP_Panel_Middle"))
-                {
-                    context.texture = setter.Panel_HP_Mid;
-                    context.source = context.texture.Frame();
-                    context.Draw();
-                    return true;
-                }
-                if (CompareAssets(context.texture, "HP_Fill") || CompareAssets(context.texture, "HP_Fill_Honey"))
-                {
-                    context.texture = setter.Panel_HP_Fill;
-                    context.source = context.texture.Frame();
-                    context.Draw();
-                    return true;
-                }
-                if (CompareAssets(context.texture, "HP_Panel_Right"))
-                {
-                    context.texture = setter.Panel_HP_Right;
-                    context.source = context.texture.Frame();
-                    context.position.X -= 2;
-                    context.Draw();
-                    return true;
-                }
+                context.texture = setter.Panel_HP_Mid;
+                context.source = context.texture.Frame();
+                context.Draw();
+                return true;
             }
-            else
+            if (CompareAssets(context.texture, "HP_Fill") || CompareAssets(context.texture, "HP_Fill_Honey"))
             {
-                if (CompareAssets(context.texture, "MP_Panel_Middle"))
-                {
-                    context.texture = setter.Panel_MP_Mid;
-                    context.source = context.texture.Frame();
-                    context.Draw();
-                    return true;
-                }
-                if (CompareAssets(context.texture, "MP_Panel_Right"))
-                {
-                    context.texture = setter.Panel_MP_Right;
-                    context.source = context.texture.Frame();
-                    context.position.X -= 3;
-                    context.Draw();
-                    return true;
-                }
-                if (CompareAssets(context.texture, "MP_Fill"))
-                {
-                    context.texture = setter.Panel_HP_Fill_Honey;
-                    context.source = context.texture.Frame();
-                    context.Draw();
-                    return true;
-                }
+                context.texture = setter.Panel_HP_Fill;
+                context.source = context.texture.Frame();
+                context.Draw();
+                return true;
+            }
+            if (CompareAssets(context.texture, "HP_Panel_Right"))
+            {
+                context.texture = setter.Panel_HP_Right;
+                context.source = context.texture.Frame();
+                context.position.X -= 1;
+                context.Draw();
+                return true;
+            }
+            if (CompareAssets(context.texture, "MP_Panel_Middle"))
+            {
+                context.texture = setter.Panel_MP_Mid;
+                context.source = context.texture.Frame();
+                context.Draw();
+                return true;
+            }
+            if (CompareAssets(context.texture, "MP_Panel_Right"))
+            {
+                context.texture = setter.Panel_MP_Right;
+                context.source = context.texture.Frame();
+                context.position.X -= 2;
+                context.Draw();
+                return true;
+            }
+            if (CompareAssets(context.texture, "MP_Fill"))
+            {
+                context.texture = setter.Panel_MP_Fill;
+                context.source = context.texture.Frame();
+                context.Draw();
+                return true;
+            }
 
-            }
             if (CompareAssets(context.texture, "Panel_Left"))
             {
                 context.texture = setter.Panel_Left;
@@ -100,79 +93,109 @@ namespace SakurabaEmaMod.Core.Overlayer
             }
             return false;
         }
+        private Dictionary<short, ManosabaResourceSet> _RarityMap2;
         public override bool PreDrawResource(ResourceOverlayDrawContext context)
         {
+            if (!ManosabaClientConfig.Instance.UseCharactorLifeBar)
+                return true;
             if (Main.LocalPlayer.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped)
             {
-                if (CompareAllAssets(ManosabaResource.SakurabaEmaBar, context, true))
-                {
-                    return false;
-
-                }
-                else if (CompareAllAssets(ManosabaResource.SakurabaEmaBar, context, false))
+                if (CompareAllAssets(ManosabaResource.SakurabaEmaBar, context))
                 {
                     return false;
                 }
             }
             //奖池还在积累
             //这地方必须得重写
-            switch (ManosabaPlayer.ManosabaGirl)
+            Dictionary<short, ManosabaResourceSet> _RarityMap = new()
             {
-                case ManosabaGirlID.NikaidouHiro:
-                    if (CompareAllAssets(ManosabaResource.NikaidouHiroBar, context, true))
-                        return false;
-                    else if (CompareAllAssets(ManosabaResource.NikaidouHiroBar, context, false))
-                        return false;
-                    return true;
-                default:
-                    return true;
-            }
+                { ManosabaGirlID.NatsumeAnan, ManosabaResource.NatsumeAnanBar},
+                { ManosabaGirlID.NikaidouHiro, ManosabaResource.NikaidouHiroBar}
+            };
+            if (_RarityMap.TryGetValue(ManosabaPlayer.ManosabaGirl, out var value))
+                return !CompareAllAssets(value,context);
+            return true;
         }
         public static List<RaritySparkle> SakurabaEmaSparkle = [];
         public static List<RaritySparkle> NikaidouHiroSparkle = [];
+        public static List<RaritySparkle> NatsumeAnanSparkle = [];
+        private Vector2 Offset => Vector2.UnitX * 45f + Vector2.UnitY;
         public override void PostDrawResource(ResourceOverlayDrawContext context)
         {
+            if (!ManosabaClientConfig.Instance.UseCharactorLifeBar)
+                return;
+            if (!CompareAssets(context.texture, "MP_Panel_Right"))
+                return;
             if (Main.LocalPlayer.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped)
             {
-                if (CompareAssets(context.texture, "HP_Panel_Right"))
+                //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
+                //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
+                if (Main.rand.NextBool(22))
                 {
-                    //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
-                    //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
-                    if (Main.rand.NextBool(22))
+                    float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f);
+                    int lifetime = 180;
+                    //尽量校准位置避免溢出外边框
+                    //不过yysy溢出了也不会咋样。说实话。
+                    Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
+                    Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                    RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, scale);
+                    SakurabaEmaSparkle.Add(rarityShinyOrb);
+                    if (Main.rand.NextBool(3))
                     {
-                        float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f);
-                        int lifetime = 180;
-                        //尽量校准位置避免溢出外边框
-                        //不过yysy溢出了也不会咋样。说实话。
-                        Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Vector2.UnitX * 33f + Vector2.UnitY * 20f, new Vector2(30)));
-                        Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
-                        RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, scale);
-                        SakurabaEmaSparkle.Add(rarityShinyOrb);
-                        if (Main.rand.NextBool(3))
-                        {
-                            position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Vector2.UnitX * 33f + Vector2.UnitY * 20f, new Vector2(30)));
-                            velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
-                            SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.HotPink, Color.LightPink).ToAddColor(100), lifetime, RandRotTwoPi, 1, 0.14f, 0.8f, true);
-                            SakurabaEmaSparkle.Add(sakuraPetals);
-                        }
+                        position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
+                        velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                        SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.HotPink, Color.LightPink).ToAddColor(100), lifetime, RandRotTwoPi, 1, 0.14f, 0.8f, true);
+                        SakurabaEmaSparkle.Add(sakuraPetals);
                     }
-                    UpdateTooltipParticles(Vector2.Zero, ref SakurabaEmaSparkle);
                 }
+                UpdateTooltipParticles(Vector2.Zero, SakurabaEmaSparkle);
             }
             switch (ManosabaPlayer.ManosabaGirl)
             {
                 case ManosabaGirlID.NikaidouHiro:
                     DrawHiroParticle(context);
                     break;
+                case ManosabaGirlID.NatsumeAnan:
+                    DrawAnanParticle(context);
+                    break;
                 default:
                     break;
             }
         }
 
+        private void DrawAnanParticle(ResourceOverlayDrawContext context)
+        {
+            //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
+            //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
+            if (Main.rand.NextBool(24))
+            {
+                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f);
+                int lifetime = 180;
+                //尽量校准位置避免溢出外边框
+                //不过yysy溢出了也不会咋样。说实话。
+                Vector2 offset2 = Vector2.UnitX * 30f;
+                Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position +offset2, new Vector2(30)));
+                Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.Gold, Color.Yellow).ToAddColor(200), lifetime, scale);
+                position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position +offset2, new Vector2(30)));
+                velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                RarityShinyCrossStar rarityShinyCrossStar = new(position, velocity, RandLerpColor(Color.Gold, Color.Yellow).ToAddColor(50), lifetime, RandRotTwoPi, 1f, scale * 0.5f, 0.2f);
+                NatsumeAnanSparkle.Add(rarityShinyOrb);
+                NatsumeAnanSparkle.Add(rarityShinyCrossStar);
+                if (Main.rand.NextBool(3))
+                {
+                    position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + offset2, new Vector2(30)));
+                    velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                    RarityNoaButterfly rarityNoaButterfly = new RarityNoaButterfly(position, -velocity.SafeNormalize(Vector2.UnitX), RandLerpColor(Color.BlueViolet, Color.SkyBlue).ToAddColor(255), 80, 1, 0.20f, 0.3f, true);
+                    NatsumeAnanSparkle.Add(rarityNoaButterfly);
+                }
+            }
+            UpdateTooltipParticles(Vector2.Zero, NatsumeAnanSparkle);
+
+        }
+
         private void DrawHiroParticle(ResourceOverlayDrawContext context)
         {
-            if (!CompareAssets(context.texture, "HP_Panel_Right"))
-                return;
             //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
             //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
             if (Main.rand.NextBool(22))
@@ -181,7 +204,7 @@ namespace SakurabaEmaMod.Core.Overlayer
                 int lifetime = 180;
                 //尽量校准位置避免溢出外边框
                 //不过yysy溢出了也不会咋样。说实话。
-                Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Vector2.UnitX * 33f + Vector2.UnitY * 20f, new Vector2(30)));
+                Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
                 Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
                 RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.Crimson, Color.DarkRed).ToAddColor(), lifetime, scale);
                 RarityShinyOrb rarityShinyOrb2 = new(position, velocity, Color.White.ToAddColor(), lifetime, scale * 0.5f);
@@ -189,13 +212,13 @@ namespace SakurabaEmaMod.Core.Overlayer
                 NikaidouHiroSparkle.Add(rarityShinyOrb2);
                 if (Main.rand.NextBool(3))
                 {
-                    position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Vector2.UnitX * 33f + Vector2.UnitY * 20f, new Vector2(30)));
+                    position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
                     velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
                     SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.Crimson, Color.DarkRed).ToAddColor(100), lifetime, RandRotTwoPi, 1, 0.14f, 0.8f, true);
                     NikaidouHiroSparkle.Add(sakuraPetals);
                 }
             }
-            UpdateTooltipParticles(Vector2.Zero, ref NikaidouHiroSparkle);
+            UpdateTooltipParticles(Vector2.Zero, NikaidouHiroSparkle);
         }
 
 
@@ -205,7 +228,7 @@ namespace SakurabaEmaMod.Core.Overlayer
         /// 但主要是我也不想管理更多东西了。
         /// </summary>
         /// <param name="sparklesList"></param>
-        public static void UpdateTooltipParticles(Vector2 drawPos, ref List<RaritySparkle> sparklesList)
+        public static void UpdateTooltipParticles(Vector2 drawPos, List<RaritySparkle> sparklesList)
         {
             //在这里更新粒子的Draw，让粒子动起来
             for (int i = 0; i < sparklesList.Count; i++)

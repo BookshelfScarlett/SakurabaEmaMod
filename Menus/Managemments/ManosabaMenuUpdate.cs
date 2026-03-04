@@ -73,13 +73,22 @@ namespace SakurabaEmaMod.Menus.Managemments
             //当前有任何正在执行的二级UI都不要尝试做这个行为。
             if (!ManoHudManager.ActiveDepth[2])
             {
-                IdleTimer++;
-
+                bool isActive = false;
+                if (Main.MouseScreen != LastAnchorPosition)
+                    isActive = true;
+                if (isActive)
+                {
+                    IsIdling = false;
+                    IdleTimer = 0;
+                }
+                else if (Main.instance.IsActive)
+                    IdleTimer++;
+                LastAnchorPosition = Main.MouseScreen;
                 //是的孩子们我一直在偷偷吃你的性能
                 //哈哈。
                 //在主界面挂机超过30秒的时候直接挂机
                 //对。
-                if (IdleTimer > GetSeconds(50) && !IsIdling)
+                if (IdleTimer > GetSeconds(30) && !IsIdling)
                 {
                     IsIdling = true;
                     LastAnchorPosition = Main.MouseScreen;
@@ -101,6 +110,11 @@ namespace SakurabaEmaMod.Menus.Managemments
 
                     return;
                 }
+            }
+            else
+            {
+                IdleTimer = 0;
+                IsIdling = false;
             }
             //播放视频的时候会直接阻止这里的传值
             //这史山你看我干不干你就完事了

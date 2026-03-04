@@ -26,33 +26,6 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
             RarityDrawHelper.DrawCustomTooltipLine(line, Color.Red, Color.Lerp(Color.Crimson, Color.Red, 0.4f), Color.Black);
             PostDrawRarity(ref RaritySparkles, line);
         }
-        private void DrawGlowBackground(DrawableTooltipLine line)
-        {
-            string textValue = line.Text;
-            Vector2 textSize = line.Font.MeasureString(textValue);
-            Effect useShader = ManosabaShader.TerrarRayLaser;
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone, useShader, Main.UIScaleMatrix);
-
-            Asset<Texture2D> backGroundTexture = ManosabaTexture.Trail_TerraRayFlow.Texture;
-            Color sine = Color.Lerp(Color.Red, Color.DarkRed, (float)((1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2.5f)) / 2));
-            useShader.Parameters["LaserTextureSize"].SetValue(backGroundTexture.Size());
-            useShader.Parameters["targetSize"].SetValue(new Vector2(textSize.X, backGroundTexture.Height()) * line.BaseScale);
-            useShader.Parameters["uTime"].SetValue(Main.GlobalTimeWrappedHourly * -15);
-            useShader.Parameters["uColor"].SetValue(sine.ToVector4() * 1f);
-            useShader.Parameters["uFadeoutLength"].SetValue(0.1f);
-            useShader.Parameters["uFadeinLength"].SetValue(0.05f);
-            useShader.CurrentTechnique.Passes[0].Apply();
-
-            Vector2 glowPosition = new(line.X - 13f, line.Y - 12f);
-            Vector2 glowScale = new Vector2(textSize.X * 0.0046f, 0.15f) * line.BaseScale;
-            Color drawColor = Color.White;
-            //实际绘制。
-            Main.spriteBatch.Draw(backGroundTexture.Value, glowPosition, null, drawColor * 0.85f, 0f, line.Origin, glowScale, SpriteEffects.None, 0f);
-
-            Main.spriteBatch.End();
-            Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointWrap, DepthStencilState.Default, RasterizerState.CullNone, null, Main.UIScaleMatrix);
-        }
 
         public override void DrawFlavorName(DrawableTooltipLine line)
         {

@@ -32,15 +32,18 @@ namespace SakurabaEmaMod.Assets.Register
     {
         public static ManosabaResourceSet SakurabaEmaBar;
         public static ManosabaResourceSet NikaidouHiroBar;
+        public static ManosabaResourceSet NatsumeAnanBar;
         public override void Load()
         {
             SakurabaEmaBar = new ManosabaResourceSet(Charactor.SakurabaEma);
             NikaidouHiroBar = new ManosabaResourceSet(Charactor.NikaidouHiro);
+            NatsumeAnanBar = new ManosabaResourceSet(Charactor.NatsumeAnan);
         }
         public override void Unload()
         {
             SakurabaEmaBar = null;
             NikaidouHiroBar = null;
+            NatsumeAnanBar = null;
         }
     }
 }

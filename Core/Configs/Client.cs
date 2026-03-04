@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using Terraria.Localization;
 using Terraria.ModLoader.Config;
 
@@ -24,5 +19,9 @@ namespace SakurabaEmaMod.Core.Configs
         [BackgroundColor(192, 54, 64, 192)]
         [DefaultValue(false)]
         public bool NoFinalBloomPlay { get; set; }
+        [BackgroundColor(192, 54, 64, 192)]
+        [DefaultValue(false)]
+        public bool UseCharactorLifeBar { get; set; }
+
     }
 }

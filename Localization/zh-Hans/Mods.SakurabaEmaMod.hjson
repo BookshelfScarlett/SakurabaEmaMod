@@ -37,5 +37,10 @@ Configs: {
 				默认关闭
 				'''
 		}
+
+		UseCharactorLifeBar: {
+			// Label: Use Charactor Life Bar
+			// Tooltip: ""
+		}
 	}
 }

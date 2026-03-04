@@ -2,7 +2,6 @@
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
-using System.Threading;
 using Terraria;
 using Terraria.ModLoader;
 
