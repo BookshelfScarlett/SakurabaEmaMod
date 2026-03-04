@@ -32,3 +32,14 @@ NoaPainter: {
 	SinnerType: "[-虚伪的艺术家-]"
 	SinnerTooltip: 「所有所有血的红色，都变成蝴蝶的图画吧！」
 }
+
+NikaidouHiroItem: {
+	DisplayName: 正论之花
+	Tooltip: ""
+	SinnerType: "[-正义的执行者-]"
+	SinnerTooltip:
+		'''
+		她至今走过的路，未曾有一星污点...
+		在那个名为独善的理想乡中，容不得绞刑台这般异物的存在
+		'''
+}

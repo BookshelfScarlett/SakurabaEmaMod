@@ -42,7 +42,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
             Vector2 textSize = tooltipLine.Font.MeasureString(tooltipLine.Text);
             //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
             //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
-            if(Main.rand.NextBool(8))
+            if (Main.rand.NextBool(8))
             {
                 float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f) * 0.9f;
                 int lifetime = 80;

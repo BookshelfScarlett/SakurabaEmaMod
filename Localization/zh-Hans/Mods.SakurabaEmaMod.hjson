@@ -9,7 +9,33 @@ Menu: {
 	GalleryText: 画廊
 	Options: 游戏设置
 	SwitchManosabaBackground: 切换背景主题
-	ModVersion: Ver. 1.2.2
+	ModVersion: Ver. 1.3.1
+	LogoCanPlay: 现在可以在主界面按Logo来播放Bloom(PV)了！
+	InGameContext: 按下鼠标右键以跳过
 }
 
 // Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj
+
+Configs: {
+	ManosabaClientConfig: {
+		DisplayName: 客户端设置
+
+		ParticleDontEmitLight: {
+			Label: 模组粒子不再发光
+			Tooltip:
+				'''
+				开启后让模组内的粒子，如人物时装身上散发的粒子不再发光
+				默认关闭
+				'''
+		}
+
+		NoFinalBloomPlay: {
+			Label: 击败月球领主后不播放Bloom(PV)
+			Tooltip:
+				'''
+				开启后在击败月球领主时不再播放Bloom(PV)
+				默认关闭
+				'''
+		}
+	}
+}

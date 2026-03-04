@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.ParticleSystem;
 using System;
 using Terraria;
@@ -44,7 +45,7 @@ namespace SakurabaEmaMod.Particles
         }
         public override void Update()
         {
-            if (!NoLighting)
+            if (!NoLighting && !ManosabaClientConfig.Instance.ParticleDontEmitLight)
                 Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G / 255f, DrawColor.B / 255f));
             if (Speed != 0)
             {

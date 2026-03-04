@@ -1,16 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Graphics;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
-using SakurabaEmaMod.Menus.Class;
 using SakurabaEmaMod.Menus.Managemments;
-using System.Reflection.Emit;
-using System.Reflection.Metadata;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace SakurabaEmaMod.Menus.MainMenu
 {
@@ -30,7 +24,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public static Texture2D UseTex = ManosabaMenuAssets.Still_Ema.Texture.Value;
         public static bool CanChangeMenu = false;
         public static float TheScaleRatios = 0f;
-        public static float LogoScaleRatios = 0f;
+        //public static float LogoScaleRatios = 0f;
         public static float BackgroundFading = 0f;
         public static void Update()
         {
@@ -40,12 +34,6 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //下面的更新值不会再继续做更新了。
             //满足之后
             TheScaleRatios += 1 / (float)GetSeconds(1);
-            float scaleRatios = Clamp(Lerp(1.05f, 1f, TheScaleRatios), 1f, 1.05f);
-
-            if(scaleRatios == 1f)
-            {
-                LogoScaleRatios += 1 / (float)GetSeconds(1);
-            }
         }
         public static int CurrentBackgroundID = ManosabaMenuID.Ema;
         public static Texture2D GetBackgroundOnNeed()
@@ -104,13 +92,9 @@ namespace SakurabaEmaMod.Menus.MainMenu
             }
 
             SB.Draw(backGround, ManosabaMethods.ScreenCenter(), null, Color.White, 0, backGround.Size() / 2, scaleRatios, 0, 0);
-            Vector2 logoPos = new Vector2(Main.screenWidth - 285f, 200f);
-            float colorRatios = Clamp(LogoScaleRatios, 0f, 1f);
-
-            SB.Draw(logo, logoPos, null, Color.White * colorRatios, 0, logo.Size() / 2, 0.52f, 0, 0);
             Rectangle rectangle = new(0, 0, Main.screenWidth, Main.screenHeight);
             Texture2D mask = ManosabaMenuAssets.Main_Mask.Texture.Value;
-            Main.spriteBatch.Draw(mask, rectangle, Color.White * colorRatios);
+            Main.spriteBatch.Draw(mask, rectangle, Color.White * Logo.LogoScaleRatios);
 
         }
     }

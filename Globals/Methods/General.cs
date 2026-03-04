@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Globals.Players;
 using SakurabaEmaMod.Items;
 using System;
+using System.Data;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -23,6 +24,13 @@ namespace SakurabaEmaMod.Globals.Methods
         }
         public static bool HasProj<T>(this Player player) where T : ModItem => HasProj(player, ItemType<T>());
         public static bool HasProj(this Player player, int projID) => player.ownedProjectileCounts[projID] > 0;
+        //public static Vector2 ScreenCenter
+        //{
+        //    get
+        //    {
+        //        return new Vector2(Main.screenWidth / 2f, Main.screenHeight / 2f);
+        //    }
+        //}
 
     }
 }

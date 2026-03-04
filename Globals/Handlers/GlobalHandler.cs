@@ -34,5 +34,14 @@ namespace SakurabaEmaMod.Globals.Handlers
         }
         public static int GetSeconds(int seconds) => seconds * 60;
         public static Color RandLerpColor(Color beginColor, Color endColor) => Color.Lerp(beginColor, endColor, RandZeroToOne);
+        public static Vector2 ScreenCenter
+        {
+            get
+            {
+                return new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+
+            }
+        }
+
     }
 }

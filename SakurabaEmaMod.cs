@@ -4,7 +4,9 @@ global using static SakurabaEmaMod.Globals.Handlers.GlobalHandlers;
 global using static Terraria.ModLoader.ModContent;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
+using ReLogic.Content.Sources;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Readers.Ogv;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -18,6 +20,14 @@ namespace SakurabaEmaMod
         public static SakurabaEmaMod Instance;
         public static Mod CrossMod_FuckEmma = null;
         public const int EmaSoundID = 1;
+        public override IContentSource CreateDefaultContentSource()
+        {
+            if(!Main.dedServ)
+            {
+                AddContent(new OgvReader());
+            }
+            return base.CreateDefaultContentSource();
+        }
         public override void Load()
         {
             Instance = this;

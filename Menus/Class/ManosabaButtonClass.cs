@@ -3,10 +3,8 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Hud;
-using SakurabaEmaMod.Menus.MainMenu;
 using SakurabaEmaMod.Menus.Managemments;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.UI.Chat;
 
@@ -106,12 +104,16 @@ namespace SakurabaEmaMod.Menus.Class
             }
             else
             {
+
                 Texture2D useTex = MouseIsHovering ? ChosenTexture : UnChosenTexture;
                 Vector2 posOffset = MouseIsHovering ? TexturePosOffset : Vector2.Zero;
-                //实际绘制
-                float colorRatios = Clamp(ManosabaBackground.LogoScaleRatios, 0f, 1f);
+                //注意这里的史山代码。在bloom开始播放的时候，会自动做别的渐变
+                float bloomRatios = ManosabaMenuUpdate.ButtonsHoverOut;
+                Vector2 bloomMove = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * 300f, bloomRatios);
+                float colorRatios = Clamp(MainMenu.Logo.LogoScaleRatios, 0f, 1f);
                 Color useColor = UseOpacity ? Color.White * Opacity : Color.White * colorRatios;
-                spriteBatch.Draw(useTex, Position + posOffset, null, useColor, Rotation, useTex.Size() / 2, ButtonScale, 0, 0);
+                //实际绘制
+                spriteBatch.Draw(useTex, Position + posOffset + bloomMove, null, useColor, Rotation, useTex.Size() / 2, ButtonScale, 0, 0);
             }
             
         }

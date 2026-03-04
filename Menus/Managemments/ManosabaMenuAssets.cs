@@ -1,5 +1,4 @@
-﻿using Microsoft.Build.ObjectModelRemoting;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.ModLoader;
 
@@ -41,10 +40,8 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static MenuTexPath Still_Margo{  get; private set; }
         public static MenuTexPath Main_Mask {  get; private set; }
         public static MenuTexPath Main_Title {  get; private set; }
-        public static MenuTexPath Main_Loading {  get; private set; }
         public static MenuTexPath Main_ArrowLeft { get; private set; }
         public static MenuTexPath Main_ArrowRight { get; private set; }
-        public static MenuTexPath Main_ArrowBack { get; private set; }
         public static MenuTexPath Alt_ButtonChosen {  get; private set; }
         public static MenuTexPath Alt_ButtonUnChosen {  get; private set; }
         public static MenuTexPath Alt_ExitUnChosen { get; private set; }
@@ -71,8 +68,6 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Margo = new MenuTexPath($"{StillPath}{nameof(Still_Margo)}");
             Main_Mask = new MenuTexPath($"{Path}{nameof(Main_Mask)}");
             Main_Title = new MenuTexPath($"{Path}{nameof(Main_Title)}");
-            Main_Loading = new MenuTexPath($"{Path}{nameof(Main_Loading)}");
-            Main_ArrowBack = new MenuTexPath($"{Path}{nameof(Main_ArrowBack)}");
             Main_ArrowLeft = new MenuTexPath($"{Path}{nameof(Main_ArrowLeft)}");
             Main_ArrowRight = new MenuTexPath($"{Path}{nameof(Main_ArrowRight)}");
 
@@ -99,8 +94,6 @@ namespace SakurabaEmaMod.Menus.Managemments
 
             Main_Mask = null;
             Main_Title = null;
-            Main_Loading = null;
-            Main_ArrowBack = null;
             Main_ArrowLeft = null;
             Main_ArrowRight = null;
    
@@ -118,7 +111,6 @@ namespace SakurabaEmaMod.Menus.Managemments
             Alt_CornerDeco = null;
             Alt_Mask = null;
             Alt_ExitChosen = null;
-            Alt_ExitUnChosen = null;
             ManosabaBackgroundList = null;
         }
     }

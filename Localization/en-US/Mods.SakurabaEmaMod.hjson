@@ -9,7 +9,33 @@ Menu: {
 	GalleryText: Gallery
 	Options: Options
 	SwitchManosabaBackground: ""
-	ModVersion: Ver. 1.2.2
+	ModVersion: Ver. 1.3.1
+	LogoCanPlay: "Now you can click logo on main title screen to play Bloom(PV)!"
+	InGameContext: "Press Right Click to skip"
 }
 
 Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj
+
+Configs: {
+	ManosabaClientConfig: {
+		DisplayName: Client Option
+
+		ParticleDontEmitLight: {
+			Label: Particles Don't Emit Light
+			Tooltip:
+				'''
+				Enables to make particles from Mod no longer emit any lights, e.g: particles from vanity set
+				Default by false
+				'''
+		}
+
+		NoFinalBloomPlay: {
+			Label: Don't play Bloom(PV) after Moon Lord fight
+			Tooltip:
+				'''
+				Enables to not play Bloom(PV) after Moon Lord fight
+				Default by false
+				'''
+		}
+	}
+}

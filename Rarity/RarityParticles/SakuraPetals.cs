@@ -12,8 +12,9 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
         public float Speed = 5f;
         public float BeginScale = 1f;
         public int Rotdir = 1;
+        private bool UseJump;
 
-        public SakuraPetals(Vector2 position,Vector2 velocity, Color color, int lifetime, float Rot, float opacity, float scale, float speed)
+        public SakuraPetals(Vector2 position,Vector2 velocity, Color color, int lifetime, float Rot, float opacity, float scale, float speed, bool useJump =false)
         {
             Position = position;
             Velocity = velocity;
@@ -25,14 +26,18 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
             BeginScale = scale;
             Rotdir = Main.rand.NextBool().ToDirectionInt();
             Speed = speed;
+            UseJump = useJump;
         }
         public override void CustomUpdate()
         {
             Vector2 idealVelocity = Vector2.UnitY.RotatedBy(Lerp(-0.94f, 0.94f, (float)Math.Sin(Time / 36f + Main.rand.NextFloat(0,10000)) * 0.5f + 0.5f)) * Speed;
             float movementInterpolant = Lerp(0.05f, 0.1f, Utils.GetLerpValue(0, Lifetime / 2, Time, true));
             Velocity = Vector2.Lerp(Velocity, idealVelocity, movementInterpolant);
-            Velocity = Velocity.SafeNormalize(-Vector2.UnitY) * Speed;
-            Position += Velocity;
+            
+            Vector2 addJump = Vector2.Zero;
+            if (UseJump)
+                addJump = Vector2.UnitY * 0.05f;
+            Position += Velocity + addJump;
             Rotation += 0.05f * Rotdir;
             Scale = Lerp(BeginScale, 0, EaseInCubic(LifetimeRatio));
         }

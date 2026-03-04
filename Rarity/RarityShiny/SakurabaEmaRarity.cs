@@ -47,7 +47,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
                 //不过yysy溢出了也不会咋样。说实话。
                 Vector2 position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.45f), -(int)(textSize.Y * 0.8f), (int)(textSize.X * 0.85f), (int)(textSize.Y * 0.85f)));
                 Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.45f, 0.75f) * 0.5f;
-                RarityShinyOrb rarityShinyOrb = new RarityShinyOrb(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, scale);
+                RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, scale);
                 particleList.Add(rarityShinyOrb);
 
             }
@@ -64,10 +64,9 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
                 float scale = Main.rand.NextFloat(0.10f * 0.5f, 0.10f) * 0.8f;
                 int lifetime = 80;
                 Vector2 position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.5f), -(int)(textSize.Y * 0.3f), (int)textSize.X, (int)(textSize.Y * 0.35f)));
-                Vector2 velocity = -Vector2.UnitY * Main.rand.NextBool().ToDirectionInt() * Main.rand.NextFloat(1.5f, 2.15f);
-                SakuraPetals sakuraPetals = new SakuraPetals(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(), lifetime, RandRotTwoPi, 1f, scale, 0.1f);
+                Vector2 velocity = -Vector2.UnitY * Main.rand.NextBool().ToDirectionInt() * Main.rand.NextFloat(0.15f, .215f);
+                SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(0), lifetime, RandRotTwoPi, 1.5f, scale, 0.1f);
                 particleList.Add(sakuraPetals);
-
             }
             //最后在通用的方法内进行更新
             RarityDrawHelper.UpdateTooltipParticles(tooltipLine, ref particleList);

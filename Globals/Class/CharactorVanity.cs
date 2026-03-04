@@ -108,12 +108,17 @@ namespace SakurabaEmaMod.Globals.Class
             //标记当前使用的人物Enum
             //如果hideVisual的情况下不使用，然后他会自动在ResetEffect尝试重置为none。
             if (!hideVisual)
+            {
                 player.ManosabaMod().ManosabaGirl = SetCharactor;
+                ExtraUpdate(player);
+            }
         }
         public override void UpdateVanity(Player player)
         {
             player.ManosabaMod().ManosabaGirl = SetCharactor;
+            ExtraUpdate(player);
         }
+        public virtual void ExtraUpdate(Player player) { }
         public virtual void ExSD()
         {
 

@@ -14,7 +14,6 @@ namespace SakurabaEmaMod.Projs
     {
         public override bool IsLoadingEnabled(Mod mod) => false;
         public override short SetCharactor => ManosabaGirlID.JougasakiNoa;
-        public new string LocalizationCategory => "Projs";
         public override string Texture => $"SakurabaEmaMod/Assets/Texture/Projs/NoaPainter";
         public AnimationHandler PainterAni = new(10);
         public bool Init = false;

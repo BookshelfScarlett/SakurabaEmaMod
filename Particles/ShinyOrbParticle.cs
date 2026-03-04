@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using SakurabaEmaMod.Core.ParticleSystem;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 
 namespace SakurabaEmaMod.Particles
 {
@@ -48,7 +49,7 @@ namespace SakurabaEmaMod.Particles
             FadeOut -= 0.05f;
             Scale *= 0.93f;
             DrawColor = Color.Lerp(InitColor, InitColor * 0.2f, (float)Math.Pow(LifetimeRatio, 30));
-            if (!NoLighting)
+            if (!NoLighting && !ManosabaClientConfig.Instance.ParticleDontEmitLight)
                 Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G /255f, DrawColor.B/255f));
 
             Velocity *= 0.95f;

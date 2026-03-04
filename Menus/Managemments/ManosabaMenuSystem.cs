@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SakurabaEmaMod.Menus.MainMenu;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -14,7 +10,9 @@ namespace SakurabaEmaMod.Menus.Managemments
     public class BackgroundConfig
     {
         public int BackgroundID { get; set; }
+        public bool IsDoneMoonlordFight { get; set; }
         public const int DefaultID = ManosabaMenuID.Ema;
+        public const bool DefaultBoolen = true;
     }
     public class ManosabaMenuSystem : ModSystem
     {
@@ -47,13 +45,14 @@ namespace SakurabaEmaMod.Menus.Managemments
                     //把当前文件名与默认文件名拼起来
                     string defaultPath = Path.Combine(FilePath, CurrentFileName);
                     //实例化自定义的json内容
-                    var defaultConfig = new BackgroundConfig { BackgroundID = BackgroundConfig.DefaultID };
+                    var defaultConfig = new BackgroundConfig { BackgroundID = BackgroundConfig.DefaultID, IsDoneMoonlordFight = BackgroundConfig.DefaultBoolen };
                     string jsonContent = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
                     //写入内容
                     File.WriteAllText(defaultPath, jsonContent);
                     //标记允许开始修改背景
                     ManosabaBackground.CanChangeMenu = true;
                     ManosabaBackground.CurrentBackgroundID = BackgroundConfig.DefaultID;
+                    Logo.IsDoneMoonLordFight = BackgroundConfig.DefaultBoolen;
                 }
                 else
                 {
@@ -62,7 +61,8 @@ namespace SakurabaEmaMod.Menus.Managemments
                     string jsonContent = File.ReadAllText(jsonFilePath);
                     var config = JsonConvert.DeserializeObject<BackgroundConfig>(jsonContent);
                     ManosabaBackground.CanChangeMenu = true;
-                    ManosabaBackground.CurrentBackgroundID = config.BackgroundID < 0 && config.BackgroundID > 5 ? BackgroundConfig.DefaultID : config.BackgroundID;
+                    ManosabaBackground.CurrentBackgroundID = config.BackgroundID < 0 && config.BackgroundID > 7 ? BackgroundConfig.DefaultID : config.BackgroundID;
+                    Logo.IsDoneMoonLordFight = config.IsDoneMoonlordFight;
                 }
 
             }
@@ -74,7 +74,7 @@ namespace SakurabaEmaMod.Menus.Managemments
                 var defaultConfig = new BackgroundConfig { BackgroundID = BackgroundConfig.DefaultID };
                 string jsonContent = JsonConvert.SerializeObject(defaultConfig, Formatting.Indented);
                 File.WriteAllText(defaultFilePath, jsonContent);
-                    ManosabaBackground.CanChangeMenu = true;
+                ManosabaBackground.CanChangeMenu = true;
                 ManosabaBackground.CurrentBackgroundID = BackgroundConfig.DefaultID;
                 Mod.Logger.Error($"Load Manosaba Mod background fail: {ex.Message}, using defualt");
             }
@@ -83,6 +83,33 @@ namespace SakurabaEmaMod.Menus.Managemments
         public override void Unload()
         {
             Instance = null;
+        }
+        public void ReimplementJson(bool isDownedML)
+        {
+            try
+            {
+                //拼接完整Json路径
+                string jsonFilePath = Path.Combine(FilePath, CurrentFileName);
+                BackgroundConfig config;
+                //查看是否存在正常的配置文件，不存在则新建
+                if (File.Exists(jsonFilePath))
+                {
+                    string jsonContent = File.ReadAllText(jsonFilePath);
+                    config = JsonConvert.DeserializeObject<BackgroundConfig>(jsonContent) ?? new BackgroundConfig();
+                }
+                else
+                {
+                    config = new BackgroundConfig();
+                }
+                //更新ID值覆盖现有内容
+                config.IsDoneMoonlordFight = isDownedML;
+                string newjsonContent = JsonConvert.SerializeObject(config, Formatting.Indented);
+                File.WriteAllText(jsonFilePath, newjsonContent);
+            }
+            catch (Exception ex)
+            {
+                Mod.Logger.Error($"Rename/Load Manosaba Mod Down fail: {ex.Message}");
+            }
         }
         /// <summary>
         /// 工具方法，用于外部调用
@@ -93,12 +120,12 @@ namespace SakurabaEmaMod.Menus.Managemments
             try
             {
                 //拼接完整Json路径
-                string jsonFilePath= Path.Combine(FilePath, CurrentFileName);
+                string jsonFilePath = Path.Combine(FilePath, CurrentFileName);
                 BackgroundConfig config;
                 //查看是否存在正常的配置文件，不存在则新建
                 if (File.Exists(jsonFilePath))
                 {
-                    string jsonContent= File.ReadAllText(jsonFilePath);
+                    string jsonContent = File.ReadAllText(jsonFilePath);
                     config = JsonConvert.DeserializeObject<BackgroundConfig>(jsonContent) ?? new BackgroundConfig();
                 }
                 else
@@ -110,37 +137,9 @@ namespace SakurabaEmaMod.Menus.Managemments
                 string newjsonContent = JsonConvert.SerializeObject(config, Formatting.Indented);
                 File.WriteAllText(jsonFilePath, newjsonContent);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Mod.Logger.Error($"Rename/Load Manosaba Mod background fail: {ex.Message}");
-            }
-        }
-        public void LoadTextFileName()
-        {
-            try
-            {
-                //遍历当前文件夹下的所有txt文件
-                string[] textFileArray = Directory.GetFiles(FilePath, "*.txt");
-                //不存在txt文件，则创建一个txt文件
-                if(textFileArray.Length ==0)
-                {
-                    CurrentFileName = DefaultFileName;
-                    string filePath = Path.Combine(FilePath, CurrentFileName);
-                    using (File.Create(filePath)) { }
-                }
-                else
-                {
-                    //如果有，取第一文件名称作为生效的名字。
-                    CurrentFileName = Path.GetFileName(textFileArray[0]);
-                }
-            }
-            //抓一个异常，使用默认值。然后输出报错
-            catch (Exception ex)
-            { 
-                    CurrentFileName = DefaultFileName;
-                string filePath = Path.Combine(FilePath, CurrentFileName);
-                using (File.Create(filePath)) { }
-                Mod.Logger.Error($"Load Manosaba Mod background fail: {ex.Message}, using defualt");
             }
         }
     }

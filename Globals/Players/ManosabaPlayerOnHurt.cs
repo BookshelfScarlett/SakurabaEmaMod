@@ -38,11 +38,51 @@ namespace SakurabaEmaMod.Globals.Players
                     DrawAnanKillParticles();
                     AnanDeathSound();
                     break;
+                case ManosabaGirlID.NikaidouHiro:
+                    DrawHiroKillParticles();
+                    HiroDeathSound();
+                    break;
                 default:
                     break;
             }
             return;
         }
+        #region 希罗
+        /// <summary>
+        /// 非常神经病的是原作希罗本来就没多少能用的惨叫
+        /// 我也不大可能扔那个电梯惨叫过来
+        /// 反正嗯算了
+        /// 
+        /// </summary>
+        private void HiroDeathSound()
+        {
+        }
+
+        /// <summary>
+        /// 从安安下方复用
+        /// 但是修改了粒子逻辑
+        /// </summary>
+        private void DrawHiroKillParticles()
+        {
+            //落樱和散发粒子，修改为这些。
+            for (int i = 0; i < 15; i++)
+            {
+                Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
+                //花瓣与光球
+                Vector2 vec = (-Vector2.UnitY).RotatedBy(Main.rand.NextFloat(ToRadians(10f)) * Main.rand.NextBool().ToDirectionInt());
+                spawnPos += Vector2.UnitX * Main.rand.NextFloat(-5f, 6f);
+                Vector2 setpos = spawnPos;
+                Color setColor = RandLerpColor(Color.Red, Color.White);
+                new NoaButterfly(setpos, vec, setColor, 80, 1f, 0.14f, 0.8f).Spawn();
+                spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
+                new Petal(spawnPos, -Vector2.UnitY.RotatedBy(Main.rand.NextFloat(ToRadians(-30f), ToRadians(30f))), RandLerpColor(Color.DarkRed, Color.Crimson), 100, RandRotTwoPi, 1f, 0.1f, 1.2f).Spawn();
+            }
+
+        }
+        #endregion
+
+        #region 安安
+
         private void DrawAnanKillParticles()
         {
             if (NoaButterflyDeath)
@@ -60,8 +100,8 @@ namespace SakurabaEmaMod.Globals.Players
                 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
                 new TurbulenceShinyOrb(spawnPos, 1f, setColor, 120, 0.67f, RandRotTwoPi).Spawn();
             }
-
         }
+        #endregion
 
         /// <summary>
         /// 蝴蝶。

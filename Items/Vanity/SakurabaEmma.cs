@@ -88,11 +88,15 @@ namespace SakurabaEmaMod.Items.Vanity
                 }
                 //落樱和散发粒子，修改为这些。
                 new CrossGlow(Player.Center, Color.Pink, 30, 1f, 0.13f, false).Spawn();
-                for (int i = 0; i < 15; i++)
+                for (int i = 0; i < 8; i++)
                 {
                     Vector2 spawnPos = Player.Center.ToRandCirclePos(36f);
-                    new Petal(spawnPos, Vector2.UnitY * Main.rand.NextFloat(1.1f, 1.3f), RandLerpColor(Color.HotPink, Color.LightPink), 120, RandRotTwoPi, 0.8f, Main.rand.NextFloat(0.08f, 0.1f), 0.3f).Spawn();
-                    new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(4), 0.2f, RandLerpColor(Color.HotPink, Color.LightPink), 120, 0.22f, RandRotTwoPi).Spawn();
+                    new Petal(spawnPos, Vector2.UnitY * Main.rand.NextFloat(1.1f, 1.3f), RandLerpColor(Color.HotPink, Color.LightPink).ToAddColor(50), 120, RandRotTwoPi, 0.8f, Main.rand.NextFloat(0.1f, 0.12f), 0.3f).Spawn();
+                }
+                for (int i = 0; i < 25; i++)
+                {
+                    Vector2 spawnPos = Player.Center.ToRandCirclePos(36f);
+                    new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(4), 1.2f, RandLerpColor(Color.HotPink, Color.LightPink), 120, 0.42f, RandRotTwoPi).Spawn();
 
                 }
             }
@@ -235,9 +239,9 @@ namespace SakurabaEmaMod.Items.Vanity
             Vector2 mountedPlayerPos = Player.position;
             Vector2 spawnPos = Main.rand.NextVector2FromRectangle(new Rectangle((int)mountedPlayerPos.X, (int)mountedPlayerPos.Y, Player.width, Player.height));
             Vector2 vel = Player.velocity.SafeNormalize(Vector2.UnitX) * -Main.rand.NextFloat(0.3f, 1.25f) * 1.1f;
-            new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 0.6f, RandLerpColor(Color.HotPink, Color.LightPink), 40, 0.34f, RandRotTwoPi).Spawn();
-            if(Main.rand.NextBool(3))
-            new Petal(spawnPos, vel, RandLerpColor(Color.HotPink, Color.LightPink), 40, RandRotTwoPi, 1f, 0.1f, 0.5f).Spawn();
+            new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(3), 1f, RandLerpColor(Color.HotPink, Color.LightPink), 40, 0.34f, RandRotTwoPi).Spawn();
+            if (Main.rand.NextBool(3))
+                new Petal(spawnPos, vel, RandLerpColor(Color.HotPink, Color.LightPink), 40, RandRotTwoPi, 1f, 0.1f, 0.5f).Spawn();
         }
 
         public void DrawGlow()

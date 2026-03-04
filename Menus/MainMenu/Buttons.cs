@@ -31,6 +31,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override Rectangle Hitbox => Utils.CenteredRectangle(Position, new Vector2(300, 200));
         public override void OnMouseLeftRelease()
         {
+            //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
+            if (PVs.BloomVideo.PlayBloom)
+                return;
+
             //需要进入alt的二级ui
             //这里还没设置，待会做二级ui的时候开始弄
             if (!ManoHudManager.ActiveDepth[2])
@@ -56,6 +60,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override Rectangle Hitbox => base.Hitbox;
         public override void OnMouseLeftRelease()
         {
+            //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
+            if (PVs.BloomVideo.PlayBloom)
+                return;
+
             //这里还没设置，待会做二级ui的时候开始弄
             if (!ManoHudManager.ActiveDepth[2])
             {
@@ -77,6 +85,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override Rectangle Hitbox => base.Hitbox;
         public override void OnMouseLeftRelease()
         {
+            //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
+            if (PVs.BloomVideo.PlayBloom)
+                return;
+
             SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
             ManosabaMenuDraw.DrawTextValue = Mod.GetLocalizationKey("Menu.Options").ToLangValue();
             ManosabaMenuUpdate.GeneralFadingRatios = 0;
@@ -94,13 +106,14 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override Rectangle Hitbox => base.Hitbox;
         public override void OnMouseLeftRelease()
         {
+            //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
+            if (PVs.BloomVideo.PlayBloom)
+                return;
             Main.instance.Exit();
         }
     }
     public class SwitchMenu : ManosabaHud
     {
-        //根据代码情况来看这里的码实际上是tmod提供的
-        //反正复制无罪
         public string TextValue;
         public override void PostUpdate()
         {
@@ -150,9 +163,11 @@ namespace SakurabaEmaMod.Menus.MainMenu
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
+            //这个Ratios是从0到1的，因此这里也是逆向的
+            float ratios = (1 - ManosabaMenuUpdate.ButtonsHoverOut);
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 size = ChatManager.GetStringSize(font, TextValue, Vector2.One);
-            ChatManager.DrawColorCodedString(spriteBatch, font, TextValue, Position, Color.Silver, 0, size / 2, Vector2.One * Scale2);
+            ChatManager.DrawColorCodedString(spriteBatch, font, TextValue, Position, Color.Silver * ratios, 0, size / 2, Vector2.One * Scale2);
 
             //在这里画模组的版本字号。
 
@@ -162,7 +177,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             Vector2 size2 = ChatManager.GetStringSize(font, TextValue, Vector2.One * scale);
             Vector2 ori = size2 / 2;
             Vector2 pos = new Vector2(Main.screenWidth, Main.screenHeight - 50f) + Vector2.UnitX * 140f;
-            ChatManager.DrawColorCodedString(Main.spriteBatch, font, TextValue2, pos, Color.White, 0, ori, Vector2.One * scale);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, TextValue2, pos, Color.White * ratios, 0, ori, Vector2.One * scale);
 
         }
     }

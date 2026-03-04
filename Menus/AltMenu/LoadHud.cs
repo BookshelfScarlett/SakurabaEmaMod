@@ -5,15 +5,8 @@ using ReLogic.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
-using SakurabaEmaMod.Menus.MainMenu;
 using SakurabaEmaMod.Menus.Managemments;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI.Chat;
 

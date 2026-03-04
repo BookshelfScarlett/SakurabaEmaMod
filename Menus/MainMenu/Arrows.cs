@@ -28,7 +28,6 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public virtual Vector2 Center => Vector2.Zero;
         public virtual bool IsLeftArrow => false;
         public virtual Rectangle Hitbox => Utils.CenteredRectangle(Center - Vector2.UnitX * IsLeftArrow.ToDirectionInt() * 20f, new Vector2(75, 1200));
-        public virtual Texture2D ArrowBackground => ManosabaMenuAssets.Main_ArrowBack.Texture.Value;
         public virtual Texture2D ArrowTexture { get; }
         public sealed override void SetDefaults()
         {
@@ -48,7 +47,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
                 }
                 else
                 {
-                    Scale2 = Lerp(Scale2, 1.05f, 0.2f);
+                    Scale2 = Lerp(Scale2, 1.15f, 0.2f);
                     Opacity = Lerp(Opacity, 1.0f, 0.2f);
                 }
             }
@@ -61,6 +60,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
         }
         public override void OnMouseLeftRelease()
         {
+            //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
+            if (PVs.BloomVideo.PlayBloom)
+                return;
+
             SoundEngine.PlaySound(ManosabaSounds.Menu_Cancel);
             ManosabaBackground.CanChangeMenu = true;
             //按下的时候给背景上一层黑底，但是不影响其他地方的绘制。

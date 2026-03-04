@@ -6,6 +6,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator;
 
 namespace SakurabaEmaMod.Globals.Players
 {
@@ -21,6 +22,8 @@ namespace SakurabaEmaMod.Globals.Players
         public short ManosabaGirl = ManosabaGirlID.None;
         public bool NoaButterflyDeath = false;
         public bool sakurabaEmaVanity = false;
+        public bool IsDoneFinalBossFight = false;
+        public bool IsPlayingBloom = false;
         #endregion
         #region 其余内容
         public bool IsGiveAnyVanityItem = false;
@@ -47,31 +50,45 @@ namespace SakurabaEmaMod.Globals.Players
             if (IsGiveAnyVanityItem)
                 return;
             string name = Player.name.ToLower();
-            if (name.Contains("Natsume") || name.Contains("Anan") || name.Contains("夏目安安") || name.Contains("安安"))
+            if (name.Contains("natsume") || name.Contains("anan") || name.Contains("夏目安安") || name.Contains("安安"))
             {
                 IsGiveAnyVanityItem = true;
                 Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<NatsumeAnanItem>());
             }
+            if (name.Contains("nikaidou") || name.Contains("hiro") || name.Contains("二阶堂希罗") || name.Contains("希罗"))
+            {
+                IsGiveAnyVanityItem = true;
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<NikaidouHiroItem>());
+            }
         }
         public override void ResetEffects()
         {
+            //是的ResetEffect这会随时甩这个东西
+            //因为我自己也不清楚更新顺序的问题
             ManosabaGirl = ManosabaGirlID.None;
             NoaButterflyDeath = false;
         }
+        public override bool FreeDodge(Player.HurtInfo info)
+        {
+            //是的孩子们在播放ed的时候玩家会直接无敌
+            //我才不管这样会不会有人逃课呢我都把整个屏幕盖住了
+            if (IsPlayingBloom)
+                return true;
+            return false;
+        }
         public override void FrameEffects()
         {
-            //这里只能通过遍历所有玩家原版盔甲栏的方式来寻找需要的时装物品。
-            //因为这里需要实现的效果是，让人物存档页面也能绘制需要的时装
-            //如果玩家佩戴了其他的饰品栏，那么……嗯，随便吧反正
-            bool equip = false;
-            if (Main.gameMenu)
-                GetArmorSlotItem(ref equip);
-            if (ManosabaGirl != ManosabaGirlID.None || equip)
+            if (ManosabaGirl != ManosabaGirlID.None)
             {
                 UpdateVanityOnNeed();
                 DrawParticleOnNeed(); 
             }
         }
+        /// <summary>
+        /// 暂时移除，目前所有的主界面绘制方法都用单独玩家类管理
+        /// 因为目前不知道如何处理他们，玩家类的数据没法读取
+        /// </summary>
+        /// <param name="equip"></param>
         public void GetArmorSlotItem(ref bool equip)
         {
             foreach (Item item in Player.armor)
@@ -97,7 +114,7 @@ namespace SakurabaEmaMod.Globals.Players
             //不过话又说回来，谁能想到这个mod会拓展成魔裁mod呢？一开始只是想把艾玛做进去罢了
             string name = $"{GetName}Item";
             //一些特殊情况。如安安有一个额外的头发……
-            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan)
+            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro)
                 Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
             Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
             Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);

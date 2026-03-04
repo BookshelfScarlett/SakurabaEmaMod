@@ -3,11 +3,7 @@ using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityShiny;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,7 +12,7 @@ namespace SakurabaEmaMod.Core
 {
     public class ManosabaRaritySystem : ModSystem
     {
-        public  static ManosabaRaritySystem Instance;
+        public static ManosabaRaritySystem Instance;
         private Dictionary<short, int> _RarityMap;
         private Dictionary<short , CharactorRarity> _EffectMap;
         public override void Load()
@@ -27,12 +23,14 @@ namespace SakurabaEmaMod.Core
                 { ManosabaGirlID.SakurabaEma, RarityType<SakurabaEmaRarity>()},
                 { ManosabaGirlID.NatsumeAnan, RarityType<NatsumeAnanRarity>()},
                 { ManosabaGirlID.JougasakiNoa , RarityType<JougasakiNoaRarity>()},
+                { ManosabaGirlID.NikaidouHiro, RarityType<NikaidouHiroRarity>()},
             };
             _EffectMap = new Dictionary<short , CharactorRarity>()
             {
                 {ManosabaGirlID.SakurabaEma, new NatsumeAnanRarity()},
                 {ManosabaGirlID.NatsumeAnan , new NatsumeAnanRarity()},
-                {ManosabaGirlID.JougasakiNoa, new JougasakiNoaRarity()}
+                {ManosabaGirlID.JougasakiNoa, new JougasakiNoaRarity()},
+                {ManosabaGirlID.NikaidouHiro, new NikaidouHiroRarity()}
             };
         }
         public bool DrawRarityEffect(DrawableTooltipLine line, short charactor)
@@ -89,5 +87,20 @@ namespace SakurabaEmaMod.Core
             ScreenSize = new Vector2(Main.screenWidth, Main.screenHeight);
             MouseRectangle = new Rectangle((int)Main.MouseScreen.X, (int)Main.MouseScreen.Y, 4, 4);
         }
+    }
+    public class ManosabaDownedBoss : ModSystem
+    {
+        //月总自己
+        internal static bool _downedVanillaFinalBoss = false;
+        //终灾
+        internal static bool _downedCalamityFinalBoss = false;
+        //突变体
+        internal static bool _downedFargoSoulFinalBoss = false;
+        //圣子
+        internal static bool _downedHomewardJourneyFinalBoss = false;
+        //星云天使
+        internal static bool _downedRedemptionFinalBoss = false;
+        //三灾
+        internal static bool _downedThoriumFinalBoss = false;
     }
 }

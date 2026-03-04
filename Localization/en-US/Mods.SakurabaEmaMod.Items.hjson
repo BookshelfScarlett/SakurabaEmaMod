@@ -18,7 +18,7 @@ NatsumeAnanItem: {
 	SinnerTooltip:
 		'''
 		She sleeps alone again today.
-		      Hurting none keeps her unhurt.
+		Hurting none keeps her unhurt.
 		'''
 }
 
@@ -27,4 +27,15 @@ NoaPainter: {
 	Tooltip: ""
 	SinnerType: ""
 	SinnerTooltip: ""
+}
+
+NikaidouHiroItem: {
+	DisplayName: Flower of Righteous Reason
+	Tooltip: ""
+	SinnerType: "[-Executor of Justice-]"
+	SinnerTooltip:
+		'''
+		Not a single blemish mars the path she has walked...
+		In that ideal land of self-perfection, there is no place for such an abomination as a gallows.
+		'''
 }

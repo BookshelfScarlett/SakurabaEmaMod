@@ -4,6 +4,7 @@ using System;
 using Terraria;
 using SakurabaEmaMod.Core.ParticleSystem;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 
 namespace SakurabaEmaMod.Particles;
 
@@ -39,7 +40,7 @@ public class TurbulenceShinyOrb : BaseParticle
 
     public override void Update()
     {
-        if(!NoLighting)
+        if(!NoLighting && !ManosabaClientConfig.Instance.ParticleDontEmitLight)
                 Lighting.AddLight(Position, new Vector3(DrawColor.R / 255f, DrawColor.G /255f, DrawColor.B/255f));
         if (Speed != 0)
         {

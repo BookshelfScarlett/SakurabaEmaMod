@@ -6,11 +6,7 @@ using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.AltMenu;
 using SakurabaEmaMod.Menus.MainMenu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SakurabaEmaMod.Menus.PVs;
 using Terraria;
 using Terraria.UI.Chat;
 
@@ -32,6 +28,7 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static ManosabaHud GalleryHud => ManoHudManager.UICollection[GetInstance<GalleryHud>().Type];
         public static ManosabaHud RightArrow => ManoHudManager.UICollection[GetInstance<RightArrow>().Type];
         public static ManosabaHud LeftArrow => ManoHudManager.UICollection[GetInstance<LeftArrow>().Type];
+        public static ManosabaHud Logo => ManoHudManager.UICollection[GetInstance<Logo>().Type];
 
         #endregion 
         public static SpriteBatch SB { get => Main.spriteBatch; }
@@ -50,6 +47,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             //退出
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
+            BloomVideo.Draw();
         }
         /// <summary>
         /// 用于在左上角绘制需要的文本内容
@@ -105,6 +103,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             //SwitchManosabaBackground.Draw(SB);
             LeftArrow.Draw(SB);
             RightArrow.Draw(SB);
+            Logo.Draw(SB);
         }
 
         private static void DrawBackground()

@@ -1,16 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using ReLogic.Content;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.MainMenu;
+using SakurabaEmaMod.Menus.PVs;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,7 +29,22 @@ namespace SakurabaEmaMod.Menus.Managemments
         public override Asset<Texture2D> MoonTexture => ManosabaTexture.InvisAsset.Texture;
         public override Asset<Texture2D> Logo => ManosabaTexture.InvisAsset.Texture;
         public override ModSurfaceBackgroundStyle MenuBackgroundStyle => null;
-        public override int Music => MusicLoader.GetMusicSlot(ManosabaMusic.Menu);
+        public static VideoPlayer BloomVideo;
+        public override void Load()
+        {
+            BloomVideo = new VideoPlayer();
+        }
+        public override int Music => GetMusic();
+        private int GetMusic()
+        {
+            //你怎么没声音啊
+            //所以这里直接多了一个Bloom的播放
+            //考虑到我本来也要做毕业后的情况，所以实际上也没差了
+            if (PVs.BloomVideo.PlayBloom)
+                return MusicLoader.GetMusicSlot(ManosabaMusic.None);
+            else
+                return MusicLoader.GetMusicSlot(ManosabaMusic.Menu);
+        }
         public override string DisplayName => Mod.GetLocalizationKey("Menu.Name").ToLangValue();
         public static bool CanSwitchToOtherMenu;
         public override void OnSelected()
@@ -43,7 +55,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             //这下面用于处理背景的渐变。
             //模拟魔裁进入游戏的情况
             ManosabaBackground.TheScaleRatios = 0;
-            ManosabaBackground.LogoScaleRatios = 0;
+            MainMenu.Logo.LogoScaleRatios = 0;
             ManosabaMenuUpdate.GeneralFadingRatios = 0;
             ManosabaMenuLayer.OverlayBlackOpacity = 1;
             CanSwitchToOtherMenu = false;

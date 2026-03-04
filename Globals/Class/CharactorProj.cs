@@ -11,6 +11,7 @@ namespace SakurabaEmaMod.Globals.Class
 {
     public abstract class CharactorProj : ModProjectile, ILocalizedModType
     {
+        public new string LocalizationCategory => "Projs";
         public Player Owner => Main.player[Projectile.owner];
         /// <summary>
         /// 标记这个射弹归属的人物
