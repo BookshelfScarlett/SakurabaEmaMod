@@ -26,8 +26,7 @@ namespace SakurabaEmaMod.Menus.AltMenu
         {
             //只有完全渐变完成的时候，这里才会允许设定为true的可能
             //主要是为了短暂的卡一下按下esc的玩家避免直接完全退出了主界面
-            if (Main.keyState.IsKeyDown(Keys.Escape) && !ManosabaMenuUpdate.BanSwitchMenu)
-
+            if ((Main.keyState.IsKeyDown(Keys.Escape) || Main.mouseRight) && !ManosabaMenuUpdate.BanSwitchMenu)
                 IsFading = true;
             Rectangle = new Rectangle(0, 0, Main.screenWidth, Main.screenHeight);
             if (IsEnable && !IsFading)
@@ -35,7 +34,7 @@ namespace SakurabaEmaMod.Menus.AltMenu
                 Opacity = Lerp(Opacity, 1f, 0.2f);
 
             }
-            if (IsFading && Main.keyState.IsKeyUp(Keys.Escape))
+            if (IsFading && (Main.keyState.IsKeyUp(Keys.Escape) || Main.mouseRightRelease))
             {
                 Opacity = Lerp(Opacity, 0f, 0.2f);
             }

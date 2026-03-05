@@ -14,6 +14,8 @@ namespace SakurabaEmaMod.Assets.Register
 
         public static SoundStyle Anan_Hit;
         public static SoundStyle Anan_Death;
+        public static SoundStyle Hiro_Hit;
+        public static SoundStyle Hiro_Death;
         public static SoundStyle Menu_Cancel => new SoundStyle($"{Path}System/{nameof(Menu_Cancel)}");
         public static SoundStyle Menu_GeneralChoice => new SoundStyle($"{Path}System/{nameof(Menu_GeneralChoice)}");
         public static SoundStyle Menu_LoadGame => new SoundStyle($"{Path}System/{nameof(Menu_LoadGame)}");
@@ -32,6 +34,9 @@ namespace SakurabaEmaMod.Assets.Register
 
             Anan_Hit = GetSound(Charactor.NatsumeAnan, "Hit", 5);
             Anan_Death = GetSound(Charactor.NatsumeAnan, "Death", 2);
+
+            Hiro_Hit = GetSound(Charactor.NikaidouHiro, "Hit", 4);
+            Hiro_Death = GetSound(Charactor.NikaidouHiro, "Death", 2);
         }
     }
 }

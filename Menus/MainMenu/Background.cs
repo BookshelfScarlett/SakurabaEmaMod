@@ -81,6 +81,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //这里会引用到update的更新
             //需要手动放缩背景的贴图大小。
             float scaleRatios;
+            //scaleRatios = Clamp(Lerp(0.47f, 0.44f, TheScaleRatios), 0.44f, 0.47f);
             scaleRatios = Clamp(Lerp(0.47f, 0.44f, TheScaleRatios), 0.44f, 0.47f);
             //背景切换。
             if (BackgroundFading > 0.02f)

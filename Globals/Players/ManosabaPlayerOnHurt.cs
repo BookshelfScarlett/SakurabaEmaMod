@@ -48,15 +48,6 @@ namespace SakurabaEmaMod.Globals.Players
             return;
         }
         #region 希罗
-        /// <summary>
-        /// 非常神经病的是原作希罗本来就没多少能用的惨叫
-        /// 我也不大可能扔那个电梯惨叫过来
-        /// 反正嗯算了
-        /// 
-        /// </summary>
-        private void HiroDeathSound()
-        {
-        }
 
         /// <summary>
         /// 从安安下方复用
@@ -147,9 +138,29 @@ namespace SakurabaEmaMod.Globals.Players
                     case ManosabaGirlID.NatsumeAnan:
                         AnanPlayerSound();
                         break;
+                    case ManosabaGirlID.NikaidouHiro:
+                        HiroPlayerSound();
+                        break;
                 }
             }
 
+        }
+        /// <summary>
+        /// 非常神经病的是原作希罗本来就没多少能用的惨叫
+        /// 我也不大可能扔那个电梯惨叫过来
+        /// 反正嗯算了
+        /// 
+        /// </summary>
+        private void HiroDeathSound()
+        {
+            SoundStyle deathSound = Main.rand.NextBool() ? ManosabaSounds.Hiro_Death : ManosabaSounds.Hiro_Hit;
+            SoundEngine.PlaySound(deathSound, Player.Center);
+        }
+
+        private void HiroPlayerSound()
+        {
+            SoundStyle deathSound = ManosabaSounds.Hiro_Hit;
+            SoundEngine.PlaySound(deathSound, Player.Center);
         }
         private void AnanDeathSound()
         {

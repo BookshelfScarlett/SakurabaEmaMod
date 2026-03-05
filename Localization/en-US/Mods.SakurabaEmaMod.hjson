@@ -39,8 +39,12 @@ Configs: {
 		}
 
 		UseCharactorLifeBar: {
-			Label: Use Charactor Life Bar
-			Tooltip: ""
+			Label: Use Custom Charactor Life Bar
+			Tooltip:
+				'''
+				Enables to use Custom Charactor Life Bar while equpipping charactor vanity
+				Default by true
+				'''
 		}
 	}
 }

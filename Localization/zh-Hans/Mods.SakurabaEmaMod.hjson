@@ -39,8 +39,12 @@ Configs: {
 		}
 
 		UseCharactorLifeBar: {
-			// Label: Use Charactor Life Bar
-			// Tooltip: ""
+			Label: 使用角色专属的生命条
+			Tooltip:
+				'''
+				开启后，在佩戴角色时装之后启用模组提供的专属生命条
+				默认开启
+				'''
 		}
 	}
 }
