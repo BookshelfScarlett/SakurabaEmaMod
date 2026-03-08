@@ -46,10 +46,16 @@ namespace SakurabaEmaMod.Core.Overlayer
                 context.Draw();
                 return true;
             }
-            if (CompareAssets(context.texture, "HP_Fill") || CompareAssets(context.texture, "HP_Fill_Honey"))
+            if (CompareAssets(context.texture, "HP_Fill"))
             {
                 context.texture = setter.Panel_HP_Fill;
                 context.source = context.texture.Frame();
+                context.Draw();
+                return true;
+            }
+            if (CompareAssets(context.texture, "HP_Fill_Honey"))
+            {
+                context.texture = setter.Panel_HP_Fill_Honey;
                 context.Draw();
                 return true;
             }

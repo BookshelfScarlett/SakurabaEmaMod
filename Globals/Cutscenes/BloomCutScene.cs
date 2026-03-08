@@ -1,15 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using rail;
 using ReLogic.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.MainMenu;
 using SakurabaEmaMod.Menus.Managemments;
-using System;
-using System.Reflection.Metadata;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -47,15 +44,20 @@ namespace SakurabaEmaMod.Globals.Cutscenes
 
         private void HanldeVideoPlay()
         {
-            //接入游戏主音量
+            /*
+            这里不能新建一个视频播放的实例。
+            主要原因是，这里必须得想办法让VideoPlayer播放的视频能够在退出世界时正常关闭，因为这里的CutScene是在游戏内播报的
+            但是，VideoPlayer不会在你手动退出世界的时候释放资源
+            尽管ModSystem内有一个OnUnloadWorld的钩子，但是你即使在这里静态Video然后尝试在OnUnloadWorld释放的话
+            他仍然会提示一个报错。因为VideoPlayer本身不能在任何“子线程”里面运行，而是必须得在主线程运行
+            因此这里必须得直接调用已经进行过Load的视频实例，即Menu里面的视频实例
+            */
             ManosabaMenu.BloomVideo.Volume = Main.musicVolume;
             Main.LocalPlayer.ManosabaMod().IsPlayingBloom = true;
             //这里会直接做掉游戏当前的音乐
             //直到需要的时候才会释放
             if (IsDone && ManosabaMenu.BloomVideo.State == MediaState.Stopped)
-            {
                 EndHandler();
-            }
             if (IsDone && ManosabaMenu.BloomVideo.State != MediaState.Stopped)
             {
                 //右键直接执行这个指令，让manager知道你需要退出了，同上
@@ -134,6 +136,10 @@ namespace SakurabaEmaMod.Globals.Cutscenes
                 
             }
         }
+        /// <summary>
+        /// 下面的这些reset应该是不必要的代码
+        /// 但我本人对基础的代码知识并不是很过关，也没有进行多次测试，先放在这
+        /// </summary>
         public void ResetData()
         {
             FlyInTimer = 0;

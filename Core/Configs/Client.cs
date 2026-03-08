@@ -20,7 +20,7 @@ namespace SakurabaEmaMod.Core.Configs
         [DefaultValue(false)]
         public bool NoFinalBloomPlay { get; set; }
         [BackgroundColor(192, 54, 64, 192)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool UseCharactorLifeBar { get; set; }
 
     }

@@ -87,14 +87,12 @@ namespace SakurabaEmaMod.Menus.AltMenu
                 DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
                 Vector2 scale = new(1.0f);
                 Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, TextValue, scale);
-                Vector2 ori = Size / 2;
+                Vector2 ori = new(Size.X,Size.Y);
                 //绘制的位置一定程度上需要偏移
                 //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
-                Vector2 textPos = new(270f, 100f);
+                Vector2 textPos = new(310f, 120f);
                 for (int i = 0; i < 8; i++)
-                {
                     ChatManager.DrawColorCodedString(spriteBatch, dynamicSpriteFont, TextValue, textPos + ToRadians(60f * i).ToRotationVector2() * 2f, Color.Black * Opacity, 0, ori, scale);
-                }
                 ChatManager.DrawColorCodedString(spriteBatch, dynamicSpriteFont, TextValue, textPos, Color.White * Opacity, 0, ori, scale);
 
                 SinglePlayer.Draw(spriteBatch);

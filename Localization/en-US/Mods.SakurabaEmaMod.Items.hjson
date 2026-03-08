@@ -39,3 +39,10 @@ NikaidouHiroItem: {
 		In that ideal land of self-perfection, there is no place for such an abomination as a gallows.
 		'''
 }
+
+JougasakiNoaItem: {
+	DisplayName: Jougasaki Noa Item
+	Tooltip: ""
+	SinnerType: ""
+	SinnerTooltip: ""
+}

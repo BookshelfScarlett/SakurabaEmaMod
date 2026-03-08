@@ -26,8 +26,13 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override void PostUpdate()
         {
             float scaleRatios = Clamp(Lerp(1.05f, 1f, ManosabaBackground.TheScaleRatios), 1f, 1.05f);
-            if(scaleRatios == 1f)
-                LogoScaleRatios += 1 / (float)GetSeconds(1);
+            if (scaleRatios == 1f)
+            {
+                if (LogoScaleRatios > 0.98f)
+                    LogoScaleRatios = 1f;
+                else
+                    LogoScaleRatios = Clamp(Lerp(LogoScaleRatios, 1f, 0.1f), 0f, 1f);
+            }
             //Opactiy在这里不起任何作用，仅作为一个外部可以调用的数据
             //这里Opcatiy主要用于控制在logo完全出现之前，背景的切换禁用
             LogoScaleRatios = Clamp(LogoScaleRatios, 0, 1);
@@ -74,7 +79,6 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //byd写的什么玩意
             Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * -700f, ManosabaMenuUpdate.ButtonsHoverOut);
             spriteBatch.Draw(UnChosenTexture, logoPos + offset, null, Color.White * colorRatios, 0, UnChosenTexture.Size() / 2, 0.52f * ButtonScale * HoverScale, 0, 0);
-            Rectangle rectangle = new(0, 0, Main.screenWidth, Main.screenHeight);
 
         }
     }

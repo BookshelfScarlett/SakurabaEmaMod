@@ -49,7 +49,7 @@ namespace SakurabaEmaMod.Core.Hud
         /// </summary>
         public bool IsNowPlaying;
         /// <summary>
-        /// 专场是否进行取消
+        /// 是否允许释放当前转场（确切来说，把当前的转场重置为“Null”
         /// </summary>
         public bool ShouldEndCutscene = false;
         /// <summary>

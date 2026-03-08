@@ -1,12 +1,8 @@
-﻿using Microsoft.Xna.Framework;
-using SakurabaEmaMod.Globals.Enums;
+﻿using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Items.Vanity;
-using System;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using static Terraria.GameContent.Bestiary.BestiaryDatabaseNPCsPopulator;
 
 namespace SakurabaEmaMod.Globals.Players
 {
@@ -60,11 +56,14 @@ namespace SakurabaEmaMod.Globals.Players
                 IsGiveAnyVanityItem = true;
                 Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<NikaidouHiroItem>());
             }
+            if (name.Contains("jougasaki") || name.Contains("noa") || name.Contains("城崎诺亚") || name.Contains("诺亚"))
+            {
+                IsGiveAnyVanityItem= true;
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<JougasakiNoaItem>());
+            }
         }
         public override void ResetEffects()
         {
-            //是的ResetEffect这会随时甩这个东西
-            //因为我自己也不清楚更新顺序的问题
             ManosabaGirl = ManosabaGirlID.None;
             NoaButterflyDeath = false;
         }
@@ -113,8 +112,8 @@ namespace SakurabaEmaMod.Globals.Players
             //除了艾玛的时装以外都统一管理
             //不过话又说回来，谁能想到这个mod会拓展成魔裁mod呢？一开始只是想把艾玛做进去罢了
             string name = $"{GetName}Item";
-            //一些特殊情况。如安安有一个额外的头发……
-            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro)
+            //一些特殊情况。如安安有一个额外的头发……a
+            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro || ManosabaGirl == ManosabaGirlID.JougasakiNoa)
                 Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
             Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
             Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);

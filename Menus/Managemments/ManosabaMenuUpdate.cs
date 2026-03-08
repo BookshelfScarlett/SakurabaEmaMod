@@ -184,7 +184,7 @@ namespace SakurabaEmaMod.Menus.Managemments
         {
             //Clamp掉这个ratios
             GeneralFadingRatios = Clamp(GeneralFadingRatios, 0, 1);
-            float frames = 8f;
+            float frames = 0.22f;
             ref float BlackLayer = ref ManosabaMenuLayer.OverlayBlackOpacity;
             //BanSwitchMenu会随时更新，确保不会出现意外
             BanSwitchMenu = BlackLayer > 0.01f;
@@ -199,8 +199,8 @@ namespace SakurabaEmaMod.Menus.Managemments
             {
                 if (Main.menuMode != LastMenuID)
                     Main.menuMode = LastMenuID;
-                GeneralFadingRatios += 1 / frames;
-                BlackLayer += 1 / frames;
+                GeneralFadingRatios = Lerp(GeneralFadingRatios, 1f, frames);
+                BlackLayer = Lerp(GeneralFadingRatios, 1f, frames);
                 if (BlackLayer > 0.98f)
                 {
                     ToManosabaMenu = false;
@@ -212,10 +212,10 @@ namespace SakurabaEmaMod.Menus.Managemments
                 //切换至其他界面
                 //原游戏由主界面到其他界面没有渐变，我们这也不会做渐变。
                 //我草他妈有
-                GeneralFadingRatios += 1 / frames;
-                BlackLayer += 1 / frames;
+                GeneralFadingRatios = Lerp(GeneralFadingRatios, 1f, frames);
+                BlackLayer = Lerp(GeneralFadingRatios, 1f, frames);
                 DrawFading();
-                if (GeneralFadingRatios >= 1f)
+                if (GeneralFadingRatios >= 0.98f)
                 {
                     Main.menuMode = NextMenuID;
                     //设定为1，因为仍然需要绘制背景
@@ -237,7 +237,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             {
                 DrawFading();
                 //第一次加载魔裁主界面时，我们才用非常慢的缓动
-                BlackLayer -= 1 / 15f;
+                BlackLayer = Lerp(BlackLayer, 0f, frames);
             }
         }
     }

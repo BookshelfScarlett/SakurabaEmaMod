@@ -1,10 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.Managemments;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
 
 namespace SakurabaEmaMod.Menus.MainMenu
 {
@@ -24,79 +27,66 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public static Texture2D UseTex = ManosabaMenuAssets.Still_Ema.Texture.Value;
         public static bool CanChangeMenu = false;
         public static float TheScaleRatios = 0f;
-        //public static float LogoScaleRatios = 0f;
         public static float BackgroundFading = 0f;
         public static void Update()
         {
             UseTex = GetBackgroundOnNeed();
-            BackgroundFading -= 1 / (float)GetSeconds(1);
-            BackgroundFading = Clamp(BackgroundFading,0,1);
-            //下面的更新值不会再继续做更新了。
-            //满足之后
-            TheScaleRatios += 1 / (float)GetSeconds(1);
+            TheScaleRatios = Lerp(TheScaleRatios, 1f, 0.04f);
+            if (TheScaleRatios > 0.98f)
+                TheScaleRatios = 1f;
         }
         public static int CurrentBackgroundID = ManosabaMenuID.Ema;
+        private static readonly Dictionary<int, int> _menuIDMap = new()
+        {
+            { ManosabaMenuID.Ema, ManosabaMenuID.Ema },
+            { ManosabaMenuID.Hiro, ManosabaMenuID.Hiro },
+            { ManosabaMenuID.Anan, ManosabaMenuID.Anan },
+            { ManosabaMenuID.Noa, ManosabaMenuID.Noa},
+            { ManosabaMenuID.HannaSherry, ManosabaMenuID.HannaSherry},
+            { ManosabaMenuID.YukiMeruru, ManosabaMenuID.YukiMeruru },
+            { ManosabaMenuID.Margo, ManosabaMenuID.Margo }
+        };
+
         public static Texture2D GetBackgroundOnNeed()
         {
             //这里需要给一个允许更改menu的标记
             //不允许更改menu的时候直接返回默认的text值
             //最主要是为了避免不断地复写json文件导致的性能问题
             if(!CanChangeMenu)
-            {
-                return UseTex; 
-            }
+                return UseTex;
             //读取这个Mod文件名，看看是否存在我们需要的名字
             //如果不存在，其余状态下默认返回艾玛的背景。
             CanChangeMenu = false;
-            switch (CurrentBackgroundID)
-            {
-                case ManosabaMenuID.Hiro:
-                    //修改当前的文件名，如果存在的话
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Hiro);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                case ManosabaMenuID.Anan:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Anan);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                case ManosabaMenuID.Noa:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Noa);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                case ManosabaMenuID.HannaSherry:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.HannaSherry);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                case ManosabaMenuID.YukiMeruru:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.YukiMeruru);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                case ManosabaMenuID.Margo:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Margo);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
-                default:
-                    ManosabaMenuSystem.Instance.ReimplementJson(ManosabaMenuID.Ema);
-                    return ManosabaMenuAssets.ManosabaBackgroundList[ManosabaMenuID.Ema].Texture.Value;
-            }
+            int targetID = _menuIDMap.TryGetValue(CurrentBackgroundID, out var id) ? id : ManosabaMenuID.Ema;
+            ManosabaMenuSystem.Instance.ReimplementJson(targetID);
+            return ManosabaMenuAssets.ManosabaBackgroundList[CurrentBackgroundID].Texture.Value;
+        }
+        public static void NextMenuOrLastMenuIDGetter(out Texture2D lastMenu, out Texture2D nextMenu)
+        {
+            //这里的逻辑处理比较奇怪
+            //如果返回的id在对应的表单里不存在的话，这里的处理实际上是：LastMenuID会播放最后一张，而nextMenu则切换回艾玛的
+            int lastMenuID = _menuIDMap.TryGetValue(CurrentBackgroundID - 1, out var id) ? id : ManosabaMenuID.Margo;
+            int nextMenuID = _menuIDMap.TryGetValue(CurrentBackgroundID + 1, out var id2) ? id2 : ManosabaMenuID.Ema;
+            nextMenu = ManosabaMenuAssets.ManosabaBackgroundList[nextMenuID].Texture.Value;
+            lastMenu = ManosabaMenuAssets.ManosabaBackgroundList[lastMenuID].Texture.Value;
         }
         public static void DrawBackgound()
         {
             Texture2D backGround = UseTex;
-            Texture2D logo = ManosabaMenuAssets.Main_Title.Texture.Value;
+            NextMenuOrLastMenuIDGetter(out Texture2D lastMenu, out Texture2D nextMenu);
             //这里会引用到update的更新
             //需要手动放缩背景的贴图大小。
             float scaleRatios;
-            //scaleRatios = Clamp(Lerp(0.47f, 0.44f, TheScaleRatios), 0.44f, 0.47f);
-            scaleRatios = Clamp(Lerp(0.47f, 0.44f, TheScaleRatios), 0.44f, 0.47f);
+            float targetValue = 0.491f;
+            //targetValue = 0.111f;
+            float beginValue = 0.54f;
+            scaleRatios = Clamp(Lerp(beginValue, targetValue, TheScaleRatios), targetValue, beginValue);
             //背景切换。
-            if (BackgroundFading > 0.02f)
-            {
-                Main.spriteBatch.End();
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
-                Main.spriteBatch.Draw(TextureAssets.BlackTile.Value, new Rectangle(0, 0, Main.screenWidth * 2, Main.screenHeight * 2), Color.Black * BackgroundFading);
-                ManosabaMethods.EnterHudArea(BlendState.NonPremultiplied, SamplerState.LinearClamp);
-            }
-
+            //事实上背景会尝试预制在左右两侧。
             SB.Draw(backGround, ManosabaMethods.ScreenCenter(), null, Color.White, 0, backGround.Size() / 2, scaleRatios, 0, 0);
             Rectangle rectangle = new(0, 0, Main.screenWidth, Main.screenHeight);
             Texture2D mask = ManosabaMenuAssets.Main_Mask.Texture.Value;
             Main.spriteBatch.Draw(mask, rectangle, Color.White * Logo.LogoScaleRatios);
-
         }
     }
 }

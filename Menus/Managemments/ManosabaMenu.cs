@@ -37,9 +37,6 @@ namespace SakurabaEmaMod.Menus.Managemments
         public override int Music => GetMusic();
         private int GetMusic()
         {
-            //你怎么没声音啊
-            //所以这里直接多了一个Bloom的播放
-            //考虑到我本来也要做毕业后的情况，所以实际上也没差了
             if (PVs.BloomVideo.PlayBloom)
                 return MusicLoader.GetMusicSlot(ManosabaMusic.None);
             else

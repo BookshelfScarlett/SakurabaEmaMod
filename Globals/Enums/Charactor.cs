@@ -21,14 +21,4 @@
         public const short ToonoHanna = 5;
         
     }
-    public static class CharactorID
-    {
-        public const string None = "None";
-        public const string SakurabaEma = "SakurabaEma";
-        public const string NikaidouHiro = "NikaidouHiro";
-        public const string NatsumeAnan = "NatsumeAnan";
-        public const string JougasakiNoa = "JougasakiNoa";
-        public const string TachibanaSherry = "TachibanaSherry";
-        public const string ToonoHanna = "ToonoHanna";
-    }
 }

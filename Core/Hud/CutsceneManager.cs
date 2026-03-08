@@ -1,4 +1,5 @@
-﻿using SakurabaEmaMod.Globals.Cutscenes;
+﻿using rail;
+using SakurabaEmaMod.Globals.Cutscenes;
 using SakurabaEmaMod.Menus.Managemments;
 using SakurabaEmaMod.Menus.PVs;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace SakurabaEmaMod.Core.Hud
 
         public override void PostUpdateEverything()
         {
+            //专场理所当然不应该在服务器里运行
             if (Main.dedServ)
                 return;
             if (ActiveCtuscenes == null)
@@ -70,20 +72,20 @@ namespace SakurabaEmaMod.Core.Hud
                 }
                 ActiveCtuscenes.Timer++;
                 ActiveCtuscenes.Update();
+
+                if (!ActiveCtuscenes.ShouldEndCutscene)
+                    return;
+                ActiveCtuscenes.IsEnd = true;
+                ActiveCtuscenes.IsNowPlaying = false;
+                //这里会先提前卡住一段时间，等OnEnd里面的内容确定执行完了才会正式释放资源
+                //换句话说就是，你需要在onend这里手动去操作结束行为。
+                ActiveCtuscenes.OnEnd();
+                //准确来说是，假如你没有在OnEnd里手动给ShouldEndCutscene赋值为false
+                //每次线程跑过来的时候，都会卡在OnEnd这个钩子里面运行
+                //而在OnEnd里面真的执行了false时，则正常释放资源
                 if (ActiveCtuscenes.ShouldEndCutscene)
-                {
-                    ActiveCtuscenes.IsEnd = true;
-                    ActiveCtuscenes.IsNowPlaying = false;
-                    
-                    //这里会先提前卡住一段时间，等OnEnd里面的内容确定执行完了才会正式释放资源
-                    //换句话说就是，你需要在onend这里手动去操作结束行为。
-                    ActiveCtuscenes.OnEnd();
-                    if (ActiveCtuscenes.ShouldEndCutscene)
-                    {
-                        return;
-                    }
-                    ActiveCtuscenes = null;
-                }
+                    return;
+                ActiveCtuscenes = null;
             }
         }
 

@@ -39,7 +39,7 @@ namespace SakurabaEmaMod.Menus.Managemments
         {
             ManosabaMethods.EnterHudArea(BlendState.NonPremultiplied, SamplerState.LinearClamp);
             //背景
-            DrawBackground();
+            ManosabaBackground.DrawBackgound();
             //主界面的按钮
             DrawButton();
             //其余的二级按钮
@@ -70,10 +70,10 @@ namespace SakurabaEmaMod.Menus.Managemments
                 DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
                 Vector2 scale = new(1.0f);
                 Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, DrawTextValue, scale);
-                Vector2 ori = Size / 2;
+                Vector2 ori = new(Size.X,Size.Y);
                 //绘制的位置一定程度上需要偏移
                 //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
-                Vector2 textPos = new(Size.X + 150f, 100f);
+                Vector2 textPos = new(Size.X + 215f, 120f);
                 for (int i = 0; i < 8; i++)
                     ChatManager.DrawColorCodedString(SB, dynamicSpriteFont, DrawTextValue, textPos + ToRadians(60f * i).ToRotationVector2() * 2f, Color.Black , 0, ori, scale);
                 ChatManager.DrawColorCodedString(SB, dynamicSpriteFont, DrawTextValue, textPos, Color.White, 0, ori, scale);
@@ -92,7 +92,6 @@ namespace SakurabaEmaMod.Menus.Managemments
         }
         private static void DrawButton()
         {
-            //纯纯过滤确保一下
             //这下面的按钮是无论出于啥状态下都会一直在绘制的。
             //因为这里用的是一个透明的背景
             LoadGame.Draw(SB);
@@ -104,12 +103,6 @@ namespace SakurabaEmaMod.Menus.Managemments
             LeftArrow.Draw(SB);
             RightArrow.Draw(SB);
             Logo.Draw(SB);
-        }
-
-        private static void DrawBackground()
-        {
-            //预先画一个艾玛背景，然后我们再在上面覆盖需要的mask
-            ManosabaBackground.DrawBackgound();
         }
     }
 }

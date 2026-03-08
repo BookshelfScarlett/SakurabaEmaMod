@@ -154,30 +154,35 @@ namespace SakurabaEmaMod.Menus.MainMenu
         public override void OnMouseLeftRelease()
         {
             if (ManosabaMenu.CanSwitchToOtherMenu)
+            {
                 MenuLoader.OffsetModMenu(1);
+            }
         }
         public override void OnMouseRightRelease()
         {
             if (ManosabaMenu.CanSwitchToOtherMenu)
+            {
                 MenuLoader.OffsetModMenu(-1);
+            }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             //这个Ratios是从0到1的，因此这里也是逆向的
             float ratios = (1 - ManosabaMenuUpdate.ButtonsHoverOut);
+            float logoRatios = Logo.LogoScaleRatios;
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 size = ChatManager.GetStringSize(font, TextValue, Vector2.One);
             ChatManager.DrawColorCodedString(spriteBatch, font, TextValue, Position, Color.Silver * ratios, 0, size / 2, Vector2.One * Scale2);
 
             //在这里画模组的版本字号。
 
-            Vector2 scale = new(1.15f);
-            string TextValue2 = Mod.GetLocalizationKey("Menu.ModVersion").ToLangValue();
+            Vector2 scale = new(1);
+            string TextValue2 = "Ver. 1.3.1.4";
             font = ManosabaFonts.BookAntiqua.Value;
             Vector2 size2 = ChatManager.GetStringSize(font, TextValue, Vector2.One * scale);
             Vector2 ori = size2 / 2;
-            Vector2 pos = new Vector2(Main.screenWidth, Main.screenHeight - 50f) + Vector2.UnitX * 140f;
-            ChatManager.DrawColorCodedString(Main.spriteBatch, font, TextValue2, pos, Color.White * ratios, 0, ori, Vector2.One * scale);
+            Vector2 pos = new Vector2(Main.screenWidth, Main.screenHeight - 40f) + Vector2.UnitX * 50f;
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, TextValue2, pos, Color.White * ratios * logoRatios, 0, ori, Vector2.One * scale);
 
         }
     }

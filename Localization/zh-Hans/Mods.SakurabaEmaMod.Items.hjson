@@ -43,3 +43,10 @@ NikaidouHiroItem: {
 		在那个名为独善的理想乡中，容不得绞刑台这般异物的存在
 		'''
 }
+
+JougasakiNoaItem: {
+	DisplayName: 伪装头巾
+	Tooltip: ""
+	SinnerType: "[-虚伪的艺术家-]"
+	SinnerTooltip: ""
+}

@@ -100,6 +100,9 @@ namespace SakurabaEmaMod.Menus.AltMenu
         public override float ButtonScale => 0.5f;
         public override void OnMouseLeftRelease()
         {
+            if (ManosabaMenuUpdate.BanSwitchMenu)
+                return;
+
             SoundEngine.PlaySound(ManosabaSounds.Menu_GeneralChoice);
             ManosabaMenuMethods.ChangeMenu(TargetMenuID);
             ManosabaMenuUpdate.OnChangeToTargetMenuID.Add(delegate
@@ -118,6 +121,9 @@ namespace SakurabaEmaMod.Menus.AltMenu
         public override int TargetMenuID => MenuID.FancyUI;
         public override void OnMouseLeftRelease()
         {
+            if (ManosabaMenuUpdate.BanSwitchMenu)
+                return;
+
             SoundEngine.PlaySound(ManosabaSounds.Menu_GeneralChoice);
             ManosabaMenuDraw.DrawTextValue = TextValue;
             ManosabaMenuMethods.OpenAchievements();
