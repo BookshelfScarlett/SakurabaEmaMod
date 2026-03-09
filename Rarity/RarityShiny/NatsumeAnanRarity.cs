@@ -19,14 +19,14 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         public override void DrawItemName(DrawableTooltipLine line)
         {
             //绘制需要的……发光背景。
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f));
             PostDrawRarity(ref RaritySparkles, line);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f));
 
         }
         public override void DrawFlavorName(DrawableTooltipLine line)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f), 0.8f);
             PostDrawFlavor(ref FlavorSparkles, line);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f), 0.8f);
         }
         public override void DrawFlavorTooltip(DrawableTooltipLine line)
         {

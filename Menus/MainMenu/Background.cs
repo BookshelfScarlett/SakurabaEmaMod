@@ -1,13 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.Managemments;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
 
 namespace SakurabaEmaMod.Menus.MainMenu
 {
@@ -41,7 +38,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             { ManosabaMenuID.Ema, ManosabaMenuID.Ema },
             { ManosabaMenuID.Hiro, ManosabaMenuID.Hiro },
             { ManosabaMenuID.Anan, ManosabaMenuID.Anan },
-            { ManosabaMenuID.Noa, ManosabaMenuID.Noa},
+            { ManosabaMenuID.Noah, ManosabaMenuID.Noah},
             { ManosabaMenuID.HannaSherry, ManosabaMenuID.HannaSherry},
             { ManosabaMenuID.YukiMeruru, ManosabaMenuID.YukiMeruru },
             { ManosabaMenuID.Margo, ManosabaMenuID.Margo }

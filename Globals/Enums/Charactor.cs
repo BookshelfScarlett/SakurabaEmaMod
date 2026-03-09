@@ -5,7 +5,7 @@
         SakurabaEma,
         NikaidouHiro,
         NatsumeAnan,
-        JougasakiNoa,
+        JougasakiNoah,
         TachibanaSherry,
         ToonoHanna,
         None
@@ -16,7 +16,7 @@
         public const short SakurabaEma = 0;
         public const short NikaidouHiro = 1;
         public const short NatsumeAnan = 2;
-        public const short JougasakiNoa = 3;
+        public const short JougasakiNoah = 3;
         public const short TachibanaSherry = 4;
         public const short ToonoHanna = 5;
         

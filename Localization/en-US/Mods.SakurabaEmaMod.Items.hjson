@@ -35,14 +35,20 @@ NikaidouHiroItem: {
 	SinnerType: "[-Executor of Justice-]"
 	SinnerTooltip:
 		'''
-		Not a single blemish mars the path she has walked...
+		Not a single blemish mars the path she has walked.
 		In that ideal land of self-perfection, there is no place for such an abomination as a gallows.
 		'''
 }
 
-JougasakiNoaItem: {
-	DisplayName: Jougasaki Noa Item
-	Tooltip: ""
-	SinnerType: ""
-	SinnerTooltip: ""
+JougasakiNoahItem: {
+	DisplayName: Disguised Short Hat
+	Tooltip: Press middle-click while hovering on this to switch death sound effects
+	SinnerType: "[-The Hypocritical Artist-]"
+	SinnerTooltip:
+		'''
+		She struggles relentlessly in agony.
+		Yet she never realizes that the chains binding her are none other than her own tail.
+		'''
+	CrySound: Current Death Sound: Child's Sob
+	RegularSound: Current Death Sound: Regular
 }

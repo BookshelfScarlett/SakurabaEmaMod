@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Rarity.RarityShiny
 {
-    public class JougasakiNoaRarity :CharactorRarity
+    public class JougasakiNoahRarity :CharactorRarity
     {
         public static List<RaritySparkle> RaritySparkles = [];
         public static List<RaritySparkle> FlavorSparkles = [];
@@ -18,14 +18,14 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         public override void DrawItemName(DrawableTooltipLine line)
         {
             //绘制需要的……发光背景。
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Silver, Color.Black, Color.Lerp(Color.White, Color.Silver, 0f), 0.8f);
             PostDrawRarity(ref RaritySparkles, line);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Silver,Color.Lerp(Color.White, Color.Silver, 0f),Color.Black, 0.8f);
 
         }
         public override void DrawFlavorName(DrawableTooltipLine line)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Silver, Color.Black, Color.Lerp(Color.White, Color.Silver, 0f), 0.95f);
             PostDrawFlavor(ref FlavorSparkles, line);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Silver,Color.Lerp(Color.White, Color.Silver, 0f),Color.Black, 0.95f);
         }
         public override void DrawFlavorTooltip(DrawableTooltipLine line)
         {
@@ -37,7 +37,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         }
         public static void DrawMore(DrawableTooltipLine line)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Black, Color.White);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.White, Color.Black);
         }
 
 
@@ -48,12 +48,13 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
             //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
             if(Main.rand.NextBool(12))
             {
-                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f) * 0.9f;
+                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f) * 0.5f;
                 int lifetime = 80;
                 Vector2 position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.50f), -(int)(textSize.Y * 0.6f), (int)(textSize.X * 0.8f), (int)(textSize.Y * 0.75f)));
                 Vector2 velocity = Vector2.UnitX * Main.rand.NextFloat(0.5f, 1.15f) * 0.41f;
-                RarityShinyOrb rarityShinyOrb = new RarityShinyOrb(position, velocity, RandLerpColor(Color.White, Color.Silver).ToAddColor(), lifetime, scale);
-                particleList.Add(rarityShinyOrb);
+                //RarityShinyOrb rarityShinyOrb = new RarityShinyOrb(position, velocity, RandLerpColor(Color.White, Color.Silver).ToAddColor(), lifetime, scale);
+                RarityFullCircle rarityFullCircle = new RarityFullCircle(position, velocity, RandLerpColor(Color.Black, Color.White), lifetime, scale);
+                particleList.Add(rarityFullCircle);
             }
             //最后在通用的方法内进行更新
             RarityDrawHelper.UpdateTooltipParticles(tooltipLine, ref particleList);
@@ -65,13 +66,12 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
             //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
             if (Main.rand.NextBool(10))
             {
-                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f) * 0.8f;
+                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f) * 0.4f;
                 int lifetime = 80;
                 Vector2 position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.5f), -(int)(textSize.Y * 0.7f), (int)textSize.X, (int)(textSize.Y * 0.35f)));
                 Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.5f, 1.15f) * 0.41f;
-                RarityShinyOrb rarityShinyOrb = new RarityShinyOrb(position, velocity, RandLerpColor(Color.White, Color.Silver).ToAddColor(), lifetime, scale);
-                particleList.Add(rarityShinyOrb);
-
+                RarityFullCircle rarityFullCircle = new RarityFullCircle(position, velocity, RandLerpColor(Color.Black, Color.White), lifetime, scale);
+                particleList.Add(rarityFullCircle);
             }
             //最后在通用的方法内进行更新
             RarityDrawHelper.UpdateTooltipParticles(tooltipLine, ref particleList);

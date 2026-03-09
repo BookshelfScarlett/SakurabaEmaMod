@@ -1,22 +1,45 @@
 ﻿using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
+using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityShiny;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using static Terraria.ModLoader.BackupIO;
 
 namespace SakurabaEmaMod.Items.Vanity
 {
-    public class JougasakiNoaItem : CharactorVanity
+    public class JougasakiNoahItem : CharactorVanity
     {
-        public override bool IsLoadingEnabled(Mod mod) => false;
-        public override short SetCharactor => ManosabaGirlID.JougasakiNoa;
-        public override int RaritySet => RarityType<JougasakiNoaRarity>();
+        public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
+        public override int RaritySet => RarityType<JougasakiNoahRarity>();
         public override int Size => 32;
         public override void ExLoad()
         {
             EquipLoader.AddEquipTexture(Mod, TexturePath + "Hair", EquipType.Back, this);
+        }
+        public override void ExModifyTooltip(List<TooltipLine> tooltips)
+        {
+            //i诺TV你们赢了
+            string localName = Main.LocalPlayer.ManosabaMod().NoahCryDeath ? "CrySound" : "RegularSound";
+            tooltips.CreateTooltip(this.GetLocalizedValue(localName), LineName: "SoundName");
+        }
+        public override bool ExPreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+        {
+
+            if (line.IsThisLine("Tooltip0"))
+            {
+                JougasakiNoahRarity.DrawMore(line);
+                return false;
+            }
+            if (line.Name == "SoundName" && line.Mod == Mod.Name)
+            {
+                JougasakiNoahRarity.DrawMore(line);
+                return false;
+            }
+            return true;
         }
         public override void AddRecipes()
         {
@@ -24,6 +47,7 @@ namespace SakurabaEmaMod.Items.Vanity
                 AddRecipeGroup(RecipeGroupID.Wood, 15).
                 AddIngredient(ItemID.FallenStar, 1).
                 AddIngredient(ItemID.WaterBucket).
+                DisableDecraft().
                 AddTile(TileID.DyeVat).
                 Register();
         }
@@ -52,7 +76,7 @@ namespace SakurabaEmaMod.Items.Vanity
             }
             if (equip)
             {
-                string name = nameof(JougasakiNoaItem);
+                string name = nameof(JougasakiNoahItem);
                 Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
                 Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
                 Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);
@@ -64,7 +88,7 @@ namespace SakurabaEmaMod.Items.Vanity
         {
             foreach (Item item in Player.armor)
             {
-                if (item.type == ItemType<NikaidouHiroItem>())
+                if (item.type == ItemType<JougasakiNoahItem>())
                 {
                     equip = true;
                     break;

@@ -44,7 +44,7 @@ namespace SakurabaEmaMod.Globals.Class
                     ManosabaGirlID.SakurabaEma => nameof(Charactor.SakurabaEma),
                     ManosabaGirlID.NikaidouHiro => nameof(Charactor.NikaidouHiro),
                     ManosabaGirlID.NatsumeAnan => nameof(Charactor.NatsumeAnan),
-                    ManosabaGirlID.JougasakiNoa => nameof(Charactor.JougasakiNoa),
+                    ManosabaGirlID.JougasakiNoah => nameof(Charactor.JougasakiNoah),
                     ManosabaGirlID.TachibanaSherry => nameof(Charactor.TachibanaSherry),
                     ManosabaGirlID.ToonoHanna => nameof(Charactor.ToonoHanna),
                     _ => nameof(Charactor.None),
@@ -56,11 +56,8 @@ namespace SakurabaEmaMod.Globals.Class
         {
             Item.width = Item.height = Size;
             Item.rare = RaritySet;
-            if (IsVanityItem)
-            {
-                Item.vanity = true;
-                Item.accessory = true;
-            }
+            Item.vanity = true;
+            Item.accessory = true;
             ExSD();
         }
         public sealed override void SetStaticDefaults()
@@ -155,10 +152,16 @@ namespace SakurabaEmaMod.Globals.Class
             //这里的代码已经被高度简化了，最主要是为了实现无需重复批量创建的效果
             //如果需要去查阅的话，最好直接跳转到对应的System下面查看
             if (ManosabaRaritySystem.Instance.DrawRarityEffect(line, SetCharactor))
-                return base.PreDrawTooltipLine(line, ref yOffset);
+            {
+                if (ExPreDrawTooltipLine(line, ref yOffset))
+                    return base.PreDrawTooltipLine(line, ref yOffset);
+                else
+                    return false;
+            }
             else
                 return false;
         }
+        public virtual bool ExPreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) => true;
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Texture2D tex = TextureAssets.Item[Type].Value;

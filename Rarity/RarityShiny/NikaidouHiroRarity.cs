@@ -23,8 +23,8 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         {
             //绘制需要的……发光背景。
             //DrawGlowBackground(line);
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Red, Color.Lerp(Color.Crimson, Color.Red, 0.4f), Color.Black);
             PostDrawRarity(ref RaritySparkles, line);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Red, Color.Lerp(Color.Crimson, Color.Red, 0.4f), Color.Black);
         }
 
         public override void DrawFlavorName(DrawableTooltipLine line)

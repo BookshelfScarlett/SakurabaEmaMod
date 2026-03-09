@@ -34,10 +34,44 @@ namespace SakurabaEmaMod.Globals.Players
                     else
                         DrawHiroParticle();
                     break;
+                case ManosabaGirlID.JougasakiNoah:
+                    if (Player.IsStandingStil(5f))
+                        DrawNoahStandingParticle();
+                    else
+                        DrawNoahParticle();
+                    break;
 
             }
         }
-        #region 二阶堂希罗特效
+        #region 城崎诺亚
+        public void DrawNoahStandingParticle()
+        {
+            //if (ParticleTimer > 0)
+            //return;
+            //这里的写法潜在问题是如果有人试图手动操作玩家的贴图大小，则无法校准
+            //但是……我还真没见过这种情况。先不管反正。
+            //顺带一提这里的效果故意与艾玛复用。
+            if (Main.rand.NextBool(32))
+            {
+                Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center - Vector2.UnitY * 30f, new(Player.width, Player.height - 30f)));
+                Vector2 vel = Vector2.UnitY.RotateRandom(PiOver4) * Main.rand.NextFloat(2f);
+                Color[] randColor = [Color.Red, Color.SkyBlue, Color.Yellow, Color.Green, Color.White];
+                Color drawColor = Utils.SelectRandom(Main.rand, randColor);
+                new FullCircle(spawnPos, vel + Vector2.UnitY * Main.rand.NextFloat(1, 3) * 0.83f, drawColor, 120, 0.08f, true).Spawn();
+            }
+            //ParticleTimer = 120f;
+        }
+        public void DrawNoahParticle()
+        {
+            Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new(Player.width, Player.height)));
+            Vector2 vel = Player.velocity.SafeNormalize(Vector2.UnitX) * -Main.rand.NextFloat(4f);
+            Color[] randColor = [Color.Red, Color.SkyBlue, Color.Yellow, Color.Green, Color.White];
+            Color drawColor = Utils.SelectRandom(Main.rand, randColor);
+            new FullCircle(spawnPos - vel, vel+ Vector2.UnitY * Main.rand.NextFloat(1, 3) * 0.5f, drawColor, 80, 0.09f * Main.rand.NextFloat(0.4f, 1.1f), true).Spawn();
+        }
+
+        #endregion
+        #region 二阶堂希罗
         public void DrawHiroStandingParticle()
         {
             if (ParticleTimer > 0)
@@ -72,11 +106,10 @@ namespace SakurabaEmaMod.Globals.Players
             }
             if (Main.rand.NextBool(3))
                 new Petal(spawnPos, vel, RandLerpColor(Color.Crimson, Color.DarkRed), 40, RandRotTwoPi, 1f, 0.1f, 0.5f).Spawn();
-
         }
         #endregion
 
-        #region 夏目安安特效
+        #region 夏目安安
         public void DrawAnanStandingParticle()
         {
             if (ParticleTimer <= 0f)

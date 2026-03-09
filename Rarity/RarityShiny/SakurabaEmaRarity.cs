@@ -16,13 +16,13 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         public override Color RarityColor => Color.Lerp(Color.HotPink, Color.DeepPink, 0.9f);
         public static void DrawRarity(DrawableTooltipLine drawableTooltipLine)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink);
             PostDrawRarity(ref RaritySparkles, drawableTooltipLine);
+            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink);
         }
         public static void DrawFlavor(DrawableTooltipLine drawableTooltipLine)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink, 0.8f);
             PostDrawFlavor(ref FlavorSparkles, drawableTooltipLine);
+            RarityDrawHelper.DrawCustomTooltipLine(drawableTooltipLine, Color.HotPink, Color.White, Color.HotPink, 0.8f);
 
         }
         public static void DrawTooltip(DrawableTooltipLine drawableTooltipLine)
@@ -65,7 +65,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
                 int lifetime = 80;
                 Vector2 position = Main.rand.NextVector2FromRectangle(new(-(int)(textSize.X * 0.5f), -(int)(textSize.Y * 0.3f), (int)textSize.X, (int)(textSize.Y * 0.35f)));
                 Vector2 velocity = -Vector2.UnitY * Main.rand.NextBool().ToDirectionInt() * Main.rand.NextFloat(0.15f, .215f);
-                SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(0), lifetime, RandRotTwoPi, 1.5f, scale, 0.1f);
+                SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.LightPink, Color.HotPink).ToAddColor(0), lifetime, RandRotTwoPi, 1.5f, scale, 0.1f,true);
                 particleList.Add(sakuraPetals);
             }
             //最后在通用的方法内进行更新

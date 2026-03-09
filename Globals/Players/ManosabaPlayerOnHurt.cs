@@ -1,24 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Enums;
+using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.MainMenu;
 using SakurabaEmaMod.Particles;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Players
 {
     public partial class ManosabaPlayer : ModPlayer
     {
+        public List<short> CharactorList = [ManosabaGirlID.NikaidouHiro, ManosabaGirlID.NatsumeAnan, ManosabaGirlID.JougasakiNoah];
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
         {
             SerCharactorPreKill(ref playSound, ref genDust);
             //是的这里会先预制默认为否
             //后面会正确处理其操作
-            if(NoaButterflyDeath)
+            if (NoaButterflyDeath)
             {
                 ModifyNoaMagic();
                 return true;
@@ -42,11 +46,108 @@ namespace SakurabaEmaMod.Globals.Players
                     DrawHiroKillParticles();
                     HiroDeathSound();
                     break;
+                case ManosabaGirlID.JougasakiNoah:
+                    DrawNoahKillParticles();
+                    NoahDeathSound();
+                    break;
                 default:
                     break;
             }
             return;
         }
+        public void CustomSoundOnHurt(Player.HurtInfo hurtInfo)
+        {
+            if (!DisableOrignalSound)
+                return;
+            hurtInfo.SoundDisabled = true;
+            //代办：其余角色的承伤音效
+            switch (ManosabaGirl)
+            {
+                case ManosabaGirlID.NatsumeAnan:
+                    AnanPlayerSound();
+                    break;
+                case ManosabaGirlID.NikaidouHiro:
+                    HiroPlayerSound();
+                    break;
+                case ManosabaGirlID.JougasakiNoah:
+                    NoahPlayerSound();
+                    break;
+            }
+        }
+
+
+        #region 诺亚
+        private void DrawNoahKillParticles()
+        {
+                Color[] randColor = [Color.Red, Color.SkyBlue, Color.Yellow, Color.Green, Color.White];
+            for (int i = 0; i < 18; i++)
+            {
+                Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
+                Vector2 vel = RandVelTwoPi(6f);
+                Color drawColor = Utils.SelectRandom(Main.rand, randColor);
+                new FullCircle(spawnPos, vel, drawColor, 80, 0.1f * Main.rand.NextFloat(0.7f, 1.1f), true).Spawn();
+            }
+            for (int i = 0;i<6;i++)
+            {
+                Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
+                Vector2 vel = Vector2.UnitY.RotateRandom(ToRadians(20f)) * -Main.rand.NextFloat(1f,6f);
+                Color drawColor = Utils.SelectRandom(Main.rand, randColor);
+                new NoaButterfly(spawnPos, vel, drawColor, 120, 1, 0.2f, 1.2f, drawGlowingOrbParticle: true).Spawn(); 
+            }
+        }
+        private void NoahDeathSound()
+        {
+            bool activeSpecialDeathSound = NoahCryIfHiroIsNearby();
+            bool justCrying = AbsoluteNoahCryingCinemaButWhy(out SoundStyle crySound);
+            SoundStyle deathSound = ManosabaSounds.Noah_Hit;
+            //我tm也不知道谁要听这个7个诺亚大哭
+            if (justCrying)
+                deathSound = crySound;
+            if (activeSpecialDeathSound)
+                deathSound = ManosabaSounds.Noah_SpecialDeath;
+            SoundEngine.PlaySound(deathSound, Player.Center);
+        }
+        /// <summary>
+        /// 诺亚死亡时查看周围是否有希罗时装的人物
+        /// 如果有，则以1/6的可能性让诺亚喊希罗语音。
+        /// </summary>
+        /// <returns></returns>
+        private bool NoahCryIfHiroIsNearby()
+        {
+            if (!Main.dedServ)
+                return false;
+            foreach (var p in Main.ActivePlayers)
+            {
+                //统一管理的好处。
+                bool activeHiro = p.team == Player.team && p.ManosabaMod().ManosabaGirl == ManosabaGirlID.NikaidouHiro;
+                //必须得在可视范围。
+                bool isCloseEnough = (p.Center - Player.Center).LengthSquared() < 600f * 600f && Collision.CanHit(p.Center, 1, 1, Player.Center, 1, 1);
+                if (activeHiro && isCloseEnough && Main.rand.NextBool(5))
+                {
+                    //找到任意一个希罗就行了，我们立刻break出去
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// i 诺 T V
+        /// </summary>
+        /// <returns></returns>
+
+        private bool AbsoluteNoahCryingCinemaButWhy(out SoundStyle crySound)
+        {
+            crySound = ManosabaSounds.Noah_Cry;
+            return NoahCryDeath;
+        }
+
+        private void NoahPlayerSound()
+        {
+            SoundStyle deathSound = ManosabaSounds.Noah_Hit;
+            SoundEngine.PlaySound(deathSound, Player.Center);
+        }
+
+        #endregion
         #region 希罗
 
         /// <summary>
@@ -68,8 +169,50 @@ namespace SakurabaEmaMod.Globals.Players
                 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
                 new Petal(spawnPos, -Vector2.UnitY.RotatedBy(Main.rand.NextFloat(ToRadians(-30f), ToRadians(30f))), RandLerpColor(Color.DarkRed, Color.Crimson), 100, RandRotTwoPi, 1f, 0.1f, 1.2f).Spawn();
             }
-
         }
+        /// <summary>
+        /// 希罗死亡时查看诺亚是否在附近
+        /// 如果有，则以1/6的可能性播报特殊的希罗死亡语音
+        /// </summary>
+        /// <returns></returns>
+        private bool NoahCryIfHiroIsDeath()
+        {
+            if (!Main.dedServ)
+                return false;
+            foreach (var p in Main.ActivePlayers)
+            {
+                //统一管理的好处。
+                bool activeHiro = p.team == Player.team && p.ManosabaMod().ManosabaGirl == ManosabaGirlID.JougasakiNoah;
+                //必须得在可视范围。
+                bool isCloseEnough = (p.Center - Player.Center).LengthSquared() < 600f * 600f && Collision.CanHit(p.Center, 1, 1, Player.Center, 1, 1);
+                if (activeHiro && isCloseEnough && Main.rand.NextBool(5))
+                {
+                    //找到任意一个希罗就行了，我们立刻break出去
+                    return true;
+                }
+            }
+            return false;
+        }
+        /// <summary>
+        /// 非常神经病的是原作希罗本来就没多少能用的惨叫
+        /// 我也不大可能扔那个电梯惨叫过来
+        /// 反正嗯算了
+        /// 
+        /// </summary>
+        private void HiroDeathSound()
+        {
+            SoundStyle deathSound = Main.rand.NextBool() ? ManosabaSounds.Hiro_Death : ManosabaSounds.Hiro_Hit;
+            if (NoahCryIfHiroIsDeath())
+                deathSound = ManosabaSounds.Noah_SpecialCry;
+            SoundEngine.PlaySound(deathSound, Player.Center);
+        }
+
+        private void HiroPlayerSound()
+        {
+            SoundStyle deathSound = ManosabaSounds.Hiro_Hit;
+            SoundEngine.PlaySound(deathSound, Player.Center);
+        }
+
         #endregion
 
         #region 安安
@@ -92,76 +235,6 @@ namespace SakurabaEmaMod.Globals.Players
                 new TurbulenceShinyOrb(spawnPos, 1f, setColor, 120, 0.67f, RandRotTwoPi).Spawn();
             }
         }
-        #endregion
-
-        /// <summary>
-        /// 蝴蝶。
-        /// 不过即使如此，角色自己的专属死亡特效可能也会被替换为蝴蝶
-        /// 虽然放在这里也只是因为原作有这个东西
-        /// </summary>
-        public void ModifyNoaMagic()
-        {
-
-        }
-        public override void ModifyHurt(ref Player.HurtModifiers modifiers)
-        {
-            ModifyCustomSound(ref modifiers);
-        }
-        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
-        {
-            ModifyCustomSound(ref modifiers);
-        }
-        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
-        {
-            ModifyCustomSound(ref modifiers);
-        }
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
-        {
-            CustomSoundOnHurt(hurtInfo);
-        }
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
-        {
-            CustomSoundOnHurt(hurtInfo);
-        }
-        public override void OnHurt(Player.HurtInfo info)
-        {
-            CustomSoundOnHurt(info);
-        }
-        public void CustomSoundOnHurt(Player.HurtInfo hurtInfo)
-        {
-            if (DisableOrignalSound)
-            {
-                hurtInfo.SoundDisabled = true;
-                //代办：其余角色的承伤音效
-                switch (ManosabaGirl)
-                {
-                    case ManosabaGirlID.NatsumeAnan:
-                        AnanPlayerSound();
-                        break;
-                    case ManosabaGirlID.NikaidouHiro:
-                        HiroPlayerSound();
-                        break;
-                }
-            }
-
-        }
-        /// <summary>
-        /// 非常神经病的是原作希罗本来就没多少能用的惨叫
-        /// 我也不大可能扔那个电梯惨叫过来
-        /// 反正嗯算了
-        /// 
-        /// </summary>
-        private void HiroDeathSound()
-        {
-            SoundStyle deathSound = Main.rand.NextBool() ? ManosabaSounds.Hiro_Death : ManosabaSounds.Hiro_Hit;
-            SoundEngine.PlaySound(deathSound, Player.Center);
-        }
-
-        private void HiroPlayerSound()
-        {
-            SoundStyle deathSound = ManosabaSounds.Hiro_Hit;
-            SoundEngine.PlaySound(deathSound, Player.Center);
-        }
         private void AnanDeathSound()
         {
             SoundStyle deathSound = ManosabaSounds.Anan_Death;
@@ -172,8 +245,19 @@ namespace SakurabaEmaMod.Globals.Players
             SoundStyle hitSound = ManosabaSounds.Anan_Hit;
             SoundEngine.PlaySound(hitSound, Player.Center);
         }
+        #endregion
+        /// <summary>
+        /// 蝴蝶。
+        /// 不过即使如此，角色自己的专属死亡特效可能也会被替换为蝴蝶
+        /// 虽然放在这里也只是因为原作有这个东西
+        /// </summary>
+        public void ModifyNoaMagic()
+        {
 
-        public void ModifyCustomSound(ref  Player.HurtModifiers modifiers)
+        }
+
+        #region 给复写钩子用的超级方法合集。
+        public void ModifyCustomSound(ref Player.HurtModifiers modifiers)
         {
             if (DisableOrignalSound)
             {
@@ -187,6 +271,16 @@ namespace SakurabaEmaMod.Globals.Players
                 return ManosabaGirl != ManosabaGirlID.None;
             }
         }
+
+        #endregion
+        #region 一大堆复写，扔到了最下面，因为本质上是复制粘贴
+        public override void ModifyHurt(ref Player.HurtModifiers modifiers) => ModifyCustomSound(ref modifiers);
+        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers) => ModifyCustomSound(ref modifiers);
+        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers) => ModifyCustomSound(ref modifiers);
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo) => CustomSoundOnHurt(hurtInfo);
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo) => CustomSoundOnHurt(hurtInfo);
+        public override void OnHurt(Player.HurtInfo info) => CustomSoundOnHurt(info);
+        #endregion
 
     }
 }

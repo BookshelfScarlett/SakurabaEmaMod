@@ -10,7 +10,7 @@ namespace SakurabaEmaMod.Menus.PVs
 {
     public class BloomVideo
     {
-        public static bool PlayBloom;
+        public static bool PlayBloom =false;
         public static bool IsDone;
         public static bool IsFullyDone;
         public static float InnerVolum = 1f;

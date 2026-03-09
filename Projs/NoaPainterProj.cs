@@ -13,7 +13,7 @@ namespace SakurabaEmaMod.Projs
     public class NoaPainterProj :  CharactorProj
     {
         public override bool IsLoadingEnabled(Mod mod) => false;
-        public override short SetCharactor => ManosabaGirlID.JougasakiNoa;
+        public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
         public override string Texture => $"SakurabaEmaMod/Assets/Texture/Projs/NoaPainter";
         public AnimationHandler PainterAni = new(10);
         public bool Init = false;

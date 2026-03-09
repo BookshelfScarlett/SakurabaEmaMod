@@ -1,6 +1,8 @@
-﻿using SakurabaEmaMod.Globals.Enums;
+﻿using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Items.Vanity;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 
@@ -16,6 +18,7 @@ namespace SakurabaEmaMod.Globals.Players
         //扔给了统一的管理。
         public float ParticleTimer = 0;
         public short ManosabaGirl = ManosabaGirlID.None;
+        public bool NoahCryDeath = false;
         public bool NoaButterflyDeath = false;
         public bool sakurabaEmaVanity = false;
         public bool IsDoneFinalBossFight = false;
@@ -59,7 +62,7 @@ namespace SakurabaEmaMod.Globals.Players
             if (name.Contains("jougasaki") || name.Contains("noa") || name.Contains("城崎诺亚") || name.Contains("诺亚"))
             {
                 IsGiveAnyVanityItem= true;
-                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<JougasakiNoaItem>());
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<JougasakiNoahItem>());
             }
         }
         public override void ResetEffects()
@@ -81,6 +84,19 @@ namespace SakurabaEmaMod.Globals.Players
             {
                 UpdateVanityOnNeed();
                 DrawParticleOnNeed(); 
+            }
+        }
+        public override void PostUpdate()
+        {
+            //我的天哪还有i诺TV
+            if (Main.mouseMiddle && Main.HoverItem.type == ItemType<JougasakiNoahItem>() && Main.playerInventory)
+            {
+                if (!Main.mouseMiddleRelease)
+                    return;
+                string Path = "SakurabaEmaMod/Assets/Sounds/";
+                SoundStyle playSound = !NoahCryDeath ? new SoundStyle($"{Path}{nameof(Charactor.JougasakiNoah)}Sounds/Hit6") : new SoundStyle($"{Path}{nameof(Charactor.JougasakiNoah)}Sounds/Hit1");
+                SoundEngine.PlaySound(playSound, Player.Center);
+                NoahCryDeath = !NoahCryDeath;
             }
         }
         /// <summary>
@@ -112,8 +128,9 @@ namespace SakurabaEmaMod.Globals.Players
             //除了艾玛的时装以外都统一管理
             //不过话又说回来，谁能想到这个mod会拓展成魔裁mod呢？一开始只是想把艾玛做进去罢了
             string name = $"{GetName}Item";
-            //一些特殊情况。如安安有一个额外的头发……a
-            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro || ManosabaGirl == ManosabaGirlID.JougasakiNoa)
+            //一些特殊情况。如安安有一个额外的头发……
+            //怎么都是特殊情况。
+            if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro || ManosabaGirl == ManosabaGirlID.JougasakiNoah)
                 Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
             Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
             Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);
@@ -133,7 +150,7 @@ namespace SakurabaEmaMod.Globals.Players
                     ManosabaGirlID.SakurabaEma => nameof(Charactor.SakurabaEma),
                     ManosabaGirlID.NikaidouHiro => nameof(Charactor.NikaidouHiro),
                     ManosabaGirlID.NatsumeAnan => nameof(Charactor.NatsumeAnan),
-                    ManosabaGirlID.JougasakiNoa => nameof(Charactor.JougasakiNoa),
+                    ManosabaGirlID.JougasakiNoah => nameof(Charactor.JougasakiNoah),
                     ManosabaGirlID.TachibanaSherry => nameof(Charactor.TachibanaSherry),
                     ManosabaGirlID.ToonoHanna => nameof(Charactor.ToonoHanna),
                     _ => nameof(Charactor.None),

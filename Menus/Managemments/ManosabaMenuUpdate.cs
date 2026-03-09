@@ -27,7 +27,7 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static ManosabaHud LeftArrow => ManoHudManager.UICollection[GetInstance<LeftArrow>().Type];
         public static ManosabaHud Logo => ManoHudManager.UICollection[GetInstance<Logo>().Type];
         //这里也同样是会做一些处理的。
-        public static bool ToManosabaMenu = false;
+        public static bool ToManosabaMenu = true;
         public static bool ToOtherMenu = false;
         public static bool BanSwitchMenu = false;
         /// <summary>
@@ -131,19 +131,19 @@ namespace SakurabaEmaMod.Menus.Managemments
         }
         private static void UpdateButtons()
         {
-                LoadGame.Update();
-                Options.Update();
-                Gallery.Update();
-                Exit.Update();
-                SwitchMenu.Update();
-                LoadHud.Update();
-                GalleryHud.Update();
-                //背景完全显示出来之间禁用背景切换
-                Logo.Update();
-                if (Logo.Opacity < 1)
-                    return;
-                LeftArrow.Update();
-                RightArrow.Update();
+            LoadGame.Update();
+            Options.Update();
+            Gallery.Update();
+            Exit.Update();
+            SwitchMenu.Update();
+            LoadHud.Update();
+            GalleryHud.Update();
+            //背景完全显示出来之间禁用背景切换
+            Logo.Update();
+            if (Logo.Opacity < 1)
+                return;
+            LeftArrow.Update();
+            RightArrow.Update();
 
         }
         private static void UpdateNotBloomcases()
@@ -200,9 +200,12 @@ namespace SakurabaEmaMod.Menus.Managemments
                 if (Main.menuMode != LastMenuID)
                     Main.menuMode = LastMenuID;
                 GeneralFadingRatios = Lerp(GeneralFadingRatios, 1f, frames);
-                BlackLayer = Lerp(GeneralFadingRatios, 1f, frames);
-                if (BlackLayer > 0.98f)
+                if (BlackLayer < 1f)
+                    BlackLayer = Lerp(BlackLayer, 1f, frames);
+                if (GeneralFadingRatios > 0.98f)
                 {
+                    GeneralFadingRatios = 1f;
+                    BlackLayer = 1f;
                     ToManosabaMenu = false;
                     Main.menuMode = ManosabaMenu.ID;
                 }
@@ -213,13 +216,14 @@ namespace SakurabaEmaMod.Menus.Managemments
                 //原游戏由主界面到其他界面没有渐变，我们这也不会做渐变。
                 //我草他妈有
                 GeneralFadingRatios = Lerp(GeneralFadingRatios, 1f, frames);
-                BlackLayer = Lerp(GeneralFadingRatios, 1f, frames);
+                BlackLayer = Lerp(BlackLayer, 1f, frames);
                 DrawFading();
                 if (GeneralFadingRatios >= 0.98f)
                 {
                     Main.menuMode = NextMenuID;
                     //设定为1，因为仍然需要绘制背景
                     GeneralFadingRatios = 1;
+                    BlackLayer = 1f;
                     NextMenuID = -1;
                     ToOtherMenu = false;
                     if (OnChangeToTargetMenuID.Count != 0)

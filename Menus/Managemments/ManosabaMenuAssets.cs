@@ -34,7 +34,7 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static MenuTexPath Still_Ema{  get; private set; }
         public static MenuTexPath Still_Hiro{  get; private set; }
         public static MenuTexPath Still_Anan{  get; private set; }
-        public static MenuTexPath Still_Noa{  get; private set; }
+        public static MenuTexPath Still_Noah{  get; private set; }
         public static MenuTexPath Still_HannaSherry{  get; private set; }
         public static MenuTexPath Still_YukiMeruru{  get; private set; }
         public static MenuTexPath Still_Margo{  get; private set; }
@@ -62,7 +62,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Ema = new MenuTexPath($"{StillPath}{nameof(Still_Ema)}");
             Still_Hiro = new MenuTexPath($"{StillPath}{nameof(Still_Hiro)}");
             Still_Anan = new MenuTexPath($"{StillPath}{nameof(Still_Anan)}");
-            Still_Noa  = new MenuTexPath($"{StillPath}{nameof(Still_Noa)}");
+            Still_Noah  = new MenuTexPath($"{StillPath}{nameof(Still_Noah)}");
             Still_HannaSherry = new MenuTexPath($"{StillPath}{nameof(Still_HannaSherry)}");
             Still_YukiMeruru = new MenuTexPath($"{StillPath}{nameof(Still_YukiMeruru)}");
             Still_Margo = new MenuTexPath($"{StillPath}{nameof(Still_Margo)}");
@@ -79,7 +79,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             Alt_Mask = new MenuTexPath($"{Path}{nameof(Alt_Mask)}");
 
             //完成内容的实例化后再把这些东西扔进数组内调用
-            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noa, Still_HannaSherry, Still_YukiMeruru, Still_Margo];
+            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noah, Still_HannaSherry, Still_YukiMeruru, Still_Margo];
         }
         public override void Unload()
         {
@@ -101,7 +101,7 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Hiro = null;
             Still_Anan = null;
             Still_HannaSherry = null;
-            Still_Noa = null;
+            Still_Noah = null;
             Still_YukiMeruru = null;
             Still_Margo = null;
 

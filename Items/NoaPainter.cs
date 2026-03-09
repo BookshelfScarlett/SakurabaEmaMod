@@ -18,7 +18,7 @@ namespace SakurabaEmaMod.Items
     public class NoaPainter : CharactorItem
     {
         public override bool IsLoadingEnabled(Mod mod) => false;
-        public override short SetCharactor => ManosabaGirlID.JougasakiNoa;
+        public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
         public override int Size => 44;
         public override string Texture => GetAsset("Items");
         public override bool AllowPrefix(int pre) => false;
@@ -54,7 +54,7 @@ namespace SakurabaEmaMod.Items
             {
                 if (line.IsThisLine("Tooltip0") || line.IsThisLine("Tootlip1"))
                 {
-                    JougasakiNoaRarity.DrawMore(line);
+                    JougasakiNoahRarity.DrawMore(line);
                 }
                 return false;
             }

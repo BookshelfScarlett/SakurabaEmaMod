@@ -79,6 +79,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //byd写的什么玩意
             Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * -700f, ManosabaMenuUpdate.ButtonsHoverOut);
             spriteBatch.Draw(UnChosenTexture, logoPos + offset, null, Color.White * colorRatios, 0, UnChosenTexture.Size() / 2, 0.52f * ButtonScale * HoverScale, 0, 0);
+            //Rectangle rectangle = new(0, 0, Main.screenWidth, Main.screenHeight);
+            //Texture2D mask = ManosabaMenuAssets.Main_Mask.Texture.Value;
+            //Main.spriteBatch.Draw(mask, rectangle, Color.White * Logo.LogoScaleRatios);
+
 
         }
     }

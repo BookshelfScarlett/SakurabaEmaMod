@@ -54,7 +54,7 @@ namespace SakurabaEmaMod.Items.Vanity
             }
             if (equip)
             {
-                string name = nameof(NikaidouHiroItem);
+                string name = "NikaidouHiroItem";
                 Player.back = EquipLoader.GetEquipSlot(Mod, name, EquipType.Back);
                 Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
                 Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);

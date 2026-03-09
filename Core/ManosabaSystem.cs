@@ -22,14 +22,14 @@ namespace SakurabaEmaMod.Core
             {
                 { ManosabaGirlID.SakurabaEma, RarityType<SakurabaEmaRarity>()},
                 { ManosabaGirlID.NatsumeAnan, RarityType<NatsumeAnanRarity>()},
-                { ManosabaGirlID.JougasakiNoa , RarityType<JougasakiNoaRarity>()},
+                { ManosabaGirlID.JougasakiNoah , RarityType<JougasakiNoahRarity>()},
                 { ManosabaGirlID.NikaidouHiro, RarityType<NikaidouHiroRarity>()},
             };
             _EffectMap = new Dictionary<short , CharactorRarity>()
             {
                 {ManosabaGirlID.SakurabaEma, new NatsumeAnanRarity()},
                 {ManosabaGirlID.NatsumeAnan , new NatsumeAnanRarity()},
-                {ManosabaGirlID.JougasakiNoa, new JougasakiNoaRarity()},
+                {ManosabaGirlID.JougasakiNoah, new JougasakiNoahRarity()},
                 {ManosabaGirlID.NikaidouHiro, new NikaidouHiroRarity()}
             };
         }
