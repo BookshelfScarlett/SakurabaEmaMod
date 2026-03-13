@@ -24,13 +24,15 @@ namespace SakurabaEmaMod.Core
                 { ManosabaGirlID.NatsumeAnan, RarityType<NatsumeAnanRarity>()},
                 { ManosabaGirlID.JougasakiNoah , RarityType<JougasakiNoahRarity>()},
                 { ManosabaGirlID.NikaidouHiro, RarityType<NikaidouHiroRarity>()},
+                { ManosabaGirlID.TachibanaSherry, RarityType<TachibanaSherryRarity>()},
             };
             _EffectMap = new Dictionary<short , CharactorRarity>()
             {
                 {ManosabaGirlID.SakurabaEma, new NatsumeAnanRarity()},
                 {ManosabaGirlID.NatsumeAnan , new NatsumeAnanRarity()},
                 {ManosabaGirlID.JougasakiNoah, new JougasakiNoahRarity()},
-                {ManosabaGirlID.NikaidouHiro, new NikaidouHiroRarity()}
+                {ManosabaGirlID.NikaidouHiro, new NikaidouHiroRarity()},
+                {ManosabaGirlID.TachibanaSherry, new TachibanaSherryRarity()}
             };
         }
         public bool DrawRarityEffect(DrawableTooltipLine line, short charactor)

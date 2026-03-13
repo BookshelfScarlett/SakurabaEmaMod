@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Rarity.RarityShiny
 {
-    public class NatsumeAnanRarity : CharactorRarity
+    public class TachibanaSherryRarity : CharactorRarity
     {
         public static List<RaritySparkle> RaritySparkles = [];
         public static List<RaritySparkle> FlavorSparkles = [];
@@ -20,21 +20,21 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
         {
             //绘制需要的……发光背景。
             PostDrawRarity(ref RaritySparkles, line);
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.7f), Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f),1f);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f), 1f);
 
         }
         public override void DrawFlavorName(DrawableTooltipLine line)
         {
             PostDrawFlavor(ref FlavorSparkles, line);
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.7f), Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f),1f);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.LightSkyBlue, Color.Silver.ToAddColor(), Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.4f), 0.8f);
         }
         public override void DrawFlavorTooltip(DrawableTooltipLine line)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f), Color.White);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.5f), Color.White);
         }
         public override void DrawMisc(DrawableTooltipLine line)
         {
-            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f), Color.White);
+            RarityDrawHelper.DrawCustomTooltipLine(line, Color.Lerp(Color.RoyalBlue, Color.SkyBlue, 0.5f), Color.White);
         }
 
         public static void PostDrawFlavor(ref List<RaritySparkle> particleList, DrawableTooltipLine tooltipLine)

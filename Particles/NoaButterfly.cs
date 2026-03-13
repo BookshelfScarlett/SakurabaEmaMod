@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Particles
 {
-    public class NoaButterfly : BaseParticle
+    public class NoahButterfly : BaseParticle
     {
         private Vector2 BeginVector;
         private float Speed;
@@ -24,7 +24,7 @@ namespace SakurabaEmaMod.Particles
         private float swingOffsetX;
         private bool NoLighting;
         private bool DrawGlowingOrbParticle;
-        public NoaButterfly(Vector2 position, Vector2 beginVector, Color color, int lifeTime, float opacity, float scale, float speed, bool noLighting = false, bool drawGlowingOrbParticle= false)
+        public NoahButterfly(Vector2 position, Vector2 beginVector, Color color, int lifeTime, float opacity, float scale, float speed, bool noLighting = false, bool drawGlowingOrbParticle= false)
         {
             Position = position;
             BeginVector = beginVector;
@@ -85,11 +85,11 @@ namespace SakurabaEmaMod.Particles
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            Texture2D texture = ManosabaTexture.Particle_NoaButterfly.Value;
+            Texture2D texture = ManosabaTexture.Particle_NoahButterfly.Value;
 
             float flapProgress = (LifetimeRatio * WingFlapSpeed + Math.Abs(swingOffsetX) * 0.5f + SeedValue * 0.00001f) % 1f;
             int frameindex = (int)(flapProgress * 4);
-            Rectangle frame = ManosabaTexture.Particle_NoaButterfly.Texture.Frame(2, 2, frameindex % 2, frameindex / 2);
+            Rectangle frame = ManosabaTexture.Particle_NoahButterfly.Texture.Frame(2, 2, frameindex % 2, frameindex / 2);
             Vector2 origin = frame.Size() * 0.5f;
 
             spriteBatch.Draw(texture, Position - Main.screenPosition, frame, DrawColor * Opacity, Rotation + ToRadians(95f), origin, Scale, 0, 0f);

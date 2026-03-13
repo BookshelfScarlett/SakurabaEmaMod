@@ -26,7 +26,7 @@ namespace SakurabaEmaMod.Globals.Class
         /// <summary>
         /// 物品使用的稀有度
         /// </summary>
-        public virtual int RaritySet => ManosabaRaritySystem.Instance.SetRarityType(SetCharactor);
+        public virtual int SetRarity => ManosabaRaritySystem.Instance.SetRarityType(SetCharactor);
         /// <summary>
         /// 用于绘制物品的描边颜色
         /// 在世界范围和物品栏内使用
@@ -55,7 +55,7 @@ namespace SakurabaEmaMod.Globals.Class
         public sealed override void SetDefaults()
         {
             Item.width = Item.height = Size;
-            Item.rare = RaritySet;
+            Item.rare = SetRarity;
             Item.vanity = true;
             Item.accessory = true;
             ExSD();
@@ -165,23 +165,20 @@ namespace SakurabaEmaMod.Globals.Class
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
             Texture2D tex = TextureAssets.Item[Type].Value;
-            //描边。
-            for (int i = 0; i < 8; i++)
-                spriteBatch.Draw(tex, position + ToRadians(60f * i).ToRotationVector2() * 2.1f, frame, EdgeColor.ToAddColor(), 0f, origin, scale, 0, 0);
-            //本身
-            spriteBatch.Draw(tex, position, frame, Color.White, 0, origin, scale, 0, 0);
+            Texture2D edge = Request<Texture2D>(Texture + "_Edge").Value;
+            spriteBatch.Draw(tex, position, frame, Color.White, 0, tex.Size()/2, scale, 0, 0);
+            spriteBatch.Draw(edge, position, frame, Color.White, 0, edge.Size()/2, scale, 0, 0);
             return false;
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
             Texture2D tex = TextureAssets.Item[Type].Value;
+            Texture2D edge = Request<Texture2D>(Texture + "_Edge").Value;
             Vector2 position = Item.position - Main.screenPosition + tex.Size() / 2;
             Rectangle iFrame = tex.Frame();
-            //绘制物品时装描边
-            for (int i = 0; i < 16; i++)
-                spriteBatch.Draw(tex, position + ToRadians(i * 60f).ToRotationVector2() * 2.4f, null, EdgeColor.ToAddColor(), 0f, tex.Size() / 2, scale, 0, 0f);
             //绘制物品本身
             spriteBatch.Draw(tex, position, iFrame, Color.White, 0f, tex.Size() / 2, scale, 0f, 0f);
+            spriteBatch.Draw(edge, position, iFrame, Color.White, 0f, edge.Size() / 2, scale, 0f, 0f);
             Lighting.AddLight(position, TorchID.UltraBright);
             return false;
         }

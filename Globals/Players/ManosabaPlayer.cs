@@ -19,6 +19,7 @@ namespace SakurabaEmaMod.Globals.Players
         public float ParticleTimer = 0;
         public short ManosabaGirl = ManosabaGirlID.None;
         public bool NoahCryDeath = false;
+        public bool EmaKiangSound = false;
         public bool NoaButterflyDeath = false;
         public bool sakurabaEmaVanity = false;
         public bool IsDoneFinalBossFight = false;
@@ -31,8 +32,11 @@ namespace SakurabaEmaMod.Globals.Players
         public override void SaveData(TagCompound tag)
         {
             tag.Add(nameof(ManosabaGirl), ManosabaGirl);
-            tag.Add(nameof(NoaButterflyDeath), NoaButterflyDeath);
             tag.Add(nameof(IsGiveAnyVanityItem), IsGiveAnyVanityItem);
+            tag.Add(nameof(NoaButterflyDeath), NoaButterflyDeath);
+
+            tag.Add(nameof(EmaKiangSound), EmaKiangSound);
+            tag.Add(nameof(NoahCryDeath), NoahCryDeath);
 
         }
         public override void LoadData(TagCompound tag)
@@ -49,6 +53,11 @@ namespace SakurabaEmaMod.Globals.Players
             if (IsGiveAnyVanityItem)
                 return;
             string name = Player.name.ToLower();
+            if(name.Contains("sakuraba") || name.Contains("ema") || name.Contains("樱羽艾玛") || name.Contains("艾玛"))
+            {
+                IsGiveAnyVanityItem = true;
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<SakurabaEmma>());
+            }
             if (name.Contains("natsume") || name.Contains("anan") || name.Contains("夏目安安") || name.Contains("安安"))
             {
                 IsGiveAnyVanityItem = true;
@@ -88,31 +97,25 @@ namespace SakurabaEmaMod.Globals.Players
         }
         public override void PostUpdate()
         {
+            bool isInInventory = Main.mouseMiddle && Main.playerInventory;
+            if (!isInInventory)
+                return;
+            if (!Main.mouseMiddleRelease)
+                return;
             //我的天哪还有i诺TV
-            if (Main.mouseMiddle && Main.HoverItem.type == ItemType<JougasakiNoahItem>() && Main.playerInventory)
+            if (Main.HoverItem.type == ItemType<JougasakiNoahItem>())
             {
-                if (!Main.mouseMiddleRelease)
-                    return;
                 string Path = "SakurabaEmaMod/Assets/Sounds/";
                 SoundStyle playSound = !NoahCryDeath ? new SoundStyle($"{Path}{nameof(Charactor.JougasakiNoah)}Sounds/Hit6") : new SoundStyle($"{Path}{nameof(Charactor.JougasakiNoah)}Sounds/Hit1");
                 SoundEngine.PlaySound(playSound, Player.Center);
                 NoahCryDeath = !NoahCryDeath;
             }
-        }
-        /// <summary>
-        /// 暂时移除，目前所有的主界面绘制方法都用单独玩家类管理
-        /// 因为目前不知道如何处理他们，玩家类的数据没法读取
-        /// </summary>
-        /// <param name="equip"></param>
-        public void GetArmorSlotItem(ref bool equip)
-        {
-            foreach (Item item in Player.armor)
+            //我的天哪还有i玛TV
+            if (Main.HoverItem.type == ItemType<SakurabaEmma>())
             {
-                if (item.type == GetItemType)
-                {
-                    equip = true;
-                    break;
-                }
+                SoundStyle playSound = !EmaKiangSound ? ManosabaSounds.Ema_Kiang : ManosabaSounds.Ema_HitSound;
+                SoundEngine.PlaySound(playSound, Player.Center);
+                EmaKiangSound = !EmaKiangSound;
             }
         }
         public override void UpdateVisibleVanityAccessories()
@@ -125,9 +128,11 @@ namespace SakurabaEmaMod.Globals.Players
         {
             if (ManosabaGirl == ManosabaGirlID.None)
                 return;
-            //除了艾玛的时装以外都统一管理
-            //不过话又说回来，谁能想到这个mod会拓展成魔裁mod呢？一开始只是想把艾玛做进去罢了
             string name = $"{GetName}Item";
+            //艾玛由于最开始的类名问题，而且因为已经实装很久了，这里没法像上面一样接入到统一管理内
+            //因此这里是手动进行的特判
+            if (ManosabaGirl == ManosabaGirlID.SakurabaEma)
+                name = nameof(SakurabaEmma);
             //一些特殊情况。如安安有一个额外的头发……
             //怎么都是特殊情况。
             if (ManosabaGirl == ManosabaGirlID.NatsumeAnan || ManosabaGirl == ManosabaGirlID.NikaidouHiro || ManosabaGirl == ManosabaGirlID.JougasakiNoah)
@@ -147,7 +152,6 @@ namespace SakurabaEmaMod.Globals.Players
             {
                 return ManosabaGirl switch
                 {
-                    ManosabaGirlID.SakurabaEma => nameof(Charactor.SakurabaEma),
                     ManosabaGirlID.NikaidouHiro => nameof(Charactor.NikaidouHiro),
                     ManosabaGirlID.NatsumeAnan => nameof(Charactor.NatsumeAnan),
                     ManosabaGirlID.JougasakiNoah => nameof(Charactor.JougasakiNoah),
@@ -155,19 +159,6 @@ namespace SakurabaEmaMod.Globals.Players
                     ManosabaGirlID.ToonoHanna => nameof(Charactor.ToonoHanna),
                     _ => nameof(Charactor.None),
                 };
-            }
-        }
-        private int GetItemType
-        {
-            get
-            {
-                return ManosabaGirl switch
-                {
-                    ManosabaGirlID.SakurabaEma => ItemType<SakurabaEmma>(),
-                    ManosabaGirlID.NatsumeAnan => ItemType<NatsumeAnanItem>(),
-                    _ => -1,
-                };
-
             }
         }
     }

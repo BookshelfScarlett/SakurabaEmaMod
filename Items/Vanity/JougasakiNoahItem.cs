@@ -14,7 +14,7 @@ namespace SakurabaEmaMod.Items.Vanity
     public class JougasakiNoahItem : CharactorVanity
     {
         public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
-        public override int RaritySet => RarityType<JougasakiNoahRarity>();
+        public override int SetRarity => RarityType<JougasakiNoahRarity>();
         public override int Size => 32;
         public override void ExLoad()
         {

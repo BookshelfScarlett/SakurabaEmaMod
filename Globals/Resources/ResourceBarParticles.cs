@@ -30,12 +30,11 @@ namespace SakurabaEmaMod.Globals.Resources
             if (!isTopLayer)
                 return;
 
-            //艾玛特判，因为艾玛还没有接入统一管理
-            if (Main.LocalPlayer.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped)
-                DrawEmaParticle(context);
-
             switch (ManosabaPlayer.ManosabaGirl)
             {
+                case ManosabaGirlID.SakurabaEma:
+                    DrawEmaParticle(context);
+                    break;
                 case ManosabaGirlID.NikaidouHiro:
                     DrawHiroParticle(context);
                     break;

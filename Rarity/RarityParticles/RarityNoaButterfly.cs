@@ -74,11 +74,11 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
         }
         public override void CustomDraw(SpriteBatch spriteBatch, Vector2 pos)
         {
-            Texture2D texture = ManosabaTexture.Particle_NoaButterfly.Value;
+            Texture2D texture = ManosabaTexture.Particle_NoahButterfly.Value;
 
             float flapProgress = (LifetimeRatio * WingFlapSpeed + Math.Abs(swingOffsetX) * 0.5f + SeedValue * 0.00001f) % 1f;
             int frameindex = (int)(flapProgress * 4);
-            Rectangle frame = ManosabaTexture.Particle_NoaButterfly.Texture.Frame(2, 2, frameindex % 2, frameindex / 2);
+            Rectangle frame = ManosabaTexture.Particle_NoahButterfly.Texture.Frame(2, 2, frameindex % 2, frameindex / 2);
             Vector2 origin = frame.Size() * 0.5f;
 
             spriteBatch.Draw(texture, pos, frame, DrawColor * Opacity, Rotation + ToRadians(95f), origin, Scale, 0, 0f);

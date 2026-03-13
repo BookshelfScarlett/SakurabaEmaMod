@@ -177,7 +177,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //在这里画模组的版本字号。
 
             Vector2 scale = new(1);
-            string TextValue2 = "Ver. 1.3.2.1";
+            string TextValue2 = "Ver. 1.3.2.2";
             font = ManosabaFonts.BookAntiqua.Value;
             Vector2 size2 = ChatManager.GetStringSize(font, TextValue, Vector2.One * scale);
             Vector2 ori = size2 / 2;

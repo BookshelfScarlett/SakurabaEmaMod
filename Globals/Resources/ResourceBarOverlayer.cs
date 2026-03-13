@@ -32,17 +32,12 @@ namespace SakurabaEmaMod.Globals.Resources
         {
             if (!ManosabaClientConfig.Instance.UseCharactorLifeBar)
                 return true;
-            if (Main.LocalPlayer.GetModPlayer<SakurabaEmaPlayer>().vanityEquipped)
-            {
-                if (CompareAllAssets(ManosabaResource.SakurabaEmaBar, context))
-                {
-                    return false;
-                }
-            }
+
             //奖池还在积累
             //这地方必须得重写
             Dictionary<short, ManosabaResourceSet> _RarityMap = new()
             {
+                { ManosabaGirlID.SakurabaEma, ManosabaResource.SakurabaEmaBar},
                 { ManosabaGirlID.NatsumeAnan, ManosabaResource.NatsumeAnanBar},
                 { ManosabaGirlID.NikaidouHiro, ManosabaResource.NikaidouHiroBar},
                 { ManosabaGirlID.JougasakiNoah, ManosabaResource.JougasakiNoahBar}
@@ -86,7 +81,6 @@ namespace SakurabaEmaMod.Globals.Resources
             if (CompareAssets(context.texture, "HP_Fill"))
             {
                 context.texture = setter.Panel_HP_Fill;
-                context.source = context.texture.Frame();
                 context.Draw();
                 return true;
             }

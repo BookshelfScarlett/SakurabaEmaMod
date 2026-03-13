@@ -56,3 +56,14 @@ JougasakiNoahItem: {
 	CrySound: 当前死亡音效: 小孩哭哭
 	RegularSound: 当前死亡音效：常规
 }
+
+TachibanaSherryItem: {
+	DisplayName: 小型聚光镜
+	Tooltip: ""
+	SinnerType: "[-毁灭侦探-]"
+	SinnerTooltip:
+		'''
+		她毁灭了一切
+		不论是案件，还是人，甚至还有自己的心
+		'''
+}

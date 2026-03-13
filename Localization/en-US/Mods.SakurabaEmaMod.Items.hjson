@@ -52,3 +52,10 @@ JougasakiNoahItem: {
 	CrySound: Current Death Sound: Child's Sob
 	RegularSound: Current Death Sound: Regular
 }
+
+TachibanaSherryItem: {
+	DisplayName: Tachibana Sherry Item
+	Tooltip: ""
+	SinnerType: ""
+	SinnerTooltip: ""
+}

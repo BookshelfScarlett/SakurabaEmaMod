@@ -24,7 +24,7 @@ namespace SakurabaEmaMod.Globals.Class
         /// <summary>
         /// 物品使用的稀有度
         /// </summary>
-        public virtual int RaritySet => ManosabaRaritySystem.Instance.SetRarityType(SetCharactor);
+        public virtual int SetRarity => ManosabaRaritySystem.Instance.SetRarityType(SetCharactor);
         public string GetAsset(string path)
         {
             return $"SakurabaEmaMod/Assets/Texture/{path}/{GetType().Name}";
@@ -32,7 +32,7 @@ namespace SakurabaEmaMod.Globals.Class
         public override void SetDefaults()
         {
             Item.width = Item.height = Size;
-            Item.rare = RaritySet;
+            Item.rare = SetRarity;
             ExSD();
         }
         public virtual void ExSD() { }

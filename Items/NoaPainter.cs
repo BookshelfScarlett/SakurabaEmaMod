@@ -25,7 +25,7 @@ namespace SakurabaEmaMod.Items
         public int FlavorTooltipIndex = -1;
         public override void ExSD()
         {
-            Item.rare = RaritySet;
+            Item.rare = SetRarity;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.noMelee = true;
             Item.noUseGraphic = true;

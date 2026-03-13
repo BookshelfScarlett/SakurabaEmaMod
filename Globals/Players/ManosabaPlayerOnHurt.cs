@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.MainMenu;
@@ -38,14 +39,19 @@ namespace SakurabaEmaMod.Globals.Players
             genDust = false;
             switch (ManosabaGirl)
             {
-                case ManosabaGirlID.NatsumeAnan:
-                    DrawAnanKillParticles();
-                    AnanDeathSound();
+                case ManosabaGirlID.SakurabaEma:
+                    DrawEmaKillParticles();
+                    EmaDeathSound();
                     break;
                 case ManosabaGirlID.NikaidouHiro:
                     DrawHiroKillParticles();
                     HiroDeathSound();
                     break;
+                case ManosabaGirlID.NatsumeAnan:
+                    DrawAnanKillParticles();
+                    AnanDeathSound();
+                    break;
+                
                 case ManosabaGirlID.JougasakiNoah:
                     DrawNoahKillParticles();
                     NoahDeathSound();
@@ -55,14 +61,19 @@ namespace SakurabaEmaMod.Globals.Players
             }
             return;
         }
+
         public void CustomSoundOnHurt(Player.HurtInfo hurtInfo)
         {
             if (!DisableOrignalSound)
                 return;
+            
             hurtInfo.SoundDisabled = true;
             //代办：其余角色的承伤音效
             switch (ManosabaGirl)
             {
+                case ManosabaGirlID.SakurabaEma:
+                    EmaPlayerSound();
+                    break;
                 case ManosabaGirlID.NatsumeAnan:
                     AnanPlayerSound();
                     break;
@@ -75,11 +86,80 @@ namespace SakurabaEmaMod.Globals.Players
             }
         }
 
+        
 
+        #region 艾玛
+        //出于某些原因如果真的有神人玩家选择加载了樱羽艾玛死亡音效mod，则禁用这个物品的所有自定义音效
+        //还有这里的中文名纯故意的
+        private bool 草艾玛
+        {
+            get
+            {
+                return ModLoader.HasMod("Sounds_SakurabaEma");
+            }
+        }
+        private void DrawEmaKillParticles()
+        {
+            //落樱和散发粒子，修改为这些。
+            new CrossGlow(Player.Center, Color.Pink, 30, 1f, 0.13f, false).Spawn();
+            for (int i = 0; i < 8; i++)
+            {
+                Vector2 spawnPos = Player.Center.ToRandCirclePos(36f);
+                new Petal(spawnPos, Vector2.UnitY * Main.rand.NextFloat(1.1f, 1.3f), RandLerpColor(Color.HotPink, Color.LightPink).ToAddColor(50), 120, RandRotTwoPi, 0.8f, Main.rand.NextFloat(0.1f, 0.12f), 0.3f).Spawn();
+            }
+            for (int i = 0; i < 25; i++)
+            {
+                Vector2 spawnPos = Player.Center.ToRandCirclePos(36f);
+                new TurbulenceShinyOrb(spawnPos.ToRandCirclePosEdge(4), 1.2f, RandLerpColor(Color.HotPink, Color.LightPink), 120, 0.42f, RandRotTwoPi).Spawn();
+
+            }
+        }
+        private void EmaDeathSound()
+        {
+            if (!草艾玛)
+                return;
+            SoundStyle sound = EmaKiangSound ? ManosabaSounds.Ema_Kiang : ManosabaSounds.Ema_HitHeavy;
+            SoundEngine.PlaySound(sound, Player.Center);
+        }
+        private void EmaPlayerSound()
+        {
+            if (!草艾玛)
+                return;
+            //kiang
+            if (Main.netMode == NetmodeID.Server)
+            {
+                int soundType;
+                if (EmaKiangSound)
+                {
+                    //是的，这里漂洋过海半天就是为了做包的收发。
+                    soundType = 1;
+                    SoundPackets.BroadcastSound(Player.Center, soundType);
+                }
+                else
+                {
+                    soundType = Main.rand.NextBool().ToInt();
+                    SoundPackets.BroadcastSound(Player.Center, soundType);
+                }
+            }
+            else
+            {
+                if (EmaKiangSound)
+                {
+                    //是的，这里漂洋过海半天就是为了做包的收发。
+                    SoundEngine.PlaySound(ManosabaSounds.Ema_Kiang, Player.Center);
+                }
+                else
+                {
+                    SoundStyle hitSound = Main.rand.NextBool() ? ManosabaSounds.Ema_HitSound : ManosabaSounds.Ema_Kiang;
+                    SoundEngine.PlaySound(hitSound, Player.Center);
+                }
+            }
+        }
+        #endregion
         #region 诺亚
         private void DrawNoahKillParticles()
         {
-                Color[] randColor = [Color.Red, Color.SkyBlue, Color.Yellow, Color.Green, Color.White];
+            Color[] randColor = [Color.Red, Color.SkyBlue, Color.Yellow, Color.Green, Color.White];
             for (int i = 0; i < 18; i++)
             {
                 Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
@@ -87,12 +167,12 @@ namespace SakurabaEmaMod.Globals.Players
                 Color drawColor = Utils.SelectRandom(Main.rand, randColor);
                 new FullCircle(spawnPos, vel, drawColor, 80, 0.1f * Main.rand.NextFloat(0.7f, 1.1f), true).Spawn();
             }
-            for (int i = 0;i<6;i++)
+            for (int i = 0; i < 6; i++)
             {
                 Vector2 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
-                Vector2 vel = Vector2.UnitY.RotateRandom(ToRadians(20f)) * -Main.rand.NextFloat(1f,6f);
+                Vector2 vel = Vector2.UnitY.RotateRandom(ToRadians(20f)) * -Main.rand.NextFloat(1f, 6f);
                 Color drawColor = Utils.SelectRandom(Main.rand, randColor);
-                new NoaButterfly(spawnPos, vel, drawColor, 120, 1, 0.2f, 1.2f, drawGlowingOrbParticle: true).Spawn(); 
+                new NoahButterfly(spawnPos, vel, drawColor, 120, 1, 0.2f, 1.2f, drawGlowingOrbParticle: true).Spawn();
             }
         }
         private void NoahDeathSound()
@@ -165,7 +245,7 @@ namespace SakurabaEmaMod.Globals.Players
                 spawnPos += Vector2.UnitX * Main.rand.NextFloat(-5f, 6f);
                 Vector2 setpos = spawnPos;
                 Color setColor = RandLerpColor(Color.Red, Color.White);
-                new NoaButterfly(setpos, vec, setColor, 80, 1f, 0.14f, 0.8f).Spawn();
+                new NoahButterfly(setpos, vec, setColor, 80, 1f, 0.14f, 0.8f).Spawn();
                 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
                 new Petal(spawnPos, -Vector2.UnitY.RotatedBy(Main.rand.NextFloat(ToRadians(-30f), ToRadians(30f))), RandLerpColor(Color.DarkRed, Color.Crimson), 100, RandRotTwoPi, 1f, 0.1f, 1.2f).Spawn();
             }
@@ -230,7 +310,7 @@ namespace SakurabaEmaMod.Globals.Players
                 spawnPos += Vector2.UnitX * Main.rand.NextFloat(-5f, 6f);
                 Vector2 setpos = spawnPos;
                 Color setColor = RandLerpColor(Color.DeepSkyBlue, Color.White);
-                new NoaButterfly(setpos, vec, setColor, 80, 1f, 0.14f, 0.8f).Spawn();
+                new NoahButterfly(setpos, vec, setColor, 80, 1f, 0.14f, 0.8f).Spawn();
                 spawnPos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, new Vector2(Player.width, Player.height)));
                 new TurbulenceShinyOrb(spawnPos, 1f, setColor, 120, 0.67f, RandRotTwoPi).Spawn();
             }
