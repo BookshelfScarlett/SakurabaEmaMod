@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Configs;
-using SakurabaEmaMod.Core.ParticleSystem;
-using SakurabaEmaMod.Particles;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using System;
 using Terraria;

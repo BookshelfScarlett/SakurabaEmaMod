@@ -1,9 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
-using SakurabaEmaMod.Items.Vanity;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,6 +16,7 @@ namespace SakurabaEmaMod.Globals.Resources
         public static List<RaritySparkle> NikaidouHiroSparkle = [];
         public static List<RaritySparkle> NatsumeAnanSparkle = [];
         public static List<RaritySparkle> JougasakniNoaSparkle = [];
+        public static List<RaritySparkle> TachibanaSherrySparkle = [];
         private Vector2 Offset => Vector2.UnitX * 45f + Vector2.UnitY;
         private void GeneralParticleManager(ResourceOverlayDrawContext context, bool topLayer = true)
         {
@@ -44,12 +45,20 @@ namespace SakurabaEmaMod.Globals.Resources
                 case ManosabaGirlID.JougasakiNoah:
                     DrawNoahPainterMovement(context);
                     break;
+                case ManosabaGirlID.TachibanaSherry:
+                    DrawSherryParticle(context);
+                    break;
                 default:
                     break;
             }
 
 
         }
+
+        private void DrawSherryParticle(ResourceOverlayDrawContext context)
+        {
+        }
+
         private void HandleLowerLayerParticle(ResourceOverlayDrawContext context)
         {
             bool isLowerLayer = CompareAssets(context.texture, "HP_Panel_Right");

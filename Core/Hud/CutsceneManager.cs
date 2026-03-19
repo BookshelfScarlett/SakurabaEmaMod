@@ -1,7 +1,4 @@
-﻿using rail;
-using SakurabaEmaMod.Globals.Cutscenes;
-using SakurabaEmaMod.Menus.Managemments;
-using SakurabaEmaMod.Menus.PVs;
+﻿using SakurabaEmaMod.Menus.PVs;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

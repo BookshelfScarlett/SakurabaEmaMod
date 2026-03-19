@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SakurabaEmaMod.Menus.Managemments
+﻿namespace SakurabaEmaMod.Menus.Managemments
 {
     public class ManosabaMenuID
     {

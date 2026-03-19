@@ -1,14 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using SakurabaEmaMod.Core.ParticleSystem;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Particles;
-using System;
-using System.Collections.Generic;
-using System.Threading;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Players

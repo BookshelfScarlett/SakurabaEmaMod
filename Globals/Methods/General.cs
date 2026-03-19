@@ -1,9 +1,5 @@
-﻿using log4net.Core;
-using Microsoft.Xna.Framework;
-using SakurabaEmaMod.Globals.Players;
-using SakurabaEmaMod.Items;
+﻿using SakurabaEmaMod.Globals.Players;
 using System;
-using System.Data;
 using Terraria;
 using Terraria.ModLoader;
 

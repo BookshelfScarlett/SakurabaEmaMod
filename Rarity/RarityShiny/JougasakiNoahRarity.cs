@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Globals.Class;
-using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
 using System.Collections.Generic;

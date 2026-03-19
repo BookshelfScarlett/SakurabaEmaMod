@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Converters;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Menus.AltMenu;
 using SakurabaEmaMod.Menus.MainMenu;

@@ -4,10 +4,6 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.ParticleSystem;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace SakurabaEmaMod.Particles

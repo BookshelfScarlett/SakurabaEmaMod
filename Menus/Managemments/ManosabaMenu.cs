@@ -5,8 +5,6 @@ using ReLogic.Content;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Menus.MainMenu;
-using SakurabaEmaMod.Menus.PVs;
-using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

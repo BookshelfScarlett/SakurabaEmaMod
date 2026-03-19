@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<!-- Import tModLoader mod properties -->
+	<Import Project="..\tModLoader.targets" />
+
+	<!-- General -->
+	<PropertyGroup>
+		
+	</PropertyGroup>
+	<ItemGroup>
+	  <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<Publicize Include="tModLoader" IncludeVirtualMembers="false" />
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Assets\Sounds\NatsumeAnanSounds\" />
+	  <Folder Include="Assets\Texture\CharactorSets\TachibanaSherry\" />
+	  <Folder Include="Assets\Texture\Items\" />
+	</ItemGroup>
+	<!-- References -->
+
+</Project>

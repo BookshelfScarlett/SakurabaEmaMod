@@ -1,12 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;

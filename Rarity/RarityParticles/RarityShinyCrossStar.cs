@@ -4,10 +4,6 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.ParticleSystem;
 using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 
 namespace SakurabaEmaMod.Rarity.RarityParticles

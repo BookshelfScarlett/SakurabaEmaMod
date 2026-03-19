@@ -30,12 +30,14 @@ namespace SakurabaEmaMod.Assets.Register
         public static ManosabaResourceSet NikaidouHiroBar;
         public static ManosabaResourceSet NatsumeAnanBar;
         public static ManosabaResourceSet JougasakiNoahBar;
+        public static ManosabaResourceSet TachibanaSherryBar;
         public override void Load()
         {
             SakurabaEmaBar = new ManosabaResourceSet(Charactor.SakurabaEma);
             NikaidouHiroBar = new ManosabaResourceSet(Charactor.NikaidouHiro);
             NatsumeAnanBar = new ManosabaResourceSet(Charactor.NatsumeAnan);
             JougasakiNoahBar = new ManosabaResourceSet(Charactor.JougasakiNoah);
+            TachibanaSherryBar = new ManosabaResourceSet(Charactor.TachibanaSherry);
         }
         public override void Unload()
         {
@@ -43,6 +45,7 @@ namespace SakurabaEmaMod.Assets.Register
             NikaidouHiroBar = null;
             NatsumeAnanBar = null;
             JougasakiNoahBar = null;
+            TachibanaSherryBar = null;
         }
     }
 }

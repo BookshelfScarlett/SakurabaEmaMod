@@ -1,19 +1,13 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SakurabaEmaMod.Assets.Register;
-using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
-using SakurabaEmaMod.Particles;
 using SakurabaEmaMod.Rarity.RarityShiny;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace SakurabaEmaMod.Items.Vanity
 {

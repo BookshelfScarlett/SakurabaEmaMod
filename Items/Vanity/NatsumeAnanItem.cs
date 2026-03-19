@@ -1,7 +1,6 @@
 ﻿using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using Terraria;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;

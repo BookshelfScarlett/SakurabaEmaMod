@@ -3,9 +3,7 @@ using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
-using SakurabaEmaMod.Menus.MainMenu;
 using SakurabaEmaMod.Particles;
-using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -294,9 +292,7 @@ namespace SakurabaEmaMod.Globals.Players
         }
 
         #endregion
-
         #region 安安
-
         private void DrawAnanKillParticles()
         {
             if (NoaButterflyDeath)

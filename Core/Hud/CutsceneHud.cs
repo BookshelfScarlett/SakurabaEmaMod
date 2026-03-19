@@ -1,9 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Globals.Enums;
-using System;
 using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Core.Hud

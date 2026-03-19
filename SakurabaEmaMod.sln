@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SakurabaEmaMod", "SakurabaEmaMod.csproj", "{B3A63A4B-AB8B-B676-F0C3-ED9DAAFA7AFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B3A63A4B-AB8B-B676-F0C3-ED9DAAFA7AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3A63A4B-AB8B-B676-F0C3-ED9DAAFA7AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3A63A4B-AB8B-B676-F0C3-ED9DAAFA7AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3A63A4B-AB8B-B676-F0C3-ED9DAAFA7AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B776A9AC-B417-40FA-99DA-CFCF12BCAB65}
+	EndGlobalSection
+EndGlobal

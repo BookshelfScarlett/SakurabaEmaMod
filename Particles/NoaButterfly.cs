@@ -1,12 +1,10 @@
-﻿using Microsoft.Build.Framework;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.ParticleSystem;
 using System;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Particles
 {

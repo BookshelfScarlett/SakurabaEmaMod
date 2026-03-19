@@ -1,5 +1,4 @@
 ﻿using SakurabaEmaMod.Globals.Enums;
-using Steamworks;
 using Terraria.Audio;
 using Terraria.ModLoader;
 

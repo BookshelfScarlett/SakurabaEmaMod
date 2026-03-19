@@ -1,8 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-using SakurabaEmaMod.Core.Hud;
+﻿using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Core.ParticleSystem;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Core.Overlayer

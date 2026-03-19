@@ -2,7 +2,6 @@ global using static Microsoft.Xna.Framework.MathHelper;
 global using static SakurabaEmaMod.Globals.Handlers.EasingHandler;
 global using static SakurabaEmaMod.Globals.Handlers.GlobalHandlers;
 global using static Terraria.ModLoader.ModContent;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using ReLogic.Content.Sources;
 using SakurabaEmaMod.Assets.Register;

@@ -1,20 +1,12 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using rail;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Globals.Players;
-using SakurabaEmaMod.Items.Vanity;
-using SakurabaEmaMod.Rarity.RarityDrawHandler;
-using SakurabaEmaMod.Rarity.RarityParticles;
-using SakurabaEmaMod.Rarity.RarityShiny;
-using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Resources
@@ -40,7 +32,8 @@ namespace SakurabaEmaMod.Globals.Resources
                 { ManosabaGirlID.SakurabaEma, ManosabaResource.SakurabaEmaBar},
                 { ManosabaGirlID.NatsumeAnan, ManosabaResource.NatsumeAnanBar},
                 { ManosabaGirlID.NikaidouHiro, ManosabaResource.NikaidouHiroBar},
-                { ManosabaGirlID.JougasakiNoah, ManosabaResource.JougasakiNoahBar}
+                { ManosabaGirlID.JougasakiNoah, ManosabaResource.JougasakiNoahBar},
+                { ManosabaGirlID.TachibanaSherry, ManosabaResource.TachibanaSherryBar}
             };
             if (_RarityMap.TryGetValue(ManosabaPlayer.ManosabaGirl, out var value))
                 return !CompareAllAssets(value, context);

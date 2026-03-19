@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.ParticleSystem;
-using System;
 using Terraria;
 
 namespace SakurabaEmaMod.Particles
