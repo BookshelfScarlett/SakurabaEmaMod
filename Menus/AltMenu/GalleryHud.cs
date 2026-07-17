@@ -16,9 +16,9 @@ namespace SakurabaEmaMod.Menus.AltMenu
     {
         public static bool IsEnable = false;
         public static bool IsFading = true;
-        public static ManosabaHud Achievement => ManoHudManager.UICollection[GetInstance<Achievement>().Type];
-        public static ManosabaHud Credits => ManoHudManager.UICollection[GetInstance<Credit>().Type];
-        public static ManosabaHud CancelGallery => ManoHudManager.UICollection[GetInstance<CancelGallery>().Type];
+        public static ManosabaHud Achievement => ManosabaHudManager.UICollection[GetInstance<Achievement>().Type];
+        public static ManosabaHud Credits => ManosabaHudManager.UICollection[GetInstance<Credit>().Type];
+        public static ManosabaHud CancelGallery => ManosabaHudManager.UICollection[GetInstance<CancelGallery>().Type];
         public override int UIDepth => 2;
         public override bool PreSetDepth() => IsEnable;
         public override void PostUpdate()

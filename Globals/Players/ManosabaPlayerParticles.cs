@@ -123,7 +123,6 @@ namespace SakurabaEmaMod.Globals.Players
 
         }
         #endregion
-
         #region 城崎诺亚
         public void DrawNoahStandingParticle()
         {
@@ -183,7 +182,6 @@ namespace SakurabaEmaMod.Globals.Players
                 new Petal(spawnPos, vel, RandLerpColor(Color.Crimson, Color.DarkRed), 40, RandRotTwoPi, 1f, 0.1f, 0.5f).Spawn();
         }
         #endregion
-
         #region 夏目安安
         public void DrawAnanStandingParticle()
         {

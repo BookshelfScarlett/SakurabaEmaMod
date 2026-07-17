@@ -29,9 +29,9 @@ namespace SakurabaEmaMod.Core.Hud
         public virtual int UIDepth => 1;
         protected sealed override void Register()
         {
-            Type = ManoHudManager.UICollection.Count;
-            if (!ManoHudManager.UICollection.Contains(this))
-                ManoHudManager.UICollection.Add(this);
+            Type = ManosabaHudManager.UICollection.Count;
+            if (!ManosabaHudManager.UICollection.Contains(this))
+                ManosabaHudManager.UICollection.Add(this);
 
             SetDefaults();
         }
@@ -49,11 +49,11 @@ namespace SakurabaEmaMod.Core.Hud
         public void Update()
         {
             if (PreSetDepth())
-                ManoHudManager.ActiveDepthCount[UIDepth] = 2;
+                ManosabaHudManager.ActiveDepthCount[UIDepth] = 2;
 
             IsHover = Colliding(Rectangle, ManosabaModSystem.MouseRectangle);
 
-            bool CanUpdate = PreUpdateHover() && !ManoHudManager.ActiveDepth[UIDepth + 1] && ManoHudManager.BlockAllUI == 0;
+            bool CanUpdate = PreUpdateHover() && !ManosabaHudManager.ActiveDepth[UIDepth + 1] && ManosabaHudManager.BlockAllUI == 0;
             if (!CanUpdate)
             {
                 IsHover = false;

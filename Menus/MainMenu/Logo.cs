@@ -6,13 +6,14 @@ using SakurabaEmaMod.Menus.Managemments;
 using SakurabaEmaMod.Menus.PVs;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Localization;
 
 namespace SakurabaEmaMod.Menus.MainMenu
 {
     public class Logo : ManosabaButtonClass
     {
         public override Texture2D UnChosenTexture => ManosabaMenuAssets.Main_Title.Texture.Value;
-        public override Texture2D ChosenTexture => ManosabaTexture.InvisAsset.Value;
+        public override Texture2D ChosenTexture => ManosabaMenuAssets.Main_Title_CN.Texture.Value;
         public override Vector2 Center => new Vector2(Main.screenWidth/ 2 +500f, 200f);
         public override bool ShouldDrawText => false;
         public override Rectangle Hitbox => Utils.CenteredRectangle(Center, new Vector2(400f, 400f));
@@ -55,8 +56,6 @@ namespace SakurabaEmaMod.Menus.MainMenu
             {
                 HoverScale = Lerp(HoverScale, 1f, 0.1f);
             }
-
-
         }
         public override void OnMouseLeftRelease()
         {
@@ -77,13 +76,10 @@ namespace SakurabaEmaMod.Menus.MainMenu
             float colorRatios = Clamp(LogoScaleRatios, 0f, 1f);
             //logo也别忘了飞走啊
             //byd写的什么玩意
+            bool isCN = Language.ActiveCulture.Name.Equals("zh-Hans");
             Vector2 offset = Vector2.Lerp(Vector2.Zero, Vector2.UnitY * -700f, ManosabaMenuUpdate.ButtonsHoverOut);
-            spriteBatch.Draw(UnChosenTexture, logoPos + offset, null, Color.White * colorRatios, 0, UnChosenTexture.Size() / 2, 0.52f * ButtonScale * HoverScale, 0, 0);
-            //Rectangle rectangle = new(0, 0, Main.screenWidth, Main.screenHeight);
-            //Texture2D mask = ManosabaMenuAssets.Main_Mask.Texture.Value;
-            //Main.spriteBatch.Draw(mask, rectangle, Color.White * Logo.LogoScaleRatios);
-
-
+            Texture2D chooseTex = isCN ? ChosenTexture : UnChosenTexture;
+            spriteBatch.Draw(chooseTex, logoPos + offset, null, Color.White * colorRatios, 0, chooseTex.Size() / 2, 0.52f * ButtonScale * HoverScale, 0, 0);
         }
     }
 }

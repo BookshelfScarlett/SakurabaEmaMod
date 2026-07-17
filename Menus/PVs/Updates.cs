@@ -42,7 +42,7 @@ namespace SakurabaEmaMod.Menus.PVs
             //写这坨史山你看我干不干你就完事了
             if (PlayBloom || ManosabaMenuUpdate.ButtonsHoverOut > 0)
             {
-                ManoHudManager.BlockAllUI = 2;
+                ManosabaHudManager.BlockAllUI = 2;
             }
             if (Main.mouseRight)
             {

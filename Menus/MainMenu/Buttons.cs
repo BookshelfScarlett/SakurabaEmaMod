@@ -37,13 +37,32 @@ namespace SakurabaEmaMod.Menus.MainMenu
 
             //需要进入alt的二级ui
             //这里还没设置，待会做二级ui的时候开始弄
-            if (!ManoHudManager.ActiveDepth[2])
+            if (!ManosabaHudManager.ActiveDepth[2])
             {
                 SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
                 ManosabaMenuUpdate.GeneralFadingRatios = 0;
                 LoadHud.IsEnable = true;
             }
         }
+        public override void DrawString(SpriteBatch sb, Vector2 spritePosition)
+        {
+            bool isCN = Language.ActiveCulture.Name.Equals("zh-Hans");
+            if (!isCN)
+                return;
+
+            string textValue = Mod.GetLocalizationKey("Menu.ButtonOption").ToLangValue();
+             //实际绘制
+            DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
+            Vector2 scale = new(1);
+            Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, textValue, scale);
+            Vector2 ori = Size / 2;
+            //绘制的位置一定程度上需要偏移
+            //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
+            Vector2 textPos = spritePosition + Vector2.UnitY * 10f + Vector2.UnitX * -6f;
+            ChatManager.DrawColorCodedString(sb, dynamicSpriteFont, textValue, textPos, Color.White * Opacity, 0, ori, scale);
+        }
+
+
     }
     /// <summary>
     /// 画廊，目前用于跳转成就界面
@@ -65,7 +84,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
                 return;
 
             //这里还没设置，待会做二级ui的时候开始弄
-            if (!ManoHudManager.ActiveDepth[2])
+            if (!ManosabaHudManager.ActiveDepth[2])
             {
                 //需要给渐变。
                 SoundEngine.PlaySound(ManosabaSounds.Menu_MainChoice);
@@ -73,6 +92,25 @@ namespace SakurabaEmaMod.Menus.MainMenu
                 GalleryHud.IsEnable = true;
             }
         }
+        public override void DrawString(SpriteBatch sb, Vector2 spritePosition)
+        {
+            bool isCN = Language.ActiveCulture.Name.Equals("zh-Hans");
+            if (!isCN)
+                return;
+
+            string textValue = Mod.GetLocalizationKey("Menu.ButtonOption").ToLangValue();
+             //实际绘制
+            DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
+            Vector2 scale = new(1);
+            Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, textValue, scale);
+            Vector2 ori = Size / 2;
+            //绘制的位置一定程度上需要偏移
+            //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
+            Vector2 textPos = spritePosition + Vector2.UnitY * 30f + Vector2.UnitX * -6f;
+            ChatManager.DrawColorCodedString(sb, dynamicSpriteFont, textValue, textPos, Color.White * Opacity, 0, ori, scale);
+        }
+
+
     }
     public class Options : ManosabaButtonClass
     {
@@ -94,6 +132,33 @@ namespace SakurabaEmaMod.Menus.MainMenu
             ManosabaMenuUpdate.GeneralFadingRatios = 0;
             ManosabaMenuMethods.ChangeMenu(TargetMenuID);
         }
+        public override void DrawString(SpriteBatch sb, Vector2 spritePosition)
+        {
+            bool isCN = Language.ActiveCulture.Name.Equals("zh-Hans");
+            if (!isCN)
+                return;
+
+            string textValue = Mod.GetLocalizationKey("Menu.ButtonOption").ToLangValue();
+             //实际绘制
+            DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
+            Vector2 scale = new(1);
+            Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, textValue, scale);
+            Vector2 ori = Size / 2;
+            //绘制的位置一定程度上需要偏移
+            //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
+            DrawText(new Vector2(3.2f, 3.2f), Color.Black);
+            for (int i = 0; i < 8; i++)
+                DrawText(ToRadians(60 * i).ToRotationVector2() * 1.5f, Color.Black);
+
+            DrawText(Vector2.Zero, IsHover ?Color.HotPink : Color.White);
+            void DrawText(Vector2 posMove,Color color)
+            {
+                Vector2 textPos = spritePosition - Vector2.UnitY * 55f;
+                ChatManager.DrawColorCodedString(sb, dynamicSpriteFont, textValue, textPos + posMove, color * Opacity, 0, ori, scale);
+            }
+
+        }
+
 
     }
     public class Exit : ManosabaButtonClass
@@ -111,6 +176,30 @@ namespace SakurabaEmaMod.Menus.MainMenu
                 return;
             Main.instance.Exit();
         }
+        public override void DrawString(SpriteBatch sb, Vector2 spritePosition)
+        {
+            bool isCN = Language.ActiveCulture.Name.Equals("zh-Hans");
+            if (!isCN)
+                return;
+            string textValue = Mod.GetLocalizationKey("Menu.ButtonOption").ToLangValue();
+             //实际绘制
+            DynamicSpriteFont dynamicSpriteFont = ManosabaFonts.等线.Value;
+            Vector2 scale = new(1f);
+            Vector2 Size = ChatManager.GetStringSize(dynamicSpriteFont, textValue, scale);
+            Vector2 ori = Size / 2;
+            //绘制的位置一定程度上需要偏移
+            //考虑到这里只有一个横条按钮需要用到这个文本。直接硬编码
+            DrawText(new Vector2(1.2f, 1.2f), Color.Black);
+            for (int i = 0; i < 8; i++)
+                DrawText(ToRadians(60 * i).ToRotationVector2() * 2f, Color.Black);
+            DrawText(Vector2.Zero,Color.White);
+            void DrawText(Vector2 posMove,Color color)
+            {
+                Vector2 textPos = spritePosition + Vector2.UnitY * 10f + Vector2.UnitX * -6f;
+                ChatManager.DrawColorCodedString(sb, dynamicSpriteFont, textValue, textPos + posMove, color * Opacity, 0, ori, scale);
+            }
+        }
+
     }
     public class SwitchMenu : ManosabaHud
     {
@@ -177,7 +266,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             //在这里画模组的版本字号。
 
             Vector2 scale = new(1);
-            string TextValue2 = "Ver. 1.3.2.2";
+            string TextValue2 = "Ver. 1.3.2.3";
             font = ManosabaFonts.BookAntiqua.Value;
             Vector2 size2 = ChatManager.GetStringSize(font, TextValue, Vector2.One * scale);
             Vector2 ori = size2 / 2;

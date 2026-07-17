@@ -1,7 +1,7 @@
 SakurabaEmma: {
 	DisplayName: 异世贝雷帽
 	Tooltip: 对着物品按下中键以切换受击音效
-	FlavorTooltip: "[-受厌恶之人-]"
+	FlavorTooltip: -受厌恶之人-
 	RealTooltip:
 		'''
 		她是应受厌恶之人
@@ -14,7 +14,7 @@ SakurabaEmma: {
 NatsumeAnanItem: {
 	DisplayName: 孩童素描本
 	Tooltip: ""
-	SinnerType: "[-编织谎言的沉睡公主-]"
+	SinnerType: -编织谎言的沉睡公主-
 	SinnerTooltip:
 		'''
 		她今天也独自沉睡着
@@ -36,7 +36,7 @@ NoaPainter: {
 NikaidouHiroItem: {
 	DisplayName: 正论之花
 	Tooltip: ""
-	SinnerType: "[-正义的执行者-]"
+	SinnerType: -正义的执行者-
 	SinnerTooltip:
 		'''
 		她至今走过的路，未曾有一星污点
@@ -47,7 +47,7 @@ NikaidouHiroItem: {
 JougasakiNoahItem: {
 	DisplayName: 伪装矮帽
 	Tooltip: 对着物品按下中键以切换死亡音效
-	SinnerType: "[-虚伪的艺术家-]"
+	SinnerType: -虚伪的艺术家-
 	SinnerTooltip:
 		'''
 		她在痛苦中不断挣扎着

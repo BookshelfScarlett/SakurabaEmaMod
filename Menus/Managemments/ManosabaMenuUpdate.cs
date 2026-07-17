@@ -15,16 +15,16 @@ namespace SakurabaEmaMod.Menus.Managemments
     /// </summary>
     public class ManosabaMenuUpdate
     {
-        public static ManosabaHud LoadGame => ManoHudManager.UICollection[GetInstance<LoadGame>().Type];
-        public static ManosabaHud Options => ManoHudManager.UICollection[GetInstance<Options>().Type];
-        public static ManosabaHud Gallery => ManoHudManager.UICollection[GetInstance<Gallery>().Type];
-        public static ManosabaHud Exit => ManoHudManager.UICollection[GetInstance<Exit>().Type];
-        public static ManosabaHud LoadHud => ManoHudManager.UICollection[GetInstance<LoadHud>().Type];
-        public static ManosabaHud GalleryHud => ManoHudManager.UICollection[GetInstance<GalleryHud>().Type];
-        public static ManosabaHud SwitchMenu => ManoHudManager.UICollection[GetInstance<SwitchMenu>().Type];
-        public static ManosabaHud RightArrow => ManoHudManager.UICollection[GetInstance<RightArrow>().Type];
-        public static ManosabaHud LeftArrow => ManoHudManager.UICollection[GetInstance<LeftArrow>().Type];
-        public static ManosabaHud Logo => ManoHudManager.UICollection[GetInstance<Logo>().Type];
+        public static ManosabaHud LoadGame => ManosabaHudManager.UICollection[GetInstance<LoadGame>().Type];
+        public static ManosabaHud Options => ManosabaHudManager.UICollection[GetInstance<Options>().Type];
+        public static ManosabaHud Gallery => ManosabaHudManager.UICollection[GetInstance<Gallery>().Type];
+        public static ManosabaHud Exit => ManosabaHudManager.UICollection[GetInstance<Exit>().Type];
+        public static ManosabaHud LoadHud => ManosabaHudManager.UICollection[GetInstance<LoadHud>().Type];
+        public static ManosabaHud GalleryHud => ManosabaHudManager.UICollection[GetInstance<GalleryHud>().Type];
+        public static ManosabaHud SwitchMenu => ManosabaHudManager.UICollection[GetInstance<SwitchMenu>().Type];
+        public static ManosabaHud RightArrow => ManosabaHudManager.UICollection[GetInstance<RightArrow>().Type];
+        public static ManosabaHud LeftArrow => ManosabaHudManager.UICollection[GetInstance<LeftArrow>().Type];
+        public static ManosabaHud Logo => ManosabaHudManager.UICollection[GetInstance<Logo>().Type];
         //这里也同样是会做一些处理的。
         public static bool ToManosabaMenu = true;
         public static bool ToOtherMenu = false;
@@ -70,7 +70,9 @@ namespace SakurabaEmaMod.Menus.Managemments
             if (Main.menuMode == ManosabaMenu.ID)
                 UpdateButtons();
             //当前有任何正在执行的二级UI都不要尝试做这个行为。
-            if (!ManoHudManager.ActiveDepth[2])
+            //这里有一个查看是否允许切换menu的判定
+            //实际上是为了判定玩家是否正在切换主界面，如果没有在切换主界面的时候这里也是不会进行的
+            if (!ManosabaHudManager.ActiveDepth[2] && !ManosabaBackground.CanChangeMenu)
             {
                 bool isActive = false;
                 if (Main.MouseScreen != LastAnchorPosition)

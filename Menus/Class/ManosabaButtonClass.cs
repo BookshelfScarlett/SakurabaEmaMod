@@ -113,8 +113,12 @@ namespace SakurabaEmaMod.Menus.Class
                 float colorRatios = Clamp(MainMenu.Logo.LogoScaleRatios, 0f, 1f);
                 Color useColor = UseOpacity ? Color.White * Opacity : Color.White * colorRatios;
                 //实际绘制
+                //DrawString(spriteBatch,Position + posOffset + bloomMove);
                 spriteBatch.Draw(useTex, Position + posOffset + bloomMove, null, useColor, Rotation, useTex.Size() / 2, ButtonScale, 0, 0);
             }
+        }
+        public virtual void DrawString(SpriteBatch sb, Vector2 spritePosition)
+        {
             
         }
         public virtual void DrawWithTextValue(SpriteBatch spriteBatch)

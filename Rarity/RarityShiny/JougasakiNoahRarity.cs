@@ -4,6 +4,7 @@ using SakurabaEmaMod.Rarity.RarityDrawHandler;
 using SakurabaEmaMod.Rarity.RarityParticles;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Rarity.RarityShiny
@@ -42,6 +43,7 @@ namespace SakurabaEmaMod.Rarity.RarityShiny
 
         public static void PostDrawFlavor(ref List<RaritySparkle> particleList, DrawableTooltipLine tooltipLine)
         {
+            
             Vector2 textSize = tooltipLine.Font.MeasureString(tooltipLine.Text);
             //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
             //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的

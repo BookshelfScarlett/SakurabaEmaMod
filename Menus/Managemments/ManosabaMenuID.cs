@@ -9,5 +9,9 @@
         public const int HannaSherry = 4;
         public const int YukiMeruru = 5;
         public const int Margo = 6;
+        public const int Tlipoca1 = 7;
+        public const int Tlipoca2 = 8;
+        public const int Leaf1 = 9;
+        public const int Leaf2 = 10;
     }
 }

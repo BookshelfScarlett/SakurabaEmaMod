@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
@@ -46,15 +47,18 @@ namespace SakurabaEmaMod.Core
                 effect.DrawItemName(line);
                 return false;
             }
-            if (line.IsThisLine("SinnerTypeName", Mod.Name))
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
             {
-                effect.DrawFlavorName(line);
-                return false;
-            }
-            if (line.IsThisLine("SinnerTooltipName", Mod.Name))
-            {
-                effect.DrawFlavorTooltip(line);
-                return false;
+                if (line.IsThisLine("SinnerTypeName", Mod.Name))
+                {
+                    effect.DrawFlavorName(line);
+                    return false;
+                }
+                if (line.IsThisLine("SinnerTooltipName", Mod.Name))
+                {
+                    effect.DrawFlavorTooltip(line);
+                    return false;
+                }
             }
             if (line.IsThisLine("Vanity") || line.IsThisLine("Equipable"))
             {

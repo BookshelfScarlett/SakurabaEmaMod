@@ -1,4 +1,5 @@
-﻿using SakurabaEmaMod.Globals.Class;
+﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Rarity.RarityShiny;
@@ -15,7 +16,15 @@ namespace SakurabaEmaMod.Items.Vanity
     {
         public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
         public override int SetRarity => RarityType<JougasakiNoahRarity>();
-        public override int Size => 32;
+        public override TextboxVanity VanityData => new TextboxVanity()
+        {
+            BackgroundEdgeColor = Color.White * .95f,
+            BackgroundColor = Color.Black * .35f,
+            TextColor = Color.White,
+            TextEdgeColor = Color.Black,
+            TitleEdgeColor = Color.White,
+            TitleColor = Color.Black,
+        };
         public override void ExLoad()
         {
             EquipLoader.AddEquipTexture(Mod, TexturePath + "Hair", EquipType.Back, this);

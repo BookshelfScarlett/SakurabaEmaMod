@@ -1,4 +1,5 @@
-﻿using SakurabaEmaMod.Globals.Class;
+﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using Terraria;
 using Terraria.ID;
@@ -10,15 +11,20 @@ namespace SakurabaEmaMod.Items.Vanity
     public class NatsumeAnanItem : CharactorVanity
     {
         public override short SetCharactor => ManosabaGirlID.NatsumeAnan;
-        public override void ExSD()
-        {
-            Item.width = 28;
-            Item.height = 32;
-        }
         public override void ExLoad()
         {
             EquipLoader.AddEquipTexture(Mod, TexturePath + "Hair", EquipType.Back, this);
         }
+        public override TextboxVanity VanityData => new TextboxVanity()
+        {
+            BackgroundColor = Color.Lerp(Color.LightBlue, Color.MediumPurple, 0.5f) * .35f,
+            BackgroundEdgeColor = Color.White * .95f,
+            TextColor = Color.White,
+            TextEdgeColor = Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f),
+            TitleEdgeColor = Color.White,
+            TitleColor = Color.Lerp(Color.RoyalBlue, Color.MediumPurple, 0.5f),
+        };
+
         public override void AddRecipes()
         {
             CreateRecipe().

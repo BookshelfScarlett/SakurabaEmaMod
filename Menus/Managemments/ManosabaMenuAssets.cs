@@ -27,28 +27,35 @@ namespace SakurabaEmaMod.Menus.Managemments
         public static MenuTexPath Main_ExitUnChosen { get; private set; }
         public static MenuTexPath Main_GalleryChosen { get; private set; }
         public static MenuTexPath Main_GalleryUnChosen { get; private set; }
-        public static MenuTexPath Main_LoadGameChosen {  get; private set; }
-        public static MenuTexPath Main_LoadGameUnChosen {  get; private set; }
-        public static MenuTexPath Main_OptionChosen {  get; private set; }
-        public static MenuTexPath Main_OptionUnChosen {  get; private set; }
-        public static MenuTexPath Still_Ema{  get; private set; }
-        public static MenuTexPath Still_Hiro{  get; private set; }
-        public static MenuTexPath Still_Anan{  get; private set; }
-        public static MenuTexPath Still_Noah{  get; private set; }
-        public static MenuTexPath Still_HannaSherry{  get; private set; }
-        public static MenuTexPath Still_YukiMeruru{  get; private set; }
-        public static MenuTexPath Still_Margo{  get; private set; }
-        public static MenuTexPath Main_Mask {  get; private set; }
-        public static MenuTexPath Main_Title {  get; private set; }
+        public static MenuTexPath Main_LoadGameChosen { get; private set; }
+        public static MenuTexPath Main_LoadGameUnChosen { get; private set; }
+        public static MenuTexPath Main_OptionChosen { get; private set; }
+        public static MenuTexPath Main_OptionUnChosen { get; private set; }
+        public static MenuTexPath Still_Ema { get; private set; }
+        public static MenuTexPath Still_Hiro { get; private set; }
+        public static MenuTexPath Still_Anan { get; private set; }
+        public static MenuTexPath Still_Noah { get; private set; }
+        public static MenuTexPath Still_HannaSherry { get; private set; }
+        public static MenuTexPath Still_YukiMeruru { get; private set; }
+        public static MenuTexPath Still_Margo { get; private set; }
+        public static MenuTexPath Main_Mask { get; private set; }
+        public static MenuTexPath Main_Title { get; private set; }
+        public static MenuTexPath Main_Title_CN { get; private set; }
         public static MenuTexPath Main_ArrowLeft { get; private set; }
         public static MenuTexPath Main_ArrowRight { get; private set; }
-        public static MenuTexPath Alt_ButtonChosen {  get; private set; }
-        public static MenuTexPath Alt_ButtonUnChosen {  get; private set; }
+        public static MenuTexPath Alt_ButtonChosen { get; private set; }
+        public static MenuTexPath Alt_ButtonUnChosen { get; private set; }
         public static MenuTexPath Alt_ExitUnChosen { get; private set; }
         public static MenuTexPath Alt_ExitChosen { get; private set; }
-        public static MenuTexPath Alt_CornerDeco {  get; private set; }
-        public static MenuTexPath Alt_Mask {  get; private set; }
-        public static MenuTexPath[] ManosabaBackgroundList = new MenuTexPath[5];
+        public static MenuTexPath Alt_CornerDeco { get; private set; }
+        public static MenuTexPath Alt_Mask { get; private set; }
+
+        public static MenuTexPath Yard_Tlipoca1 { get; private set; }
+        public static MenuTexPath Yard_Tlipoca2 { get; private set; }
+        public static MenuTexPath Yard_Leaf1 { get; private set; }
+        public static MenuTexPath Yard_Leaf2 { get; private set; }
+
+        public static MenuTexPath[] ManosabaBackgroundList = new MenuTexPath[15];
         public override void Load()
         {
             Main_ExitChosen = new MenuTexPath($"{Path}{nameof(Main_ExitChosen)}");
@@ -62,12 +69,13 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_Ema = new MenuTexPath($"{StillPath}{nameof(Still_Ema)}");
             Still_Hiro = new MenuTexPath($"{StillPath}{nameof(Still_Hiro)}");
             Still_Anan = new MenuTexPath($"{StillPath}{nameof(Still_Anan)}");
-            Still_Noah  = new MenuTexPath($"{StillPath}{nameof(Still_Noah)}");
+            Still_Noah = new MenuTexPath($"{StillPath}{nameof(Still_Noah)}");
             Still_HannaSherry = new MenuTexPath($"{StillPath}{nameof(Still_HannaSherry)}");
             Still_YukiMeruru = new MenuTexPath($"{StillPath}{nameof(Still_YukiMeruru)}");
             Still_Margo = new MenuTexPath($"{StillPath}{nameof(Still_Margo)}");
             Main_Mask = new MenuTexPath($"{Path}{nameof(Main_Mask)}");
             Main_Title = new MenuTexPath($"{Path}{nameof(Main_Title)}");
+            Main_Title_CN = new MenuTexPath($"{Path}{nameof(Main_Title_CN)}");
             Main_ArrowLeft = new MenuTexPath($"{Path}{nameof(Main_ArrowLeft)}");
             Main_ArrowRight = new MenuTexPath($"{Path}{nameof(Main_ArrowRight)}");
 
@@ -78,8 +86,15 @@ namespace SakurabaEmaMod.Menus.Managemments
             Alt_CornerDeco = new MenuTexPath($"{Path}{nameof(Alt_CornerDeco)}");
             Alt_Mask = new MenuTexPath($"{Path}{nameof(Alt_Mask)}");
 
+            Yard_Tlipoca1 = new MenuTexPath($"{StillPath}{nameof(Yard_Tlipoca1)}");
+            Yard_Tlipoca2 = new MenuTexPath($"{StillPath}{nameof(Yard_Tlipoca2)}");
+            Yard_Leaf1 = new MenuTexPath($"{StillPath}{nameof(Yard_Leaf1)}");
+            Yard_Leaf2 = new MenuTexPath($"{StillPath}{nameof(Yard_Leaf2)}");
+
+
+
             //完成内容的实例化后再把这些东西扔进数组内调用
-            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noah, Still_HannaSherry, Still_YukiMeruru, Still_Margo];
+            ManosabaBackgroundList = [Still_Ema, Still_Hiro, Still_Anan, Still_Noah, Still_HannaSherry, Still_YukiMeruru, Still_Margo, Yard_Tlipoca1, Yard_Tlipoca2, Yard_Leaf1, Yard_Leaf2];
         }
         public override void Unload()
         {
@@ -94,9 +109,10 @@ namespace SakurabaEmaMod.Menus.Managemments
 
             Main_Mask = null;
             Main_Title = null;
+            Main_Title_CN = null;
             Main_ArrowLeft = null;
             Main_ArrowRight = null;
-   
+
             Still_Ema = null;
             Still_Hiro = null;
             Still_Anan = null;
@@ -105,12 +121,18 @@ namespace SakurabaEmaMod.Menus.Managemments
             Still_YukiMeruru = null;
             Still_Margo = null;
 
+
             Alt_ButtonChosen = null;
             Alt_ButtonUnChosen = null;
             Alt_ExitUnChosen = null;
             Alt_CornerDeco = null;
             Alt_Mask = null;
             Alt_ExitChosen = null;
+
+            Yard_Tlipoca1 = null;
+            Yard_Tlipoca2 = null;
+            Yard_Leaf1 = null;
+            Yard_Leaf2 = null;
             ManosabaBackgroundList = null;
         }
     }

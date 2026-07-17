@@ -12,6 +12,10 @@ Menu: {
 	ModVersion: Ver. 1.3.1.3
 	LogoCanPlay: 现在可以在主界面按Logo来播放Bloom(PV)了！
 	InGameContext: 按下鼠标右键以跳过
+	ButtonStart: 加载游戏
+	ButtonOption: 设置
+	ButtonGallery: 画廊
+	ButtonExit: 退出
 }
 
 // Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj
@@ -21,7 +25,7 @@ Configs: {
 		DisplayName: 客户端设置
 
 		ParticleDontEmitLight: {
-			Label: 模组粒子不再发光
+			Label: "[i:Torch]模组粒子不再发光"
 			Tooltip:
 				'''
 				开启后让模组内的粒子，如人物时装身上散发的粒子不再发光
@@ -30,7 +34,7 @@ Configs: {
 		}
 
 		NoFinalBloomPlay: {
-			Label: 击败月球领主后不播放Bloom(PV)
+			Label: "[i:MusicBox]击败月球领主后不播放Bloom(PV)"
 			Tooltip:
 				'''
 				开启后在击败月球领主时不再播放Bloom(PV)
@@ -39,11 +43,29 @@ Configs: {
 		}
 
 		UseCharactorLifeBar: {
-			Label: 使用角色专属的生命条
+			Label: "[i:LifeCrystal]使用角色专属的生命条"
 			Tooltip:
 				'''
 				开启后，在佩戴角色时装之后启用模组提供的专属生命条
 				默认开启
+				'''
+		}
+
+		TraditionalTooltipShowcase: {
+			Label: "[i:Paintbrush]旧版时装原罪文本绘制方式"
+			Tooltip:
+				'''
+				启用后，角色时装道具的原罪描述将会使用旧版的显示方案
+				默认关闭
+				'''
+		}
+
+		NoCustomCharactorSounds: {
+			Label: "[i:Megaphone]禁用角色时装音效"
+			Tooltip:
+				'''
+				启用后，角色时装道具不再修改玩家的受伤音效
+				默认关闭
 				'''
 		}
 	}

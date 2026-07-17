@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Core.Hud;
 using SakurabaEmaMod.Menus.Managemments;
+using Steamworks;
 using Terraria;
 using Terraria.Audio;
 
@@ -58,6 +59,7 @@ namespace SakurabaEmaMod.Menus.MainMenu
             }
 
         }
+        private const ulong AuthorSteamID = 76561198813687655;
         public override void OnMouseLeftRelease()
         {
             //播放BloomPV的时候做掉这里避免眼疾手快时意外退出
@@ -68,23 +70,38 @@ namespace SakurabaEmaMod.Menus.MainMenu
             ManosabaBackground.CanChangeMenu = true;
             //按下的时候给背景上一层黑底，但是不影响其他地方的绘制。
             ManosabaBackground.BackgroundFading = 1;
-            ref int BackID = ref ManosabaBackground.CurrentBackgroundID; 
+            ref int BackID = ref ManosabaBackground.CurrentBackgroundID;
+            ulong steamID = SteamUser.GetSteamID().m_SteamID;
+            string steamName = SteamFriends.GetPersonaName().ToLower();
+
+            int endID = CheckSteamUser();
             if (IsLeftArrow)
             {
                 if (BackID <= 0)
-                    BackID = ManosabaMenuID.Margo;
+                    BackID = endID;
                 else
                     BackID -= 1;
 
             }
             else
             {
-                if (BackID >= ManosabaMenuID.Margo)
+                if (BackID >= endID)
                     BackID = ManosabaMenuID.Ema;
                 else
                     BackID += 1;
             }
         }
+        public static int CheckSteamUser()
+        {
+            //确定一下Steam玩家的状态
+            //只有正确的steam名或者正确的steamID，才会允许使用特莉波卡的背景
+            ulong steamID = SteamUser.GetSteamID().m_SteamID;
+            string steamName = SteamFriends.GetPersonaName().ToLower();
+            bool isLegalCondition = steamID == AuthorSteamID || steamName.Contains("kino") || steamName.Contains("冰语");
+            return isLegalCondition ? ManosabaMenuID.Leaf2 : ManosabaMenuID.Margo;
+
+        }
+
         public override void PostUpdate()
         {
             Rectangle = Hitbox;

@@ -166,6 +166,7 @@ namespace SakurabaEmaMod.Globals.Cutscenes
                 //记得设置logo的情况，这是个静态数据，所以没问题
                 Logo.IsDoneMoonLordFight = true;
                 Main.LocalPlayer.ManosabaMod().IsPlayingBloom = false;
+                Main.LocalPlayer.ManosabaMod().IsDoneFinalBossFight = true;
                 base.OnEnd();
             }
         }

@@ -1,6 +1,7 @@
 ﻿using SakurabaEmaMod.Assets.Register;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Items.Vanity;
+using Steamworks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -34,6 +35,7 @@ namespace SakurabaEmaMod.Globals.Players
             tag.Add(nameof(ManosabaGirl), ManosabaGirl);
             tag.Add(nameof(IsGiveAnyVanityItem), IsGiveAnyVanityItem);
             tag.Add(nameof(NoaButterflyDeath), NoaButterflyDeath);
+            tag.Add(nameof(IsDoneFinalBossFight), IsDoneFinalBossFight);
 
             tag.Add(nameof(EmaKiangSound), EmaKiangSound);
             tag.Add(nameof(NoahCryDeath), NoahCryDeath);
@@ -44,6 +46,10 @@ namespace SakurabaEmaMod.Globals.Players
             ManosabaGirl = tag.GetShort(nameof(ManosabaGirl));
             NoaButterflyDeath = tag.GetBool(nameof(NoaButterflyDeath));
             IsGiveAnyVanityItem = tag.GetBool(nameof(IsGiveAnyVanityItem));
+            IsDoneFinalBossFight = tag.GetBool(nameof(IsDoneFinalBossFight));
+
+            EmaKiangSound = tag.GetBool(nameof(EmaKiangSound));
+            NoahCryDeath = tag.GetBool(nameof(NoahCryDeath));
 
         }
         public override void OnEnterWorld()

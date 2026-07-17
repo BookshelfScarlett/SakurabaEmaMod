@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Core.NetCodes;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
@@ -114,14 +115,14 @@ namespace SakurabaEmaMod.Globals.Players
         }
         private void EmaDeathSound()
         {
-            if (!草艾玛)
+            if (草艾玛)
                 return;
             SoundStyle sound = EmaKiangSound ? ManosabaSounds.Ema_Kiang : ManosabaSounds.Ema_HitHeavy;
             SoundEngine.PlaySound(sound, Player.Center);
         }
         private void EmaPlayerSound()
         {
-            if (!草艾玛)
+            if (草艾玛)
                 return;
             //kiang
             if (Main.netMode == NetmodeID.Server)
@@ -344,7 +345,7 @@ namespace SakurabaEmaMod.Globals.Players
         {
             get
             {
-                return ManosabaGirl != ManosabaGirlID.None;
+                return ManosabaGirl != ManosabaGirlID.None && !ManosabaClientConfig.Instance.NoCustomCharactorSounds;
             }
         }
 

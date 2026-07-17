@@ -22,6 +22,12 @@ namespace SakurabaEmaMod.Core.Configs
         [BackgroundColor(192, 54, 64, 192)]
         [DefaultValue(true)]
         public bool UseCharactorLifeBar { get; set; }
+        [BackgroundColor(192, 54, 64, 192)]
+        [DefaultValue(false)]
+        public bool TraditionalTooltipShowcase{ get; set; }
+        [BackgroundColor(192, 54, 64, 192)]
+        [DefaultValue(false)]
+        public bool NoCustomCharactorSounds { get; set; }
 
     }
 }

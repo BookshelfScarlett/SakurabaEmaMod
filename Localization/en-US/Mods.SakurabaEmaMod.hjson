@@ -9,9 +9,13 @@ Menu: {
 	GalleryText: Gallery
 	Options: Options
 	SwitchManosabaBackground: ""
-	ModVersion: Ver. 1.3.1.3
+	ModVersion: Ver. 1.3.2.3
 	LogoCanPlay: Now you can click logo on main title screen to play Bloom(PV)!
 	InGameContext: Press Right Click to skip
+	ButtonStart: ""
+	ButtonOption: ""
+	ButtonGallery: ""
+	ButtonExit: ""
 }
 
 Projectiles.NoaPainterProj.DisplayName: Noa Painter Proj
@@ -44,6 +48,24 @@ Configs: {
 				'''
 				Enables to use Custom Charactor Life Bar while equpipping charactor vanity
 				Default by true
+				'''
+		}
+
+		TraditionalTooltipShowcase: {
+			Label: Traditional Sin Tooltip Showcase
+			Tooltip:
+				'''
+				Enables to use traditional sin tooltip showcase for charactor vanity item
+				Default by false
+				'''
+		}
+
+		NoCustomCharactorSounds: {
+			Label: No Custom Charactor Sounds
+			Tooltip:
+				'''
+				Enables to stop custom hit sound for charactor vanity item
+				Default by false
 				'''
 		}
 	}

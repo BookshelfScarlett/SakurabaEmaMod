@@ -16,10 +16,10 @@ namespace SakurabaEmaMod.Menus.AltMenu
     {
         public static bool IsEnable = false;
         public static bool IsFading = true;
-        public static ManosabaHud SinglePlayer => ManoHudManager.UICollection[GetInstance<SinglePlayer>().Type];
-        public static ManosabaHud Multiplayer => ManoHudManager.UICollection[GetInstance<Multiplayer>().Type];
-        public static ManosabaHud Workshop => ManoHudManager.UICollection[GetInstance<Workshop>().Type];
-        public static ManosabaHud CancelLoad => ManoHudManager.UICollection[GetInstance<CancelLoad>().Type];
+        public static ManosabaHud SinglePlayer => ManosabaHudManager.UICollection[GetInstance<SinglePlayer>().Type];
+        public static ManosabaHud Multiplayer => ManosabaHudManager.UICollection[GetInstance<Multiplayer>().Type];
+        public static ManosabaHud Workshop => ManosabaHudManager.UICollection[GetInstance<Workshop>().Type];
+        public static ManosabaHud CancelLoad => ManosabaHudManager.UICollection[GetInstance<CancelLoad>().Type];
         public override int UIDepth => 2;
         public override bool PreSetDepth() => IsEnable;
         public override void PostUpdate()

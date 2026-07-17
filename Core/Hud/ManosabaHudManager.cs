@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Core.Hud
 {
-    public class ManoHudManager : ModSystem
+    public class ManosabaHudManager : ModSystem
     {
         // 所有UI的集合，UI的Type为在集合中的索引
         public static List<ManosabaHud> UICollection = new List<ManosabaHud>();

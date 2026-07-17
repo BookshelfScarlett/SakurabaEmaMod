@@ -1,16 +1,21 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
+using SakurabaEmaMod.Globals.Textbox;
 using SakurabaEmaMod.Rarity.RarityShiny;
 using System.Collections.Generic;
+using System.Security;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace SakurabaEmaMod.Items.Vanity
 {
+
     /// <summary>
     /// 代办：将其扔到统一基类管理
     /// </summary>
@@ -64,22 +69,27 @@ namespace SakurabaEmaMod.Items.Vanity
                 AddTile(TileID.Loom).
                 Register();
         }
+        public static IReadOnlyList<TooltipLine> CacheList = [];
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             //遍历一遍寻找需要绘制的特殊台词位置的索引
             //这里需要把对应的原罪名与原罪文本直接植入到物品名的下方，让其看起来比较协调
-            FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
-            //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
-            string value = this.GetLocalizedValue("FlavorTooltip").ToLangValue();
-            string realTooltipValue = this.GetLocalizedValue("RealTooltip").ToLangValue();
-            //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
-            TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
-            TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
-            //植入Tooltip。
-            tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
-            tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
-            //艾玛有中键音效切换，这里需要提示玩家当前使用的版本
-            //直接用的封装CreateTooltip方法
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+            {
+                FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
+                //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
+                string value = this.GetLocalizedValue("FlavorTooltip").ToLangValue();
+                string realTooltipValue = this.GetLocalizedValue("RealTooltip").ToLangValue();
+                //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
+                TooltipLine flavorTooltip = new TooltipLine(Mod, "FlavorTooltipName", value);
+                TooltipLine realTooltip = new TooltipLine(Mod, "RealToolTipName", realTooltipValue);
+                //植入Tooltip。
+                tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
+                tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
+                
+            }
+                //艾玛有中键音效切换，这里需要提示玩家当前使用的版本
+                //直接用的封装CreateTooltip方法
             Player player = Main.LocalPlayer;
             if (player.ManosabaMod().EmaKiangSound)
             {
@@ -87,6 +97,7 @@ namespace SakurabaEmaMod.Items.Vanity
             }
             else
                 tooltips.CreateTooltip(this.GetLocalizedValue("RegularSound"), LineName: "SoundName");
+            CacheList = tooltips;
         }
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
@@ -94,19 +105,23 @@ namespace SakurabaEmaMod.Items.Vanity
             if (line.Mod == "Terraria" && line.Name == "ItemName")
             {
                 SakurabaEmaRarity.DrawRarity(line);
+                TextboxManager.FirstLineY = line.Y;
                 return false;
             }
-            //为原罪名文本绘制特效
-            if (line.Mod == Mod.Name && line.Name == "FlavorTooltipName")
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
             {
-                SakurabaEmaRarity.DrawFlavor(line);
-                return false;
-            }
-            //为原罪文本绘制特效
-            if (line.Mod == Mod.Name && line.Name == "RealToolTipName")
-            {
-                SakurabaEmaRarity.DrawTooltip(line);
-                return false;
+                //为原罪名文本绘制特效
+                if (line.Mod == Mod.Name && line.Name == "FlavorTooltipName")
+                {
+                    SakurabaEmaRarity.DrawFlavor(line);
+                    return false;
+                }
+                //为原罪文本绘制特效
+                if (line.Mod == Mod.Name && line.Name == "RealToolTipName")
+                {
+                    SakurabaEmaRarity.DrawTooltip(line);
+                    return false;
+                }
             }
             if (line.IsThisLine("Vanity") || line.IsThisLine("Equipable"))
             {
@@ -128,6 +143,25 @@ namespace SakurabaEmaMod.Items.Vanity
         }
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+                return;
+            string titleString = this.GetLocalizationKey("FlavorTooltip").ToLangValue();
+            string sinString = this.GetLocalizedValue("RealTooltip").ToLangValue();
+            TextboxSettings sets = new TextboxSettings()
+            {
+                TitleText = titleString,
+                TitleEdgeColor = Color.White,
+                TitleTextColor = Color.HotPink,
+                HasTitle = true,
+                BackgroundColor = Color.Lerp(Color.WhiteSmoke, Color.HotPink, 0.50f) * .46f,
+                BackgroundEdgeColor = Color.White * .98f,
+                MainText = sinString,
+                TextColor = Color.White,
+                TextEdgeColor = Color.HotPink,
+                TitleTextSize = 1.15f
+            };
+            TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheList, ref sets);
+
             base.PostDrawTooltipLine(line);
         }
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
@@ -163,6 +197,49 @@ namespace SakurabaEmaMod.Items.Vanity
         {
             if (!hideVisual)
                 player.ManosabaMod().ManosabaGirl = ManosabaGirlID.SakurabaEma;
+        }
+    }
+    public class EmaPlayer: ModPlayer
+    {
+        public bool Equipped = false;
+        public override void ResetEffects()
+        {
+            Equipped = false;
+        }
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add(nameof(Equipped), Equipped);
+        }
+        public override void LoadData(TagCompound tag)
+        {
+            Equipped = tag.GetBool(nameof(Equipped));
+        }
+        public override void FrameEffects()
+        {
+            bool equip = false;
+            if (Main.gameMenu)
+            {
+                GetArmorSlotItem(ref equip);
+            }
+            if (equip)
+            {
+                string name = "SakurabaEmma";
+                Player.legs = EquipLoader.GetEquipSlot(Mod, name, EquipType.Legs);
+                Player.body = EquipLoader.GetEquipSlot(Mod, name, EquipType.Body);
+                Player.head = EquipLoader.GetEquipSlot(Mod, name, EquipType.Head);
+
+            }
+        }
+        public void GetArmorSlotItem(ref bool equip)
+        {
+            foreach (Item item in Player.armor)
+            {
+                if (item.type == ItemType<SakurabaEmma>())
+                {
+                    equip = true;
+                    break;
+                }
+            }
         }
     }
 }

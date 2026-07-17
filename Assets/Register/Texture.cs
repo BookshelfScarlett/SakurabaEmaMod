@@ -56,6 +56,7 @@ namespace SakurabaEmaMod.Assets.Register
 
         public static Tex2DWithPath Texture_BloomShockwave { get; set; }
         public static Tex2DWithPath Texture_RarityGlow { get; set; }
+        public static Tex2DWithPath Texture_WhiteCubeBig { get; set; }
 
         public static Tex2DWithPath InvisAsset { get; private set; }
         public static Texture2D Particle_SharpTear => TextureAssets.Extra[ExtrasID.SharpTears].Value;
@@ -80,6 +81,7 @@ namespace SakurabaEmaMod.Assets.Register
 
             Texture_BloomShockwave = new Tex2DWithPath($"{Path_General}{nameof(Texture_BloomShockwave)}");
             Texture_RarityGlow = new Tex2DWithPath($"{Path_General}{nameof(Texture_RarityGlow)}");
+            Texture_WhiteCubeBig = new Tex2DWithPath($"{Path_General}{nameof(Texture_WhiteCubeBig)}");
 
         }
         public override void Unload()
@@ -99,6 +101,7 @@ namespace SakurabaEmaMod.Assets.Register
 
             Texture_BloomShockwave = null;
             Texture_RarityGlow = null;
+            Texture_WhiteCubeBig = null;
         }
     }
 }

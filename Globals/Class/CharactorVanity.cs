@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Core;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
+using SakurabaEmaMod.Globals.Textbox;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -11,6 +13,15 @@ using Terraria.ModLoader;
 
 namespace SakurabaEmaMod.Globals.Class
 {
+    public struct TextboxVanity(Color textColor, Color titleColor, Color textEdgeColor, Color titleEdgeColor, Color backgroundColor, Color backgroundEdgeColor)
+    {
+        public Color TextColor = textColor;
+        public Color TitleColor = titleColor;
+        public Color TextEdgeColor = textEdgeColor;
+        public Color TitleEdgeColor = titleEdgeColor;
+        public Color BackgroundColor = backgroundColor;
+        public Color BackgroundEdgeColor = backgroundEdgeColor;
+    }
     public abstract class CharactorVanity : ModItem, ILocalizedModType
     {
         public override string LocalizationCategory => "Items";
@@ -35,6 +46,7 @@ namespace SakurabaEmaMod.Globals.Class
         public virtual bool IsVanityItem => true;
         public int FlavorTooltipIndex = -1;
         public string TexturePath => $"SakurabaEmaMod/Assets/Texture/CharactorSets/{GetName}/";
+        public virtual TextboxVanity VanityData { get; set; }
         private string GetName
         {
             get
@@ -54,7 +66,7 @@ namespace SakurabaEmaMod.Globals.Class
         public override string Texture => $"{TexturePath}Item";
         public sealed override void SetDefaults()
         {
-            Item.width = Item.height = Size;
+            Item.width = Item.height = 16;
             Item.rare = SetRarity;
             Item.vanity = true;
             Item.accessory = true;
@@ -124,16 +136,21 @@ namespace SakurabaEmaMod.Globals.Class
         {
             //遍历一遍寻找需要绘制的特殊台词位置的索引
             //这里需要把对应的原罪名与原罪文本直接植入到物品名的下方，让其看起来比较协调
-            FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
-            //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
-            string value = ManosabaMethods.ToLangValue(this.GetLocalizedValue("SinnerType"));
-            string realTooltipValue = ManosabaMethods.ToLangValue(this.GetLocalizedValue("SinnerTooltip"));
-            //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
-            TooltipLine flavorTooltip = new TooltipLine(Mod, "SinnerTypeName", value);
-            TooltipLine realTooltip = new TooltipLine(Mod, "SinnerTooltipName", realTooltipValue);
-            //植入Tooltip。
-            tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
-            tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+            {
+                FlavorTooltipIndex = tooltips.FindIndex(line => line.Name == "ItemName" && line.Mod == "Terraria");
+                //通过本地化路径获取相应的内容，一个是原罪名，第二个为原罪文本
+                string value = ManosabaMethods.ToLangValue(this.GetLocalizedValue("SinnerType"));
+                string realTooltipValue = ManosabaMethods.ToLangValue(this.GetLocalizedValue("SinnerTooltip"));
+                //实例化TooltipLine，这里的名字不能乱写，需要作为后面绘制特殊效果用的一个索引
+                TooltipLine flavorTooltip = new TooltipLine(Mod, "SinnerTypeName", value);
+                TooltipLine realTooltip = new TooltipLine(Mod, "SinnerTooltipName", realTooltipValue);
+                //植入Tooltip。
+                tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
+                tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
+            }
+            else
+                CacheTooltipLine = tooltips;
             ExModifyTooltip(tooltips);
         }
         public virtual void ExModifyTooltip(List<TooltipLine> tooltips) { }
@@ -145,9 +162,14 @@ namespace SakurabaEmaMod.Globals.Class
         /// <param name="yOffset"></param>
         /// <returns></returns>
         public virtual bool CustomDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) => false;
+        public static IReadOnlyList<TooltipLine> CacheTooltipLine = [];
         public sealed override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
-            if(CustomDrawTooltipLine(line, ref yOffset)) 
+            if (line.IsItemName())
+            {
+                TextboxManager.FirstLineY = line.Y;
+            }
+            if (CustomDrawTooltipLine(line, ref yOffset))
                 return true;
             //这里的代码已经被高度简化了，最主要是为了实现无需重复批量创建的效果
             //如果需要去查阅的话，最好直接跳转到对应的System下面查看
@@ -162,25 +184,27 @@ namespace SakurabaEmaMod.Globals.Class
                 return false;
         }
         public virtual bool ExPreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) => true;
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
-            Texture2D tex = TextureAssets.Item[Type].Value;
-            Texture2D edge = Request<Texture2D>(Texture + "_Edge").Value;
-            spriteBatch.Draw(tex, position, frame, Color.White, 0, tex.Size()/2, scale, 0, 0);
-            spriteBatch.Draw(edge, position, frame, Color.White, 0, edge.Size()/2, scale, 0, 0);
-            return false;
-        }
-        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
-        {
-            Texture2D tex = TextureAssets.Item[Type].Value;
-            Texture2D edge = Request<Texture2D>(Texture + "_Edge").Value;
-            Vector2 position = Item.position - Main.screenPosition + tex.Size() / 2;
-            Rectangle iFrame = tex.Frame();
-            //绘制物品本身
-            spriteBatch.Draw(tex, position, iFrame, Color.White, 0f, tex.Size() / 2, scale, 0f, 0f);
-            spriteBatch.Draw(edge, position, iFrame, Color.White, 0f, edge.Size() / 2, scale, 0f, 0f);
-            Lighting.AddLight(position, TorchID.UltraBright);
-            return false;
+            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+                return;
+            string titleString = this.GetLocalizationKey("SinnerType").ToLangValue();
+            string sinString = this.GetLocalizedValue("SinnerTooltip").ToLangValue();
+            TextboxSettings sets = new TextboxSettings()
+            {
+                BackgroundColor = VanityData.BackgroundColor,
+                BackgroundEdgeColor = VanityData.BackgroundEdgeColor,
+                HasTitle = true,
+                TextColor = VanityData.TextColor,
+                TextEdgeColor = VanityData.TextEdgeColor,
+                TitleEdgeColor = VanityData.TitleEdgeColor,
+                TitleTextColor = VanityData.TitleColor,
+                TitleText = titleString,
+                MainText = sinString,
+                TitleTextSize = 1.15f
+            };
+            TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheTooltipLine, ref sets);
+
         }
     }
 }

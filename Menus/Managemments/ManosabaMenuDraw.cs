@@ -19,16 +19,16 @@ namespace SakurabaEmaMod.Menus.Managemments
     public class ManosabaMenuDraw
     {
         #region 一大堆引用
-        public static ManosabaHud LoadGame => ManoHudManager.UICollection[GetInstance<LoadGame>().Type];
-        public static ManosabaHud Options => ManoHudManager.UICollection[GetInstance<Options>().Type];
-        public static ManosabaHud Gallery => ManoHudManager.UICollection[GetInstance<Gallery>().Type];
-        public static ManosabaHud Exit => ManoHudManager.UICollection[GetInstance<Exit>().Type];
-        public static ManosabaHud SwitchMenu => ManoHudManager.UICollection[GetInstance<SwitchMenu>().Type];
-        public static ManosabaHud LoadHud => ManoHudManager.UICollection[GetInstance<LoadHud>().Type];
-        public static ManosabaHud GalleryHud => ManoHudManager.UICollection[GetInstance<GalleryHud>().Type];
-        public static ManosabaHud RightArrow => ManoHudManager.UICollection[GetInstance<RightArrow>().Type];
-        public static ManosabaHud LeftArrow => ManoHudManager.UICollection[GetInstance<LeftArrow>().Type];
-        public static ManosabaHud Logo => ManoHudManager.UICollection[GetInstance<Logo>().Type];
+        public static ManosabaHud LoadGame => ManosabaHudManager.UICollection[GetInstance<LoadGame>().Type];
+        public static ManosabaHud Options => ManosabaHudManager.UICollection[GetInstance<Options>().Type];
+        public static ManosabaHud Gallery => ManosabaHudManager.UICollection[GetInstance<Gallery>().Type];
+        public static ManosabaHud Exit => ManosabaHudManager.UICollection[GetInstance<Exit>().Type];
+        public static ManosabaHud SwitchMenu => ManosabaHudManager.UICollection[GetInstance<SwitchMenu>().Type];
+        public static ManosabaHud LoadHud => ManosabaHudManager.UICollection[GetInstance<LoadHud>().Type];
+        public static ManosabaHud GalleryHud => ManosabaHudManager.UICollection[GetInstance<GalleryHud>().Type];
+        public static ManosabaHud RightArrow => ManosabaHudManager.UICollection[GetInstance<RightArrow>().Type];
+        public static ManosabaHud LeftArrow => ManosabaHudManager.UICollection[GetInstance<LeftArrow>().Type];
+        public static ManosabaHud Logo => ManosabaHudManager.UICollection[GetInstance<Logo>().Type];
 
         #endregion 
         public static SpriteBatch SB { get => Main.spriteBatch; }

@@ -1,4 +1,5 @@
-﻿using SakurabaEmaMod.Globals.Class;
+﻿using Microsoft.Xna.Framework;
+using SakurabaEmaMod.Globals.Class;
 using SakurabaEmaMod.Globals.Enums;
 using Terraria;
 using Terraria.ID;
@@ -10,11 +11,16 @@ namespace SakurabaEmaMod.Items.Vanity
     internal class NikaidouHiroItem : CharactorVanity
     {
         public override short SetCharactor => ManosabaGirlID.NikaidouHiro;
-        public override void ExSD()
+        public override TextboxVanity VanityData => new TextboxVanity()
         {
-            Item.width = 32;
-            Item.height = 32;
-        }
+            BackgroundEdgeColor = Color.Lerp(Color.Red, Color.IndianRed,0.1f) with { A = 255},
+            BackgroundColor = Color.Lerp(Color.Black,Color.White,0.132f)* .5f,
+            TextColor = Color.Lerp(Color.Red,Color.White,0.134f) with { A = 255},
+            TextEdgeColor = Color.Black,
+            TitleEdgeColor = Color.Red,
+            TitleColor = Color.Black,
+        };
+
         public override void ExLoad()
         {
             EquipLoader.AddEquipTexture(Mod, TexturePath + "Hair", EquipType.Back, this);
