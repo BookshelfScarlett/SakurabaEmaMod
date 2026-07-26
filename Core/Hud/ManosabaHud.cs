@@ -8,7 +8,7 @@ namespace SakurabaEmaMod.Core.Hud
 {
     public class ManosabaHud : ModType
     {
-        public AnimationHandler AniProgress = new AnimationHandler(5);
+        public AnimationStruct AniProgress = new AnimationStruct(5);
         public int Type;
         public Vector2 Position;
         public Vector2 Scale;

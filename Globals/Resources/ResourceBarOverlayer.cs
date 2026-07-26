@@ -36,7 +36,10 @@ namespace SakurabaEmaMod.Globals.Resources
                 { ManosabaGirlID.TachibanaSherry, ManosabaResource.TachibanaSherryBar}
             };
             if (_RarityMap.TryGetValue(ManosabaPlayer.ManosabaGirl, out var value))
+            {
                 return !CompareAllAssets(value, context);
+            }
+
             return true;
         }
 
@@ -49,15 +52,21 @@ namespace SakurabaEmaMod.Globals.Resources
                 return;
             GeneralParticleManager(context, isTopLayer);
         }
+        /// <summary>
+        /// 泰拉怎么会没有默认绘制深度呢？
+        /// 泰拉的生命资源条的绘制顺序，或者说图层顺序，由上到下为：
+        /// <br><see langword="MP_Fill"/> -> <see langword="MP_Panel_Right"/></br>
+        /// </summary>
         public bool CompareAllAssets(ManosabaResourceSet setter, ResourceOverlayDrawContext context)
         {
             if (CompareAssets(context.texture, "HP_Panel_Right"))
             {
+                //雪莉的必须得给个特判，不要在这里画而是在魔力条那画
+                if (setter.Equals(ManosabaResource.TachibanaSherryBar))
+                    return true;
                 //诺亚的必须得给个特判，不要在这里画而是在魔力条那画
                 if (setter.Equals(ManosabaResource.JougasakiNoahBar))
-                {
                     return true;
-                }
                 context.texture = setter.Panel_HP_Right;
                 context.source = context.texture.Frame();
                 context.position.X -= 1;
@@ -86,6 +95,11 @@ namespace SakurabaEmaMod.Globals.Resources
 
             if (CompareAssets(context.texture, "MP_Panel_Right"))
             {
+                //雪莉的直接干掉，在postdraw里画
+                if(setter.Equals(ManosabaResource.TachibanaSherryBar))
+                {
+                    return true;
+                }
                 //诺亚的必须得给个特判
                 if (setter.Equals(ManosabaResource.JougasakiNoahBar))
                 {
@@ -100,6 +114,7 @@ namespace SakurabaEmaMod.Globals.Resources
             }
             if (CompareAssets(context.texture, "MP_Fill"))
             {
+                
                 context.texture = setter.Panel_MP_Fill;
                 context.Draw();
                 return true;

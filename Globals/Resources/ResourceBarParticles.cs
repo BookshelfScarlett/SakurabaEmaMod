@@ -47,16 +47,40 @@ namespace SakurabaEmaMod.Globals.Resources
                     break;
                 case ManosabaGirlID.TachibanaSherry:
                     DrawSherryParticle(context);
+                    DrawSherryManaRightPanel(context);
+                    DrawSherryHPRightPanel(context);
+
                     break;
                 default:
                     break;
             }
 
-
         }
 
         private void DrawSherryParticle(ResourceOverlayDrawContext context)
         {
+            //在这里手动创建新的粒子，然后我们再将其添加进需要的表单内
+            //因为没有实际使用一个总的粒子列表来控制所有的粒子绘制，因此这里都是要进行手动操作的
+            if (Main.rand.NextBool(32))
+            {
+                float scale = Main.rand.NextFloat(0.40f * 0.5f, 0.40f);
+                int lifetime = 180;
+                //尽量校准位置避免溢出外边框
+                //不过yysy溢出了也不会咋样。说实话。
+                Vector2 position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
+                Vector2 velocity = Vector2.UnitY * Main.rand.NextFloat(0.05f, 3.55f);
+                RarityShinyOrb rarityShinyOrb = new(position, velocity, RandLerpColor(Color.RoyalBlue, Color.Silver).ToAddColor(), lifetime, scale);
+                TachibanaSherrySparkle.Add(rarityShinyOrb);
+                if (Main.rand.NextBool(3))
+                {
+                    position = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(context.position + Offset, new Vector2(30)));
+                    velocity = Vector2.UnitY * Main.rand.NextFloat(1.05f, 1.55f);
+                    SakuraPetals sakuraPetals = new(position, velocity, RandLerpColor(Color.RoyalBlue, Color.Silver).ToAddColor(100), lifetime, RandRotTwoPi, 1, 0.14f, 0.8f, true);
+                    TachibanaSherrySparkle.Add(sakuraPetals);
+                }
+            }
+            UpdateTooltipParticles(Vector2.Zero, TachibanaSherrySparkle);
+
         }
 
         private void HandleLowerLayerParticle(ResourceOverlayDrawContext context)

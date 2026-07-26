@@ -1,32 +1,57 @@
 ﻿namespace SakurabaEmaMod.Globals.Handlers
 {
-    public class AnimationHandler
+    public struct AnimationStruct(int slot)
     {
-        public int[] AniProgress = [];
-
-        public int[] MaxAniProgress = [];
-
-        public float[] Auxfloat = [];
-
-        public bool[] HasFinish = [];
-
-        public float[] RotVelocity = [];
-
-        public AnimationHandler(int TotalAniUnit)
+        public bool[] IsDone = new bool[slot];
+        public int[] Progress = new int[slot];
+        public int[] MaxProgress = new int[slot];
+        public float[] Buffer = new float[slot];
+    }
+    public static class AniState
+    {
+        public const int Begin = 0;
+        public const int Mid = 1;
+        public const int End = 2;
+    }
+    public enum AniID
+    {
+        Begin,
+        Mid,
+        End
+    }
+    public static class AniMethods
+    {
+        public static bool UpdateAniState(this AnimationStruct animationStruct, int slotID, float bufferLength = 0)
         {
-            // 使用 new int[length] 来创建指定长度的数组
-            AniProgress = new int[TotalAniUnit];
-
-            MaxAniProgress = new int[TotalAniUnit];
-
-            Auxfloat = new float[TotalAniUnit];
-
-            HasFinish = new bool[TotalAniUnit];
-
-            RotVelocity = new float[TotalAniUnit];
+            animationStruct.Progress[slotID]++;
+            if (animationStruct.Progress[slotID] >= animationStruct.MaxProgress[slotID])
+            {
+                if (bufferLength > 0)
+                {
+                    animationStruct.Buffer[slotID]++;
+                    if (animationStruct.Buffer[slotID] >= bufferLength)
+                        animationStruct.IsDone[slotID] = true;
+                }
+                else
+                    animationStruct.IsDone[slotID] = true;
+            }
+            return false;
         }
-        public const int AniBegin = 0;
-        public const int AniMid = 1;
-        public const int AniEnd = 2;
+        public static float GetAniProgress(this AnimationStruct animationStruct, int slotID)
+        {
+            int id = slotID;
+            float progress = animationStruct.Progress[id] / (float)animationStruct.MaxProgress[id];
+            return Clamp(progress, 0f, 1f);
+        }
+        public static bool OnAnimationBegin(this AnimationStruct animationStruct, int slotID) => animationStruct.GetAniProgress(slotID) == 0;
+        public static float UpdateAngle(this AnimationStruct animationHelper, float BeginAngle, float EndAngle, int Filp, float Progress, float PreFilpAdd = 0)
+        {
+            float startAngleOffset = ToRadians(BeginAngle);
+            float endAngleOffset = ToRadians(EndAngle);
+            float baseRotation = Lerp(startAngleOffset, endAngleOffset, Progress) + PreFilpAdd;
+            if (Filp == -1)
+                baseRotation = baseRotation * Filp;
+            return baseRotation;
+        }
     }
 }

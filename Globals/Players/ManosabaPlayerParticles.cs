@@ -25,7 +25,10 @@ namespace SakurabaEmaMod.Globals.Players
             switch (ManosabaGirl)
             {
                 case ManosabaGirlID.TachibanaSherry:
-                    DrawSherryParticle();
+                    if (isStanding)
+                        DrawSherryStandingParticle();
+                    else
+                        DrawSherryMovingParticle();
                     break;
                 case ManosabaGirlID.SakurabaEma:
                     DrawEmaParticle();
@@ -52,13 +55,6 @@ namespace SakurabaEmaMod.Globals.Players
             }
         }
         #region 橘雪莉
-        public void DrawSherryParticle()
-        {
-            if (Player.IsStandingStil(5f) && Player.velocity.Y == 0)
-                DrawSherryStandingParticle();
-            else
-                DrawSherryMovingParticle();
-        }
         public void DrawSherryMovingParticle()
         {
             if (Main.rand.NextBool())

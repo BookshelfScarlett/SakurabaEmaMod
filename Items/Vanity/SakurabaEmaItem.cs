@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Core.Configs;
+using SakurabaEmaMod.Globals.Avator;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Globals.Textbox;
@@ -24,6 +25,7 @@ namespace SakurabaEmaMod.Items.Vanity
         public new string LocalizationCategory => "Items";
         public static string ItemPath => "SakurabaEmaMod/Assets/Texture/CharactorSets/SakurabaEma/";
         public override string Texture => $"{ItemPath}Item";
+        public Texture2D AvatorTexture => Request<Texture2D>(ItemPath + "Avatar").Value;
         //没有理由给这个东西敲词缀，说实话
         public override bool AllowPrefix(int pre) => false;
         public override void Load()
@@ -143,52 +145,52 @@ namespace SakurabaEmaMod.Items.Vanity
         }
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
-            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
-                return;
-            string titleString = this.GetLocalizationKey("FlavorTooltip").ToLangValue();
-            string sinString = this.GetLocalizedValue("RealTooltip").ToLangValue();
-            TextboxSettings sets = new TextboxSettings()
+            float height = 0;
+            if (!ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
             {
-                TitleText = titleString,
-                TitleEdgeColor = Color.White,
-                TitleTextColor = Color.HotPink,
-                HasTitle = true,
+                string titleString = this.GetLocalizationKey("FlavorTooltip").ToLangValue();
+                string sinString = this.GetLocalizedValue("RealTooltip").ToLangValue();
+                TextboxSettings sets = new TextboxSettings()
+                {
+                    TitleText = titleString,
+                    TitleEdgeColor = Color.White,
+                    TitleTextColor = Color.HotPink,
+                    HasTitle = true,
+                    BackgroundColor = Color.Lerp(Color.WhiteSmoke, Color.HotPink, 0.50f) * .46f,
+                    BackgroundEdgeColor = Color.White * .98f,
+                    MainText = sinString,
+                    TextColor = Color.White,
+                    TextEdgeColor = Color.HotPink,
+                    TitleTextSize = 1.15f
+                };
+                height = TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheList, ref sets);
+            }
+            if (ManosabaClientConfig.Instance.NoCharactorAvatar)
+                return;
+            AvatorSettings avatorSettings = new AvatorSettings()
+            {
                 BackgroundColor = Color.Lerp(Color.WhiteSmoke, Color.HotPink, 0.50f) * .46f,
                 BackgroundEdgeColor = Color.White * .98f,
-                MainText = sinString,
-                TextColor = Color.White,
-                TextEdgeColor = Color.HotPink,
-                TitleTextSize = 1.15f
+                AvatorTexture = AvatorTexture,
+                Scale = 1f
             };
-            TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheList, ref sets);
+            if (height != 0)
+                height += 30;
+            AvatorMethods.DrawAvatorWithBackground(line, CacheList, ref  avatorSettings, height);
+        }
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+        {
+            Main.GetItemDrawFrame(Type, out Texture2D itemTexture, out Rectangle itemFrame);
+            Vector2 drawOrigin = itemFrame.Size() / 2;
+            Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+            spriteBatch.Draw(itemTexture, drawPosition, itemFrame, Color.White, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+        }
+        public override void PostUpdate()
+        {
+            if(!ManosabaClientConfig.Instance.ParticleDontEmitLight)
+            Lighting.AddLight(Item.Center, TorchID.White);
+        }
 
-            base.PostDrawTooltipLine(line);
-        }
-        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
-        {
-            Texture2D tex = TextureAssets.Item[Type].Value;
-            Vector2 position = Item.position - Main.screenPosition + tex.Size() / 2;
-            Rectangle iFrame = tex.Frame();
-            //绘制物品时装描边
-            for (int i = 0; i < 16; i++)
-                spriteBatch.Draw(tex, position + ToRadians(i * 60f).ToRotationVector2() * 2.4f, null, Color.Pink with { A = 0 }, 0f, tex.Size() / 2, scale, 0, 0f);
-            //绘制物品本身
-            spriteBatch.Draw(tex, position, iFrame, Color.White, 0f, tex.Size() / 2, scale, 0f, 0f);
-            Lighting.AddLight(position, TorchID.UltraBright);
-            return false;
-        }
-        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
-        {
-            Texture2D tex = TextureAssets.Item[Type].Value;
-            //描边。
-            for (int i = 0; i < 8; i++)
-            {
-                spriteBatch.Draw(tex, position + ToRadians(60f * i).ToRotationVector2() * 2.1f, frame, Color.LightPink.ToAddColor(), 0f, origin, scale, 0, 0);
-            }
-            //本身
-            spriteBatch.Draw(tex, position, frame, Color.White, 0, origin, scale, 0, 0);
-            return false;
-        }
         public override void UpdateVanity(Player player)
         {
             player.ManosabaMod().ManosabaGirl = ManosabaGirlID.SakurabaEma;

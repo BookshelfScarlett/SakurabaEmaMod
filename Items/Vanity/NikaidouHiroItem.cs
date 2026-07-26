@@ -8,7 +8,7 @@ using Terraria.ModLoader.IO;
 
 namespace SakurabaEmaMod.Items.Vanity
 {
-    internal class NikaidouHiroItem : CharactorVanity
+    public class NikaidouHiroItem : CharactorVanity
     {
         public override short SetCharactor => ManosabaGirlID.NikaidouHiro;
         public override TextboxVanity VanityData => new TextboxVanity()

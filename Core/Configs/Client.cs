@@ -28,6 +28,13 @@ namespace SakurabaEmaMod.Core.Configs
         [BackgroundColor(192, 54, 64, 192)]
         [DefaultValue(false)]
         public bool NoCustomCharactorSounds { get; set; }
+        [BackgroundColor(192, 54, 64, 192)]
+        [DefaultValue(false)]
+        public bool NoCharactorAvatar { get; set; }
+        [BackgroundColor(192, 54, 64, 192)]
+        [DefaultValue(false)]
+        public bool NoCharactorParticle { get; set; }
+
 
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using SakurabaEmaMod.Core;
 using SakurabaEmaMod.Core.Configs;
+using SakurabaEmaMod.Globals.Avator;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Globals.Textbox;
@@ -46,6 +47,7 @@ namespace SakurabaEmaMod.Globals.Class
         public virtual bool IsVanityItem => true;
         public int FlavorTooltipIndex = -1;
         public string TexturePath => $"SakurabaEmaMod/Assets/Texture/CharactorSets/{GetName}/";
+        public Texture2D AvatorTexture => Request<Texture2D>(TexturePath + "Avatar").Value;
         public virtual TextboxVanity VanityData { get; set; }
         private string GetName
         {
@@ -149,7 +151,6 @@ namespace SakurabaEmaMod.Globals.Class
                 tooltips.Insert(FlavorTooltipIndex + 1, flavorTooltip);
                 tooltips.Insert(FlavorTooltipIndex + 2, realTooltip);
             }
-            else
                 CacheTooltipLine = tooltips;
             ExModifyTooltip(tooltips);
         }
@@ -183,28 +184,53 @@ namespace SakurabaEmaMod.Globals.Class
             else
                 return false;
         }
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+        {
+            Main.GetItemDrawFrame(Type, out Texture2D itemTexture, out Rectangle itemFrame);
+            Vector2 drawOrigin = itemFrame.Size() / 2;
+            Vector2 drawPosition = Item.Bottom - Main.screenPosition - new Vector2(0, drawOrigin.Y);
+            spriteBatch.Draw(itemTexture, drawPosition, itemFrame, Color.White, rotation, drawOrigin, scale, SpriteEffects.None, 0);
+        }
+        public override void PostUpdate()
+        {
+            if(!ManosabaClientConfig.Instance.ParticleDontEmitLight)
+            Lighting.AddLight(Item.Center, TorchID.White);
+        }
         public virtual bool ExPreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset) => true;
         public override void PostDrawTooltipLine(DrawableTooltipLine line)
         {
-            if (ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+            float height = 0;
+            if (!ManosabaClientConfig.Instance.TraditionalTooltipShowcase)
+            {
+                string titleString = this.GetLocalizationKey("SinnerType").ToLangValue();
+                string sinString = this.GetLocalizedValue("SinnerTooltip").ToLangValue();
+                TextboxSettings sets = new TextboxSettings()
+                {
+                    BackgroundColor = VanityData.BackgroundColor,
+                    BackgroundEdgeColor = VanityData.BackgroundEdgeColor,
+                    HasTitle = true,
+                    TextColor = VanityData.TextColor,
+                    TextEdgeColor = VanityData.TextEdgeColor,
+                    TitleEdgeColor = VanityData.TitleEdgeColor,
+                    TitleTextColor = VanityData.TitleColor,
+                    TitleText = titleString,
+                    MainText = sinString,
+                    TitleTextSize = 1.15f
+                };
+                height = TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheTooltipLine, ref sets);
+            }
+            if (ManosabaClientConfig.Instance.NoCharactorAvatar)
                 return;
-            string titleString = this.GetLocalizationKey("SinnerType").ToLangValue();
-            string sinString = this.GetLocalizedValue("SinnerTooltip").ToLangValue();
-            TextboxSettings sets = new TextboxSettings()
+            AvatorSettings avatorSettings = new AvatorSettings()
             {
                 BackgroundColor = VanityData.BackgroundColor,
                 BackgroundEdgeColor = VanityData.BackgroundEdgeColor,
-                HasTitle = true,
-                TextColor = VanityData.TextColor,
-                TextEdgeColor = VanityData.TextEdgeColor,
-                TitleEdgeColor = VanityData.TitleEdgeColor,
-                TitleTextColor = VanityData.TitleColor,
-                TitleText = titleString,
-                MainText = sinString,
-                TitleTextSize = 1.15f
+                AvatorTexture = AvatorTexture,
+                Scale = 1f
             };
-            TextboxMethods.DrawTextboxTooltipWithBackground(line, CacheTooltipLine, ref sets);
-
+            if (height != 0)
+                height += 30;
+            AvatorMethods.DrawAvatorWithBackground(line, CacheTooltipLine, ref  avatorSettings, height);
         }
     }
 }

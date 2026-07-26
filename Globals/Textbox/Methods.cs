@@ -13,12 +13,12 @@ namespace SakurabaEmaMod.Globals.Textbox
 {
     public static class TextboxMethods
     {
-        public static void DrawTextboxTooltipWithBackground(DrawableTooltipLine line, IReadOnlyList<TooltipLine> cacheTooltip, ref TextboxSettings textboxSettings, float extraYOffset = 0, float maxWidth = -1)
+        public static float DrawTextboxTooltipWithBackground(DrawableTooltipLine line, IReadOnlyList<TooltipLine> cacheTooltip, ref TextboxSettings textboxSettings, float extraYOffset = 0, float maxWidth = -1)
         {
             //line.Index如果不等于最后一行我们都不会绘制，以确保其绘制一次。
             //CacheTooltipList是事先在modifyTooltipline里缓存的列表。
             if (cacheTooltip is null || line.Index != cacheTooltip.Count - 1)
-                return;
+                return 0;
             DynamicSpriteFont font = line.Font ?? FontAssets.MouseText.Value;
 
             Vector2 scale = line.BaseScale;
@@ -96,6 +96,7 @@ namespace SakurabaEmaMod.Globals.Textbox
                 for (int i = 0; i < 16; i++)
                     ChatManager.DrawColorCodedString(sb, font, textboxSettings.MainText, mainTextPos + (TwoPi / 16f * i).ToRotationVector2() * 1.2f + posOffset, textboxSettings.TextEdgeColor * lerpValue, 0, Vector2.Zero, scale);
                 ChatManager.DrawColorCodedString(sb, font, textboxSettings.MainText, mainTextPos + posOffset, textboxSettings.TextColor * lerpValue, 0, Vector2.Zero, scale);
+                return maxSizeY;
             }
             else
             {
@@ -129,7 +130,9 @@ namespace SakurabaEmaMod.Globals.Textbox
                 for (int i = 0; i < 16; i++)
                     ChatManager.DrawColorCodedString(sb, font, textboxSettings.MainText, mainTextPos + (TwoPi / 16f * i).ToRotationVector2() * 1.2f + posOffset, textboxSettings.TextEdgeColor * lerpValue, 0, Vector2.Zero, scale);
                 ChatManager.DrawColorCodedString(sb, font, textboxSettings.MainText, mainTextPos + posOffset, textboxSettings.TextColor * lerpValue, 0, Vector2.Zero, scale);
+                return maxHeight;
             }
+
         }
         public static void DrawTextboxBackground(float beginPosX, float beginPosY, float width, float height, int padding, Vector2 drawPos, Color color, Vector2? posOffset = null, Color? edgeColor = null)
         {

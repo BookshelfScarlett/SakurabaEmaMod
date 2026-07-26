@@ -1,4 +1,5 @@
 ﻿using SakurabaEmaMod.Assets.Register;
+using SakurabaEmaMod.Core.Configs;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Items.Vanity;
 using Steamworks;
@@ -79,6 +80,12 @@ namespace SakurabaEmaMod.Globals.Players
                 IsGiveAnyVanityItem= true;
                 Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<JougasakiNoahItem>());
             }
+            if (name.Contains("tachibana") || name.Contains("sherry") || name.Contains("橘雪莉") || name.Contains("雪莉"))
+            {
+                IsGiveAnyVanityItem= true;
+                Player.QuickSpawnItemDirect(Player.GetSource_FromThis(), ItemType<TachibanaSherryItem>());
+            }
+
         }
         public override void ResetEffects()
         {
@@ -95,7 +102,7 @@ namespace SakurabaEmaMod.Globals.Players
         }
         public override void FrameEffects()
         {
-            if (ManosabaGirl != ManosabaGirlID.None)
+            if (ManosabaGirl != ManosabaGirlID.None && !ManosabaClientConfig.Instance.NoCharactorParticle)
             {
                 UpdateVanityOnNeed();
                 DrawParticleOnNeed(); 

@@ -1,7 +1,7 @@
 SakurabaEmma: {
 	DisplayName: Otherworldly Beret
 	Tooltip: Press middle-click while hovering on this to switch sound effects
-	FlavorTooltip: "[-The Reviled One-]"
+	FlavorTooltip: -The Reviled One-
 	RealTooltip:
 		'''
 		She is one who deserves revulsion.
@@ -14,7 +14,7 @@ SakurabaEmma: {
 NatsumeAnanItem: {
 	DisplayName: A Child's Sketchbook
 	Tooltip: ""
-	SinnerType: "[-The Lying Sleeping Princess-]"
+	SinnerType: -The Lying Sleeping Princess-
 	SinnerTooltip:
 		'''
 		She sleeps alone again today.
@@ -32,7 +32,7 @@ NoaPainter: {
 NikaidouHiroItem: {
 	DisplayName: Flower of Righteous Reason
 	Tooltip: ""
-	SinnerType: "[-Executor of Justice-]"
+	SinnerType: -Executor of Justice-
 	SinnerTooltip:
 		'''
 		Not a single blemish mars the path she has walked.
@@ -43,7 +43,7 @@ NikaidouHiroItem: {
 JougasakiNoahItem: {
 	DisplayName: Disguised Short Hat
 	Tooltip: Press middle-click while hovering on this to switch death sound effects
-	SinnerType: "[-The Hypocritical Artist-]"
+	SinnerType: -The Hypocritical Artist-
 	SinnerTooltip:
 		'''
 		She struggles relentlessly in agony.
@@ -54,8 +54,12 @@ JougasakiNoahItem: {
 }
 
 TachibanaSherryItem: {
-	DisplayName: Tachibana Sherry Item
+	DisplayName: Compact Magnifier
 	Tooltip: ""
-	SinnerType: ""
-	SinnerTooltip: ""
+	SinnerType: -Destroyer Detective-
+	SinnerTooltip:
+		'''
+		She destroyed everything.
+		      Whether it was the cases, the people, or even her own heart.
+		'''
 }

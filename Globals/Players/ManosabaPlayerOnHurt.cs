@@ -32,7 +32,7 @@ namespace SakurabaEmaMod.Globals.Players
 
         private void SerCharactorPreKill(ref bool playSound, ref bool genDust)
         {
-            if (ManosabaGirl == ManosabaGirlID.None)
+            if (ManosabaGirl == ManosabaGirlID.None || ManosabaGirl == ManosabaGirlID.TachibanaSherry)
                 return;
             //playSound = false;
             genDust = false;
@@ -345,7 +345,7 @@ namespace SakurabaEmaMod.Globals.Players
         {
             get
             {
-                return ManosabaGirl != ManosabaGirlID.None && !ManosabaClientConfig.Instance.NoCustomCharactorSounds;
+                return (ManosabaGirl != ManosabaGirlID.None && ManosabaGirl != ManosabaGirlID.TachibanaSherry) && !ManosabaClientConfig.Instance.NoCustomCharactorSounds;
             }
         }
 

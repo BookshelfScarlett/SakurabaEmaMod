@@ -1,15 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using SakurabaEmaMod.Core;
-using SakurabaEmaMod.Core.Hud;
+﻿using SakurabaEmaMod.Core;
 using SakurabaEmaMod.Globals.Class;
-using SakurabaEmaMod.Globals.Cutscenes;
 using SakurabaEmaMod.Globals.Enums;
 using SakurabaEmaMod.Globals.Methods;
 using SakurabaEmaMod.Projs;
 using SakurabaEmaMod.Rarity.RarityShiny;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +15,6 @@ namespace SakurabaEmaMod.Items
     {
         public override bool IsLoadingEnabled(Mod mod) => false;
         public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
-        public override int Size => 44;
         public override string Texture => GetAsset("Items");
         public override bool AllowPrefix(int pre) => false;
         public int FlavorTooltipIndex = -1;
@@ -63,26 +58,9 @@ namespace SakurabaEmaMod.Items
                 return true;
             }
         }
-        public override bool? UseItem(Player player)
+        public override bool CanShoot(Player player)
         {
-                player.ManosabaMod().IsDoneFinalBossFight = false;
-            if (player.itemAnimation == player.itemAnimationMax)
-            {
-                CutsceneManager.QueueCutscene(GetInstance<BloomCutScene>());
-            }
-            return base.UseItem(player);
-        }
-        public override void UseAnimation(Player player)
-        {
-            base.UseAnimation(player);
-        }
-        public override bool CanUseItem(Player player) => !player.HasProj(Item.shoot);
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            return false;
-            Projectile proj = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback);
-            proj.owner = player.whoAmI;
-            proj.Center = player.Center + new Vector2(28f, 0f).RotatedBy(velocity.ToRotation()); 
+            return base.CanShoot(player);
         }
     }
 }

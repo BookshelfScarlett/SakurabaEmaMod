@@ -15,7 +15,7 @@ namespace SakurabaEmaMod.Projs
         public override bool IsLoadingEnabled(Mod mod) => false;
         public override short SetCharactor => ManosabaGirlID.JougasakiNoah;
         public override string Texture => $"SakurabaEmaMod/Assets/Texture/Projs/NoaPainter";
-        public AnimationHandler PainterAni = new(10);
+        public AnimationStruct PainterAni = new(10);
         public bool Init = false;
         public Vector2 InitMouseVec = Vector2.Zero;
         public float MouseVecRot = 0;
@@ -47,6 +47,7 @@ namespace SakurabaEmaMod.Projs
         {
             if (!Init)
             {
+                InitAI();
 
             }
             bool stillInUse = (Owner.channel || Owner.controlUseTile) && !Owner.noItems && !Owner.CCed;
@@ -62,8 +63,8 @@ namespace SakurabaEmaMod.Projs
         }
         public void InitAI()
         {
-            PainterAni.MaxAniProgress[AnimationHandler.AniBegin] = 15;
-            PainterAni.MaxAniProgress[AnimationHandler.AniEnd] = 15;
+            PainterAni.MaxProgress[0] = 15 * Projectile.MaxUpdates;
+            PainterAni.MaxProgress[1] = 15 * Projectile.MaxUpdates;
             InitMouseVec = (Main.MouseWorld - Owner.Center).SafeNormalize(Vector2.UnitX);
             MouseVecRot = InitMouseVec.ToRotation();
             
@@ -83,33 +84,6 @@ namespace SakurabaEmaMod.Projs
         {
             MouseVecRot = Utils.AngleLerp(MouseVecRot, (Main.MouseWorld - Owner.Center).ToRotation(), 0.2f);
             Projectile.velocity = Projectile.rotation.ToRotationVector2();
-            DoAnimation();
-        }
-        public void DoAnimation()
-        {
-            if (!PainterAni.HasFinish[AnimationHandler.AniBegin])
-            {
-                DoBeginAnimation();
-
-                if (PainterAni.AniProgress[AnimationHandler.AniBegin] < PainterAni.MaxAniProgress[AnimationHandler.AniBegin])
-                    PainterAni.AniProgress[AnimationHandler.AniBegin]++;
-                if (PainterAni.AniProgress[AnimationHandler.AniBegin] >= PainterAni.MaxAniProgress[AnimationHandler.AniBegin])
-                {
-                    PainterAni.HasFinish[AnimationHandler.AniBegin] = true;
-                    Projectile.netUpdate = true;
-                }
-            }
-            else if(!PainterAni.HasFinish[AnimationHandler.AniEnd])
-            {
-                if (PainterAni.AniProgress[AnimationHandler.AniEnd] < PainterAni.MaxAniProgress[AnimationHandler.AniEnd])
-                    PainterAni.AniProgress[AnimationHandler.AniEnd]++;
-
-            }
-        }
-
-        private void DoBeginAnimation()
-        {
-            throw new NotImplementedException();
         }
 
         public override bool PreDraw(ref Color lightColor)

@@ -60,7 +60,7 @@ JougasakiNoahItem: {
 TachibanaSherryItem: {
 	DisplayName: 小型聚光镜
 	Tooltip: ""
-	SinnerType: "[-毁灭侦探-]"
+	SinnerType: -毁灭侦探-
 	SinnerTooltip:
 		'''
 		她毁灭了一切

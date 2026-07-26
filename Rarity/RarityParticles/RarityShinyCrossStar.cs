@@ -40,13 +40,24 @@ namespace SakurabaEmaMod.Rarity.RarityParticles
         public override void CustomDraw(SpriteBatch spriteBatch, Vector2 drawPos)
         {
             Texture2D star = ManosabaTexture.Particle_SharpTear;
-            Tex2DWithPath shinyOrb = ManosabaTexture.Particle_ShinyOrb;
-            Vector2 starScale = new Vector2(1.2f, 0.8f);
-            spriteBatch.Draw(star, drawPos, null, DrawColor * Opacity, Rotation, star.Size() / 2, starScale * Scale, SpriteEffects.None, 0);
-            spriteBatch.Draw(star, drawPos, null, DrawColor * Opacity, Rotation + PiOver2, star.Size() / 2, starScale * Scale, SpriteEffects.None, 0);
-            //防止过曝
-            spriteBatch.Draw(shinyOrb.Value, drawPos, null, Color.Lerp(Color.White, DrawColor, 0.5f) * 0.95f * Opacity, 0, shinyOrb.Origin, Scale * 0.75f, SpriteEffects.None, 0);
-            spriteBatch.Draw(ManosabaTexture.Particle_CrossGlow.Value, drawPos, null, DrawColor, Rotation, ManosabaTexture.Particle_CrossGlow.Origin, 0.05f * Scale, 0, 0);
+            for (float i = 0; i < 1f; i += 0.1f)
+            {
+                Vector2 starScale = GetScale(i);
+                float colorAlpha = GetAlphaFade(1 - i);
+                spriteBatch.Draw(star, drawPos, null, DrawColor * Opacity * colorAlpha, Rotation, star.Size() / 2, starScale * Scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(star, drawPos, null, DrawColor * Opacity * colorAlpha, Rotation + PiOver2, star.Size() / 2, starScale * Scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(star, drawPos, null, Color.White * Opacity, Rotation + PiOver2, star.Size() / 2, starScale * Scale * 0.5f, SpriteEffects.None, 0);
+            }
+        }
+        public float GetAlphaFade(float t)
+        {
+            return Lerp(0.5f, 1f, t);
+        }
+        public Vector2 GetScale(float t)
+        {
+            Vector2 starScale = new(1.2f, 0.8f);
+            Vector2 beginScale = new(0.2f, 0.05f);
+            return Vector2.Lerp(beginScale, starScale, t);
         }
     }
 }
